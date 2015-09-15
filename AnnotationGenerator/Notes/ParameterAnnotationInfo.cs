@@ -6,14 +6,14 @@ using static AnnotationGenerator.Notes.ResharperXmlBuilder;
 
 namespace AnnotationGenerator.Notes
 {
-    public class ParameterNotesInfo : INote
+    public class ParameterAnnotationInfo : IAnnotationInfo
     {
         public string ParameterName { get; }
         public bool IsFormatString { get; }
         public bool IsNotNull { get; }
         public bool CanBeNull { get; }
 
-        public ParameterNotesInfo([NotNull] string parameterName, bool isFormatString = false, bool isNotNull = false, bool canBeNull = false)
+        public ParameterAnnotationInfo([NotNull] string parameterName, bool isFormatString = false, bool isNotNull = false, bool canBeNull = false)
         {
             if (parameterName == null) throw new ArgumentNullException(nameof(parameterName));
 

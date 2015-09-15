@@ -5,7 +5,7 @@ using AnnotationGenerator.Notes;
 using JetBrains.Annotations;
 using NUnit.Framework;
 
-namespace AnnotationGenerator.Tests
+namespace AnnotationGenerator.Tests.AnnotationXml
 {
     [TestFixture]
     [SuppressMessage("ReSharper", "AssignNullToNotNullAttribute")]

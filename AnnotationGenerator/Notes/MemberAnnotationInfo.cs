@@ -4,12 +4,12 @@ using static AnnotationGenerator.Notes.ResharperXmlBuilder;
 
 namespace AnnotationGenerator.Notes
 {
-    class MemberNotesInfo : INote
+    class MemberAnnotationInfo : IAnnotationInfo
     {
         public bool IsNotNull { get; }
         public bool CanBeNull { get; }
 
-        public MemberNotesInfo(bool isNotNull = false, bool canBeNull = false)
+        public MemberAnnotationInfo(bool isNotNull = false, bool canBeNull = false)
         {
             IsNotNull = isNotNull;
             CanBeNull = canBeNull;

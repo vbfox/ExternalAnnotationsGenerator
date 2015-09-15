@@ -13,7 +13,7 @@ namespace AnnotationGenerator
         private static readonly string usageInfo = $"Should be a call on one of the methods of {nameof(ParameterNotes)}.";
 
         [CanBeNull]
-        public static ParameterNotesInfo ExtractParameter(Expression expression, ParameterInfo parameter)
+        public static ParameterAnnotationInfo ExtractParameter(Expression expression, ParameterInfo parameter)
         {
             var methodCallExpression = AssertCallOnSpecialClass(expression);
 
@@ -21,19 +21,19 @@ namespace AnnotationGenerator
             switch (methodName)
             {
                 case nameof(ParameterNotes.FormatString):
-                    return new ParameterNotesInfo(parameter.Name, isFormatString:true, isNotNull:true);
+                    return new ParameterAnnotationInfo(parameter.Name, isFormatString:true, isNotNull:true);
 
                 case nameof(ParameterNotes.NullableFormatString):
-                    return new ParameterNotesInfo(parameter.Name, isFormatString: true);
+                    return new ParameterAnnotationInfo(parameter.Name, isFormatString: true);
 
                 case nameof(ParameterNotes.Some):
-                    return new ParameterNotesInfo(parameter.Name);
+                    return new ParameterAnnotationInfo(parameter.Name);
 
                 case nameof(ParameterNotes.NotNull):
-                    return new ParameterNotesInfo(parameter.Name, isNotNull: true);
+                    return new ParameterAnnotationInfo(parameter.Name, isNotNull: true);
 
                 case nameof(ParameterNotes.CanBeNull):
-                    return new ParameterNotesInfo(parameter.Name, canBeNull: true);
+                    return new ParameterAnnotationInfo(parameter.Name, canBeNull: true);
 
                 default:
                     throw new ArgumentException($"Expression '{expression}' call an unsupported method : {methodName}. {usageInfo}",
@@ -58,7 +58,7 @@ namespace AnnotationGenerator
         }
 
         [CanBeNull]
-        public static MemberNotesInfo ExtractMember(Expression expression, MemberInfo member)
+        public static MemberAnnotationInfo ExtractMember(Expression expression, MemberInfo member)
         {
             var methodCallExpression = AssertCallOnSpecialClass(expression);
 
@@ -66,13 +66,13 @@ namespace AnnotationGenerator
             switch (methodName)
             {
                 case nameof(ParameterNotes.Some):
-                    return new MemberNotesInfo();
+                    return new MemberAnnotationInfo();
 
                 case nameof(ParameterNotes.NotNull):
-                    return new MemberNotesInfo(isNotNull:true);
+                    return new MemberAnnotationInfo(isNotNull:true);
 
                 case nameof(ParameterNotes.CanBeNull):
-                    return new MemberNotesInfo(canBeNull:true);
+                    return new MemberAnnotationInfo(canBeNull:true);
 
                 default:
                     throw new ArgumentException($"Expression '{expression}' call an unsupported method : {methodName}. {usageInfo}",
