@@ -1,22 +1,68 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
+using JetBrains.Annotations;
 
 namespace AnnotationGenerator
 {
+    public class AnnotationFile
+    {
+        [NotNull]
+        public string FileName { get; }
+
+        [NotNull]
+        public XDocument Content { get; }
+
+        public AnnotationFile([NotNull] string fileName, [NotNull] XDocument content)
+        {
+            if (fileName == null) throw new ArgumentNullException(nameof(fileName));
+            if (content == null) throw new ArgumentNullException(nameof(content));
+
+            FileName = fileName;
+            Content = content;
+        }
+    }
+
+    public class AnnotationFileGenerator
+    {
+        private readonly AssemblyAnnotations annotations;
+
+        public AnnotationFileGenerator([NotNull] AssemblyAnnotations annotations)
+        {
+            if (annotations == null) throw new ArgumentNullException(nameof(annotations));
+
+            this.annotations = annotations;
+        }
+
+        [NotNull]
+        public AnnotationFile Generate()
+        {
+            return new AnnotationFile("", new XDocument());
+        }
+    }
+
     public class Annotator : FluentInterface
     {
-        readonly IList<XDocument> documents = new List<XDocument>();
+        readonly List<AssemblyAnnotations> annotations = new List<AssemblyAnnotations>();
 
         public void AnnotateAssemblyContaining<T>(Action<AssemblyAnnotator<T>> annotationActions)
         {
-            annotationActions(new AssemblyAnnotator<T>(this));
+            var annotator = new AssemblyAnnotator<T>();
+            annotationActions(annotator);
+            annotations.Add(annotator.GetAnnotations());
         }
 
+        public IEnumerable<AnnotationFile> GenerateFiles()
+        {
+            return annotations.Select(a => new AnnotationFileGenerator(a).Generate());
+        }
+
+        /*
         internal IEnumerable<XDocument> GetDocuments()
         {
             return documents;
@@ -66,5 +112,6 @@ namespace AnnotationGenerator
                 }
             }
         }
+        */
     }
 }

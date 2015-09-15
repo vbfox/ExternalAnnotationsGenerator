@@ -17,7 +17,7 @@ namespace AnnotationGenerator.Tests
 
             annotator.AnnotateAssemblyContaining<ILogger>(asm => {});
 
-            var doc = annotator.GetDocuments().First();
+            var doc = annotator.GenerateFiles().First().Content;
             var assemblyElement = doc.XPathSelectElement("/assembly");
 
             Assert.That(assemblyElement, Is.Not.Null);
@@ -29,8 +29,8 @@ namespace AnnotationGenerator.Tests
             var annotator = new Annotator();
 
             annotator.AnnotateAssemblyContaining<ILogger>(asm => {});
-
-            var doc = annotator.GetDocuments().First();
+            
+            var doc = annotator.GenerateFiles().First().Content;
             var assemblyElement = doc.XPathSelectElement("/assembly[@name=\"Ninject.Extensions.Logging\"]");
 
             Assert.That(assemblyElement, Is.Not.Null);
@@ -46,7 +46,7 @@ namespace AnnotationGenerator.Tests
                 asm.AnnotateType<ILogger>(type => type.Annotate(i => i.Info(FormatString(), Some<object[]>())));
             });
 
-            var doc = annotator.GetDocuments().First();
+            var doc = annotator.GenerateFiles().First().Content;
             var memberElement = doc.XPathSelectElement("/assembly/member");
 
             Assert.That(memberElement, Is.Not.Null);
@@ -62,7 +62,7 @@ namespace AnnotationGenerator.Tests
                 asm.AnnotateType<ILogger>(type => type.Annotate(i => i.Info(FormatString(), Some<object[]>())));
             });
 
-            var doc = annotator.GetDocuments().First();
+            var doc = annotator.GenerateFiles().First().Content;
             var memberElement = doc.XPathSelectElement("/assembly/member");
 
             Assert.That(memberElement, Is.Not.Null);
@@ -79,7 +79,7 @@ namespace AnnotationGenerator.Tests
                 asm.AnnotateType<ILoggerFactory>(type => type.Annotate(i => i.GetLogger(Some<Type>()) == NotNull<ILogger>()));
             });
 
-            var doc = annotator.GetDocuments().First();
+            var doc = annotator.GenerateFiles().First().Content;
             var memberElement = doc.XPathSelectElement("/assembly/member");
 
             Assert.That(memberElement, Is.Not.Null);
@@ -109,7 +109,7 @@ namespace AnnotationGenerator.Tests
                 asm.AnnotateType<ILogger>(type => type.Annotate(i => i.Info(FormatString(), Some<object[]>())));
             });
 
-            var doc = annotator.GetDocuments().First();
+            var doc = annotator.GenerateFiles().First().Content;
             var attributeElement = doc.XPathSelectElement("/assembly/member/attribute");
 
             Assert.That(attributeElement, Is.Not.Null);
@@ -125,7 +125,7 @@ namespace AnnotationGenerator.Tests
                 asm.AnnotateType<ILogger>(type => type.Annotate(i => i.Info(FormatString(), Some<object[]>())));
             });
 
-            var doc = annotator.GetDocuments().First();
+            var doc = annotator.GenerateFiles().First().Content;
             var attributeElement = doc.XPathSelectElement("/assembly/member/attribute");
 
             Assert.That(attributeElement, Is.Not.Null);
@@ -142,7 +142,7 @@ namespace AnnotationGenerator.Tests
                 asm.AnnotateType<ILogger>(type => type.Annotate(i => i.Info(FormatString(), Some<object[]>())));
             });
 
-            var doc = annotator.GetDocuments().First();
+            var doc = annotator.GenerateFiles().First().Content;
             var argumentElement = doc.XPathSelectElement("/assembly/member/attribute/argument");
 
             Assert.That(argumentElement, Is.Not.Null);
@@ -159,7 +159,7 @@ namespace AnnotationGenerator.Tests
                 asm.AnnotateType<ILoggerFactory>(type => type.Annotate(i => i.GetLogger(Some<Type>()) == NotNull<ILogger>()));
             });
 
-            var doc = annotator.GetDocuments().First();
+            var doc = annotator.GenerateFiles().First().Content;
             var attributeElement = doc.XPathSelectElement("/assembly/member/attribute");
 
             Assert.That(attributeElement, Is.Not.Null);

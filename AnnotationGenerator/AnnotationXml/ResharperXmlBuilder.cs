@@ -66,5 +66,12 @@ namespace AnnotationGenerator.Notes
 
             return new XElement("parameter", new XAttribute("name", parameterName));
         }
+
+        public static XDocument BuildDocument(string assemblyName)
+        {
+            return new XDocument(
+                new XDeclaration("1.0", "utf-8", null),
+                new XElement("assembly", new XAttribute("name", assemblyName)));
+        }
     }
 }

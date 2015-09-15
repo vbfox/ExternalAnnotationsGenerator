@@ -36,7 +36,7 @@ namespace Ninject.Annotations
             });
 
             var version = args.Length > 0 ? args[0] : "1.0.0.0";
-
+            /*
             annotator.CreateNugetPackage(
                 new NugetSpec(
                     version: version, 
@@ -46,7 +46,7 @@ namespace Ninject.Annotations
                     owners: "Tom Rathbone",
                     projectUrl: "https://github.com/chillitom/ReSharper.ExternalAnnotations.Generator/blob/master/Ninject.Annotations/Program.cs", 
                     iconUrl: "https://raw.githubusercontent.com/ninject/ninject/master/logos/Ninject-Logo32.png", 
-                    description: "External Annotations for Ninject and Ninject Extensions"));
+                    description: "External Annotations for Ninject and Ninject Extensions"));*/
         }
     }
 }

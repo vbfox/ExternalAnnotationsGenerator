@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="Annotator.cs" />
     <Compile Include="AssemblyAnnotator.cs" />
+    <Compile Include="ExpressionHelpers.cs" />
     <Compile Include="FluentInterface.cs" />
     <Compile Include="NotesInfoExtractor.cs" />
     <Compile Include="MemberAnnotator.cs" />
