@@ -1,18 +1,19 @@
 ﻿using System;
 using System.Linq;
 using System.Xml.XPath;
-using AnnotationGenerator.Notes;
 using Ninject.Extensions.Logging;
 using NUnit.Framework;
+using static AnnotationGenerator.ParameterNotes;
 
 namespace AnnotationGenerator.Tests
 {
+    [TestFixture]
     public class AnnotatorTests
     {
         [Test]
         public void CreatesAssemblyElement()
         {
-            Annotator annotator = new Annotator();
+            var annotator = new Annotator();
 
             annotator.AnnotateAssemblyContaining<ILogger>(asm => {});
 
@@ -25,7 +26,7 @@ namespace AnnotationGenerator.Tests
         [Test]
         public void SetsAssemblyElementNameAttribute()
         {
-            Annotator annotator = new Annotator();
+            var annotator = new Annotator();
 
             annotator.AnnotateAssemblyContaining<ILogger>(asm => {});
 
@@ -38,11 +39,11 @@ namespace AnnotationGenerator.Tests
         [Test]
         public void CreatesMemberElementIfParameterAnnotated()
         {
-            Annotator annotator = new Annotator();
+            var annotator = new Annotator();
 
             annotator.AnnotateAssemblyContaining<ILogger>(asm =>
             {
-                asm.AnnotateType<ILogger>(type => type.Annotate(i => i.Info(FormatString._, Any<object[]>._)));
+                asm.AnnotateType<ILogger>(type => type.Annotate(i => i.Info(FormatString(), Some<object[]>())));
             });
 
             var doc = annotator.GetDocuments().First();
@@ -54,11 +55,11 @@ namespace AnnotationGenerator.Tests
         [Test]
         public void SetsMemberElementName()
         {
-            Annotator annotator = new Annotator();
+            var annotator = new Annotator();
 
             annotator.AnnotateAssemblyContaining<ILogger>(asm =>
             {
-                asm.AnnotateType<ILogger>(type => type.Annotate(i => i.Info(FormatString._, Any<object[]>._)));
+                asm.AnnotateType<ILogger>(type => type.Annotate(i => i.Info(FormatString(), Some<object[]>())));
             });
 
             var doc = annotator.GetDocuments().First();
@@ -71,11 +72,11 @@ namespace AnnotationGenerator.Tests
         [Test]
         public void CreatesMemberElementIfMethodAnnotated()
         {
-            Annotator annotator = new Annotator();
+            var annotator = new Annotator();
 
             annotator.AnnotateAssemblyContaining<ILogger>(asm =>
             {
-                asm.AnnotateType<ILoggerFactory>(type => type.Annotate(i => i.GetLogger(Any<Type>._), NotNull._));
+                asm.AnnotateType<ILoggerFactory>(type => type.Annotate(i => i.GetLogger(Some<Type>()) == NotNull<ILogger>()));
             });
 
             var doc = annotator.GetDocuments().First();
@@ -89,11 +90,11 @@ namespace AnnotationGenerator.Tests
         {
             Assert.Throws<Exception>(() =>
             {
-                Annotator annotator = new Annotator();
+                var annotator = new Annotator();
 
                 annotator.AnnotateAssemblyContaining<ILogger>(asm =>
                 {
-                    asm.AnnotateType<ILogger>(type => type.Annotate(i => i.Info(Any<string>._, Any<object[]>._)));
+                    asm.AnnotateType<ILogger>(type => type.Annotate(i => i.Info(Some<string>(), Some<object[]>())));
                 });
             });
         }
@@ -101,11 +102,11 @@ namespace AnnotationGenerator.Tests
         [Test]
         public void CreatesStringFormatMethodAttribute()
         {
-            Annotator annotator = new Annotator();
+            var annotator = new Annotator();
 
             annotator.AnnotateAssemblyContaining<ILogger>(asm =>
             {
-                asm.AnnotateType<ILogger>(type => type.Annotate(i => i.Info(FormatString._, Any<object[]>._)));
+                asm.AnnotateType<ILogger>(type => type.Annotate(i => i.Info(FormatString(), Some<object[]>())));
             });
 
             var doc = annotator.GetDocuments().First();
@@ -117,11 +118,11 @@ namespace AnnotationGenerator.Tests
         [Test]
         public void SetsAttributeCtorAttribute()
         {
-            Annotator annotator = new Annotator();
+            var annotator = new Annotator();
 
             annotator.AnnotateAssemblyContaining<ILogger>(asm =>
             {
-                asm.AnnotateType<ILogger>(type => type.Annotate(i => i.Info(FormatString._, Any<object[]>._)));
+                asm.AnnotateType<ILogger>(type => type.Annotate(i => i.Info(FormatString(), Some<object[]>())));
             });
 
             var doc = annotator.GetDocuments().First();
@@ -134,11 +135,11 @@ namespace AnnotationGenerator.Tests
         [Test]
         public void CreatesStringFormatMethodArgumentElement()
         {
-            Annotator annotator = new Annotator();
+            var annotator = new Annotator();
 
             annotator.AnnotateAssemblyContaining<ILogger>(asm =>
             {
-                asm.AnnotateType<ILogger>(type => type.Annotate(i => i.Info(FormatString._, Any<object[]>._)));
+                asm.AnnotateType<ILogger>(type => type.Annotate(i => i.Info(FormatString(), Some<object[]>())));
             });
 
             var doc = annotator.GetDocuments().First();
@@ -151,11 +152,11 @@ namespace AnnotationGenerator.Tests
         [Test]
         public void CreatesNotNullAnnotationWhenAppliedToMethod()
         {
-            Annotator annotator = new Annotator();
+            var annotator = new Annotator();
 
             annotator.AnnotateAssemblyContaining<ILogger>(asm =>
             {
-                asm.AnnotateType<ILoggerFactory>(type => type.Annotate(i => i.GetLogger(Any<Type>._), NotNull._));
+                asm.AnnotateType<ILoggerFactory>(type => type.Annotate(i => i.GetLogger(Some<Type>()) == NotNull<ILogger>()));
             });
 
             var doc = annotator.GetDocuments().First();
