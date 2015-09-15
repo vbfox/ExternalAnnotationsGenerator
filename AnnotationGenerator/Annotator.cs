@@ -8,7 +8,7 @@ using System.Xml.XPath;
 
 namespace AnnotationGenerator
 {
-    public class Annotator
+    public class Annotator : FluentInterface
     {
         readonly IList<XDocument> documents = new List<XDocument>();
 

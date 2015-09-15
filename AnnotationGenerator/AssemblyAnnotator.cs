@@ -4,7 +4,7 @@ using JetBrains.Annotations;
 
 namespace AnnotationGenerator
 {
-    public class AssemblyAnnotator<TAsm>
+    public class AssemblyAnnotator<TAsm> : FluentInterface
     {
         private readonly Annotator annotator;
         private readonly XElement rootElement;

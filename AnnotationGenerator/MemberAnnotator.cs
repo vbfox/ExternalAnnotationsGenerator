@@ -5,15 +5,18 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Xml.Linq;
 using AnnotationGenerator.Notes;
+using JetBrains.Annotations;
 
 namespace AnnotationGenerator
 {
-    public class MemberAnnotator<TClass,TAsm>
+    public class MemberAnnotator<TClass, TAssembly> : FluentInterface
     {
-        private readonly AssemblyAnnotator<TAsm> assemblyAnnotator;
+        private readonly AssemblyAnnotator<TAssembly> assemblyAnnotator;
 
-        internal MemberAnnotator(AssemblyAnnotator<TAsm> assemblyAnnotator)
+        internal MemberAnnotator([NotNull] AssemblyAnnotator<TAssembly> assemblyAnnotator)
         {
+            if (assemblyAnnotator == null) throw new ArgumentNullException(nameof(assemblyAnnotator));
+
             this.assemblyAnnotator = assemblyAnnotator;
         }
 
