@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using System.Xml.Linq;
 using JetBrains.Annotations;
 
@@ -76,8 +77,6 @@ namespace AnnotationGenerator.Notes
         {
             if (methodInfo == null) throw new ArgumentNullException(nameof(methodInfo));
 
-            var parameters = string.Join(",", methodInfo.GetParameters().Select(p => p.ParameterType.FullName));
-
             var declaringType = methodInfo.DeclaringType;
             if (declaringType == null)
             {
@@ -85,8 +84,43 @@ namespace AnnotationGenerator.Notes
             }
 
             var methodName = methodInfo.IsConstructor ? "#ctor" : methodInfo.Name;
+            var parameterString = GetParametersString(methodInfo);
 
-            return $"M:{declaringType.FullName}.{methodName}({parameters})";
+            return $"M:{declaringType.FullName}.{methodName}{parameterString}";
+        }
+
+        private static string GetTypeName(Type type)
+        {
+            var builder = new StringBuilder();
+            AddTypeName(type, builder);
+            return builder.ToString();
+        }
+
+        private static void AddTypeName(Type type, StringBuilder builder)
+        {
+            if (type.IsConstructedGenericType)
+            {
+                var typeName = type.FullName.Substring(0, type.FullName.LastIndexOf("`", StringComparison.Ordinal) - 1);
+                builder.Append(typeName);
+            }
+            else
+            {
+                builder.Append(type.FullName);
+            }
+        }
+
+        private static string GetParametersString([NotNull] MethodBase methodInfo)
+        {
+            var parameters = methodInfo.GetParameters();
+            if (parameters.Length <= 0)
+            {
+                return "";
+            }
+
+            var parametersSeparated = string.Join(",",
+                methodInfo.GetParameters().Select(p => p.ParameterType.FullName));
+
+            return $"({parametersSeparated})";
         }
     }
 }
