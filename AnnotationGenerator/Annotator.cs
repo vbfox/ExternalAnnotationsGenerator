@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.XPath;
+using AnnotationGenerator.Notes;
 using JetBrains.Annotations;
 
 namespace AnnotationGenerator
@@ -42,7 +44,26 @@ namespace AnnotationGenerator
         [NotNull]
         public AnnotationFile Generate()
         {
-            return new AnnotationFile("", new XDocument());
+            return new AnnotationFile("", CreateDocument());
+        }
+
+        private XDocument CreateDocument()
+        {
+            var document = ResharperXmlBuilder.BuildDocument(annotations.Assembly.GetName().Name);
+            Debug.Assert(document.Root != null);
+
+            foreach (var annotatedMember in annotations)
+            {
+                var memberName = ResharperNamesBuilder.GetMemberNameString(annotatedMember.Member);
+                var memberElement = new XElement("member", new XAttribute("name", memberName));
+                foreach (var info in annotatedMember)
+                {
+                    memberElement.Add(info.GetAttributesXml());
+                }
+                document.Root.Add(memberElement);
+            }
+
+            return document;
         }
     }
 

@@ -18,6 +18,17 @@ namespace AnnotationGenerator.Notes
             return assembly.FullName;
         }
 
+        public static string GetMemberNameString([NotNull] MemberInfo member)
+        {
+            var methodInfo = member as MethodBase;
+            if (methodInfo != null)
+            {
+                return GetMethodNameString(methodInfo);
+            }
+
+            throw new ArgumentException("Member type not supported : " + member.MemberType, nameof(member));
+        }
+
         public static string GetMethodNameString([NotNull] MethodBase methodInfo)
         {
             if (methodInfo == null) throw new ArgumentNullException(nameof(methodInfo));
