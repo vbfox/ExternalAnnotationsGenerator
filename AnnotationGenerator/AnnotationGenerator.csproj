@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>AnnotationGenerator</RootNamespace>
     <AssemblyName>AnnotationGenerator</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -46,15 +47,14 @@
   <ItemGroup>
     <Compile Include="Annotator.cs" />
     <Compile Include="AssemblyAnnotator.cs" />
-    <Compile Include="ExpressionNoteExtractor.cs" />
+    <Compile Include="NotesInfoExtractor.cs" />
     <Compile Include="MemberAnnotator.cs" />
-    <Compile Include="Notes\Any.cs" />
-    <Compile Include="Notes\FormatString.cs" />
+    <Compile Include="Notes\MemberNotesInfo.cs" />
+    <Compile Include="Notes\ParameterNotesInfo.cs" />
+    <Compile Include="Notes\ResharperXmlBuilder.cs" />
+    <Compile Include="ParameterNotes.cs" />
     <Compile Include="Notes\IClassNote.cs" />
-    <Compile Include="Notes\IMemberNote.cs" />
     <Compile Include="Notes\INote.cs" />
-    <Compile Include="Notes\IParameterNote.cs" />
-    <Compile Include="Notes\NotNull.cs" />
     <Compile Include="NugetSpec.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResharperAnnotations.cs" />

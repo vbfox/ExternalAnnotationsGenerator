@@ -10,7 +10,7 @@ namespace AnnotationGenerator
 {
     public class Annotator
     {
-        readonly IList<XDocument> _documents = new List<XDocument>();
+        readonly IList<XDocument> documents = new List<XDocument>();
 
         public void AnnotateAssemblyContaining<T>(Action<AssemblyAnnotator<T>> annotationActions)
         {
@@ -19,12 +19,12 @@ namespace AnnotationGenerator
 
         internal IEnumerable<XDocument> GetDocuments()
         {
-            return _documents;
+            return documents;
         }
 
         internal void AddDocument(XDocument document)
         {
-            _documents.Add(document);
+            documents.Add(document);
         }
 
         public void CreateNugetPackage(NugetSpec spec)
@@ -53,7 +53,7 @@ namespace AnnotationGenerator
 
         private void WriteAnnotationFiles(NugetSpec spec)
         {
-            foreach (var document in _documents)
+            foreach (var document in documents)
             {
                 var assemblyName = document.XPathSelectElement("/assembly").Attribute("name").Value;
                 var filename = assemblyName + ".xml";                

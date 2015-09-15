@@ -1,7 +1,7 @@
 ﻿using System;
 using AnnotationGenerator;
-using AnnotationGenerator.Notes;
 using Ninject.Extensions.Logging;
+using static AnnotationGenerator.ParameterNotes;
 
 namespace Ninject.Annotations
 {
@@ -9,29 +9,29 @@ namespace Ninject.Annotations
     {
         static void Main(string[] args)
         {
-            Annotator annotator = new Annotator();
+            var annotator = new Annotator();
 
             annotator.AnnotateAssemblyContaining<ILogger>(asm =>
             {
                 asm.AnnotateType<ILogger>(type =>
                 {
-                    type.Annotate(logger => logger.Debug(FormatString._, Any<object[]>._));
-                    type.Annotate(logger => logger.Debug(Any<Exception>._, FormatString._, Any<object[]>._));
-                    type.Annotate(logger => logger.Info(FormatString._, Any<object[]>._));
-                    type.Annotate(logger => logger.Info(Any<Exception>._, FormatString._, Any<object[]>._));
-                    type.Annotate(logger => logger.Trace(FormatString._, Any<object[]>._));
-                    type.Annotate(logger => logger.Trace(Any<Exception>._, FormatString._, Any<object[]>._));
-                    type.Annotate(logger => logger.Warn(FormatString._, Any<object[]>._));
-                    type.Annotate(logger => logger.Warn(Any<Exception>._, FormatString._, Any<object[]>._));
-                    type.Annotate(logger => logger.Error(FormatString._, Any<object[]>._));
-                    type.Annotate(logger => logger.Error(Any<Exception>._, FormatString._, Any<object[]>._));
-                    type.Annotate(logger => logger.Fatal(FormatString._, Any<object[]>._));
-                    type.Annotate(logger => logger.Fatal(Any<Exception>._, FormatString._, Any<object[]>._));
+                    type.Annotate(logger => logger.Debug(FormatString(), Some<object[]>()));
+                    type.Annotate(logger => logger.Debug(NotNull<Exception>(), FormatString(), Some<object[]>()));
+                    type.Annotate(logger => logger.Info(FormatString(), Some<object[]>()));
+                    type.Annotate(logger => logger.Info(NotNull<Exception>(), FormatString(), Some<object[]>()));
+                    type.Annotate(logger => logger.Trace(FormatString(), Some<object[]>()));
+                    type.Annotate(logger => logger.Trace(NotNull<Exception>(), FormatString(), Some<object[]>()));
+                    type.Annotate(logger => logger.Warn(FormatString(), Some<object[]>()));
+                    type.Annotate(logger => logger.Warn(NotNull<Exception>(), FormatString(), Some<object[]>()));
+                    type.Annotate(logger => logger.Error(FormatString(), Some<object[]>()));
+                    type.Annotate(logger => logger.Error(NotNull<Exception>(), FormatString(), Some<object[]>()));
+                    type.Annotate(logger => logger.Fatal(FormatString(), Some<object[]>()));
+                    type.Annotate(logger => logger.Fatal(NotNull<Exception>(), FormatString(), Some<object[]>()));
                 });
 
                 asm.AnnotateType<ILoggerFactory>(type =>
                 {
-                    type.Annotate(logger => logger.GetLogger(Any<Type>._), NotNull._);
+                    type.Annotate(logger => logger.GetLogger(NotNull<Type>()) == NotNull<ILogger>());
                 });
             });
 

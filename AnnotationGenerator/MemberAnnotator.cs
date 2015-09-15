@@ -10,111 +10,97 @@ namespace AnnotationGenerator
 {
     public class MemberAnnotator<TClass,TAsm>
     {
-        private readonly AssemblyAnnotator<TAsm> _assemblyAnnotator;
+        private readonly AssemblyAnnotator<TAsm> assemblyAnnotator;
 
         internal MemberAnnotator(AssemblyAnnotator<TAsm> assemblyAnnotator)
         {
-            _assemblyAnnotator = assemblyAnnotator;
+            this.assemblyAnnotator = assemblyAnnotator;
         }
 
-        public void Annotate(Expression<Action<TClass>> expression, params IMemberNote[] memberNotes)
+        public void Annotate(Expression<Func<TClass, bool>> expression)
+        {
+
+        }
+
+        public void Annotate(Expression<Action<TClass>> expression)
         {
             var methodInfo = GetMethodInfo(expression);
+            var parameterNotes = GetNotesFromExpression(expression.Body).ToList();
 
-            var parameterNotes = GetNotesFromExpression(expression);
-
-            if (parameterNotes.Any() || memberNotes.Any())
+            if (parameterNotes.Any())
             {
-                var memberAnnotations = GetMemberAnnotations(memberNotes, parameterNotes);
-                var parameterAnnotations = GetParameterAnnotations(parameterNotes);
+                var attributesXml = GetAttributesXml(parameterNotes);
 
-                _assemblyAnnotator.AddElement(new XElement("member",
+                assemblyAnnotator.AddElement(new XElement("member",
                     new XAttribute("name", GetMethodNameString(methodInfo)),
-                    memberAnnotations, parameterAnnotations));
-            }
-            else
-            {
-                throw new Exception("Expected some advice about method or member of method " + methodInfo);
+                    attributesXml));
             }
         }
 
         private string GetMethodNameString(MethodInfo methodInfo)
         {
-            string parameters = string.Join(",", methodInfo.GetParameters().Select(p => p.ParameterType.FullName));
+            var parameters = string.Join(",", methodInfo.GetParameters().Select(p => p.ParameterType.FullName));
 
-            Type declaringType = methodInfo.DeclaringType;
-
-            return string.Format("M:{0}.{1}({2})", declaringType.FullName, methodInfo.Name, parameters);
-        }
-
-        private IEnumerable<XElement> GetParameterAnnotations(IEnumerable<INote> parameterNotes)
-        {
-            yield break;
-        }
-
-        private IEnumerable<XElement> GetMemberAnnotations(INote[] memberNotes, IEnumerable<INote> parameterNotes)
-        {
-            foreach (var memberNote in memberNotes)
+            var declaringType = methodInfo.DeclaringType;
+            if (declaringType == null)
             {
-                if (memberNote is NotNull)
-                {
-                    yield return new XElement("attribute", new XAttribute("ctor", "M:JetBrains.Annotations.NotNullAttribute.#ctor"));
-                }
+                throw new ArgumentException("The method is required to have a declaring type", nameof(methodInfo));
             }
 
-            foreach (var parameterNote in parameterNotes)
-            {
-                if (parameterNote is FormatString)
-                {
-                    FormatString formatStringNote = (FormatString) parameterNote;
-                    yield return new XElement("attribute", 
-                        new XAttribute("ctor", "M:JetBrains.Annotations.StringFormatMethodAttribute.#ctor(System.String)"),
-                        new XElement("argument", formatStringNote.ParameterName));
-                }
-            }
+            return $"M:{declaringType.FullName}.{methodInfo.Name}({parameters})";
         }
 
-        public IEnumerable<INote> GetNotesFromExpression(Expression<Action<TClass>> expression)
+        private static IEnumerable<XElement> GetAttributesXml(IEnumerable<INote> notes)
+        {
+            return notes.SelectMany(n => n.GetAttributesXml());
+        }
+
+        public IEnumerable<ParameterNotesInfo> GetNotesFromMethodCall(MethodCallExpression methodCallExpression)
+        {
+            return Enumerable.Zip(
+                methodCallExpression.Arguments,
+                methodCallExpression.Method.GetParameters(),
+                NotesInfoExtractor.ExtractParameter);
+        }
+
+        public IEnumerable<ParameterNotesInfo> GetNotesFromExpression(Expression<Func<TClass, bool>> expression)
         {
             var methodCallExpression = expression.Body as MethodCallExpression;
-            if (methodCallExpression != null)
+            if (methodCallExpression == null)
             {
-                int param = 0;
-                var parameters = methodCallExpression.Method.GetParameters();
-
-                foreach (var arg in methodCallExpression.Arguments)
-                {
-                    var parameter = parameters[param];
-                    param++;
-
-                    var memberExpression = arg as MemberExpression;
-
-                    var declaringType = memberExpression.Member.DeclaringType;
-
-                    if (typeof(INote).IsAssignableFrom(declaringType))
-                    {
-                        yield return ExpressionNoteExtractor.FromExpression(arg, parameter);
-                    }                    
-                }
+                throw new ArgumentException("Expected a method call.", nameof(expression));
             }
+
+            return GetNotesFromMethodCall(methodCallExpression);
         }
 
-        public static MethodInfo GetMethodInfo<T, U>(Expression<Func<T, U>> expression)
+        public IEnumerable<ParameterNotesInfo> GetNotesFromExpression(Expression expressionBody)
+        {
+            var methodCallExpression = expressionBody as MethodCallExpression;
+            if (methodCallExpression == null)
+            {
+                throw new ArgumentException("Expected a method call.", nameof(expressionBody));
+            }
+
+            return GetNotesFromMethodCall(methodCallExpression);
+        }
+
+        public static MethodInfo GetMethodInfo<TArg, TResult>(Expression<Func<TArg, TResult>> expression)
         {
             var methodCallExpression = expression.Body as MethodCallExpression;
             if (methodCallExpression != null)
                 return methodCallExpression.Method;
 
-            throw new ArgumentException("Expression is not a member access", "expression");
+            throw new ArgumentException("Expression is not a member access", nameof(expression));
         }
 
-        public static MethodInfo GetMethodInfo<T>(Expression<Action<T>> expression)
+        public static MethodInfo GetMethodInfo<TArg>(Expression<Action<TArg>> expression)
         {
             var methodCallExpression = expression.Body as MethodCallExpression;
             if (methodCallExpression != null)
                 return methodCallExpression.Method;
 
-            throw new ArgumentException("Expression is not a member access", "expression");
+            throw new ArgumentException("Expression is not a member access", nameof(expression));
         }
     }
 }

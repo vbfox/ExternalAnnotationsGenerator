@@ -1,18 +1,21 @@
 using System;
 using System.Xml.Linq;
+using JetBrains.Annotations;
 
 namespace AnnotationGenerator
 {
     public class AssemblyAnnotator<TAsm>
     {
-        private readonly Annotator _annotator;
-        private readonly XElement _rootElement;
+        private readonly Annotator annotator;
+        private readonly XElement rootElement;
 
-        internal AssemblyAnnotator(Annotator annotator)
+        internal AssemblyAnnotator([NotNull] Annotator annotator)
         {
-            _annotator = annotator;
+            if (annotator == null) throw new ArgumentNullException(nameof(annotator));
 
-            _rootElement = CreateDocument();
+            this.annotator = annotator;
+
+            rootElement = CreateDocument();
         }
 
         private XElement CreateDocument()
@@ -23,18 +26,22 @@ namespace AnnotationGenerator
             var document = new XDocument(
                 new XDeclaration("1.0", "utf-8", null), element);
 
-            _annotator.AddDocument(document);
+            annotator.AddDocument(document);
 
             return element;
         }
 
-        internal void AddElement(XElement element)
+        internal void AddElement([NotNull] XElement element)
         {
-            _rootElement.Add(element);
+            if (element == null) throw new ArgumentNullException(nameof(element));
+
+            rootElement.Add(element);
         }
 
-        public void AnnotateType<TType>(Action<MemberAnnotator<TType,TAsm>> annotationActions)
+        public void AnnotateType<TType>([NotNull] Action<MemberAnnotator<TType,TAsm>> annotationActions)
         {
+            if (annotationActions == null) throw new ArgumentNullException(nameof(annotationActions));
+
             annotationActions(new MemberAnnotator<TType,TAsm>(this));
         }
     }

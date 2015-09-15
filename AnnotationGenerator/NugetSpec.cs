@@ -25,15 +25,15 @@ namespace AnnotationGenerator
             Tags = tags;
         }
 
-        public string Id { get; private set; }
-        public string Version { get; private set; }
-        private string Title { get; set; }
-        private string Authors { get; set; }
-        private string Owners { get; set; }
-        private string ProjectUrl { get; set; }
-        private string IconUrl { get; set; }
-        private string Description { get; set; }
-        private string Tags { get; set; }
+        public string Id { get; }
+        public string Version { get; }
+        public string Title { get; }
+        public string Authors { get; }
+        public string Owners { get; }
+        public string ProjectUrl { get; }
+        public string IconUrl { get; }
+        public string Description { get; }
+        public string Tags { get; }
 
         internal XDocument GetXml()
         {
