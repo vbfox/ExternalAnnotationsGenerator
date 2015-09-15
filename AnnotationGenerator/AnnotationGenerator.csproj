@@ -52,7 +52,8 @@
     <Compile Include="MemberAnnotator.cs" />
     <Compile Include="Notes\MemberNotesInfo.cs" />
     <Compile Include="Notes\ParameterNotesInfo.cs" />
-    <Compile Include="Notes\ResharperXmlBuilder.cs" />
+    <Compile Include="AnnotationXml\ResharperNamesBuilder.cs" />
+    <Compile Include="AnnotationXml\ResharperXmlBuilder.cs" />
     <Compile Include="ParameterNotes.cs" />
     <Compile Include="Notes\IClassNote.cs" />
     <Compile Include="Notes\INote.cs" />
