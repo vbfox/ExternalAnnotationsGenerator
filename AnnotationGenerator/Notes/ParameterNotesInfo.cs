@@ -13,7 +13,7 @@ namespace AnnotationGenerator.Notes
         public bool IsNotNull { get; }
         public bool CanBeNull { get; }
 
-        public ParameterNotesInfo([NotNull] string parameterName, bool isFormatString, bool isNotNull, bool canBeNull)
+        public ParameterNotesInfo([NotNull] string parameterName, bool isFormatString = false, bool isNotNull = false, bool canBeNull = false)
         {
             if (parameterName == null) throw new ArgumentNullException(nameof(parameterName));
 

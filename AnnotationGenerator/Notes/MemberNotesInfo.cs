@@ -9,7 +9,7 @@ namespace AnnotationGenerator.Notes
         public bool IsNotNull { get; }
         public bool CanBeNull { get; }
 
-        public MemberNotesInfo(bool isNotNull, bool canBeNull)
+        public MemberNotesInfo(bool isNotNull = false, bool canBeNull = false)
         {
             IsNotNull = isNotNull;
             CanBeNull = canBeNull;
