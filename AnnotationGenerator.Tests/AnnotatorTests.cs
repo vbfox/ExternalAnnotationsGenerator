@@ -86,9 +86,9 @@ namespace AnnotationGenerator.Tests
         }
 
         [Test]
-        public void ThrowsExceptionIfAnnotationContainsNoAdvice()
+        public void DoesNotThrowsExceptionIfAnnotationContainsNoAdvice()
         {
-            Assert.Throws<Exception>(() =>
+            Assert.DoesNotThrow(() =>
             {
                 var annotator = new Annotator();
 
