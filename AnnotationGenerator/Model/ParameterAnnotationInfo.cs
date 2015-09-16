@@ -6,7 +6,7 @@ using JetBrains.Annotations;
 
 namespace AnnotationGenerator.Model
 {
-    public class ParameterAnnotationInfo : IAnnotationInfo
+    internal class ParameterAnnotationInfo : IAnnotationInfo
     {
         public string ParameterName { get; }
         public bool IsFormatString { get; }

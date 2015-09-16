@@ -3,7 +3,7 @@ using System.Xml.Linq;
 
 namespace AnnotationGenerator.Model
 {
-    public interface IAnnotationInfo
+    internal interface IAnnotationInfo
     {
         IEnumerable<XElement> GetAttributesXml();
     }

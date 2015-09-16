@@ -4,7 +4,7 @@ using AnnotationGenerator.FileGeneration;
 
 namespace AnnotationGenerator.Model
 {
-    class MemberAnnotationInfo : IAnnotationInfo
+    internal class MemberAnnotationInfo : IAnnotationInfo
     {
         public bool IsNotNull { get; }
         public bool CanBeNull { get; }

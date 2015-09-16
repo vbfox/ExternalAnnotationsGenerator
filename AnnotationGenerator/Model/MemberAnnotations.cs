@@ -6,7 +6,7 @@ using JetBrains.Annotations;
 
 namespace AnnotationGenerator.Model
 {
-    public class MemberAnnotations : IEnumerable<IAnnotationInfo>
+    internal class MemberAnnotations : IEnumerable<IAnnotationInfo>
     {
         public MemberInfo Member { get; }
 

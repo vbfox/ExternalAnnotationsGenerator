@@ -10,7 +10,7 @@ namespace Ninject.Annotations
         static void Main(string[] args)
         {
             var annotator = Annotator.Create();
-
+            
             annotator.AnnotateType<ILogger>(type =>
             {
                 type.Annotate(logger => logger.Debug(FormatString(), Some<object[]>()));

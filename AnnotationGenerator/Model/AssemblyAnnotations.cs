@@ -2,12 +2,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
-using AnnotationGenerator.Model;
 using JetBrains.Annotations;
 
-namespace AnnotationGenerator
+namespace AnnotationGenerator.Model
 {
-    public class AssemblyAnnotations : IEnumerable<MemberAnnotations>
+    internal class AssemblyAnnotations : IEnumerable<MemberAnnotations>
     {
         public Assembly Assembly { get; }
 

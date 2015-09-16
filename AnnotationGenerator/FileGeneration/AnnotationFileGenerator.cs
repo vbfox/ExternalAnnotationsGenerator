@@ -1,11 +1,12 @@
 using System;
 using System.Diagnostics;
 using System.Xml.Linq;
+using AnnotationGenerator.Model;
 using JetBrains.Annotations;
 
 namespace AnnotationGenerator.FileGeneration
 {
-    public class AnnotationFileGenerator
+    internal class AnnotationFileGenerator
     {
         private readonly AssemblyAnnotations annotations;
 

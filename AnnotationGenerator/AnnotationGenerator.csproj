@@ -50,7 +50,7 @@
     <Compile Include="FileGeneration\AnnotationFileGenerator.cs" />
     <Compile Include="Construction\AnnotationsBuilder.cs" />
     <Compile Include="Annotator.cs" />
-    <Compile Include="AssemblyAnnotations.cs" />
+    <Compile Include="Model\AssemblyAnnotations.cs" />
     <Compile Include="Construction\ExpressionParser.cs" />
     <Compile Include="Construction\ExpressionParsingResult.cs" />
     <Compile Include="IFluentInterface.cs" />
