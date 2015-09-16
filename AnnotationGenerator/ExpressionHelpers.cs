@@ -11,24 +11,82 @@ namespace AnnotationGenerator
 {
     static class ExpressionHelpers
     {
-        public static MethodInfo GetMethodInfo<TArg, TResult>(Expression<Func<TArg, TResult>> expression)
+        public class ParsedExpression
         {
+            [CanBeNull]
+            public MethodCallExpression TargetMethodCall { get; }
+
+            [CanBeNull]
+            public MemberExpression TargetMemberAccess { get; }
+
+            [CanBeNull]
+            public MethodCallExpression EqualsMethodCall { get; }
+
+            public ParsedExpression([NotNull] MethodCallExpression targetMethodCall,
+                [CanBeNull] MethodCallExpression equalsMethodCall)
+            {
+                if (targetMethodCall == null) throw new ArgumentNullException(nameof(targetMethodCall));
+
+                TargetMethodCall = targetMethodCall;
+                EqualsMethodCall = equalsMethodCall;
+            }
+        }
+
+        public static ParsedExpression Parse(LambdaExpression expression)
+        {
+            switch (expression.Body.NodeType)
+            {
+                case ExpressionType.Call:
+                    {
+                        var call = (MethodCallExpression)expression.Body;
+                        return new ParsedExpression(call, null);
+                    }
+
+                case ExpressionType.Equal:
+                    {
+                        var binary = (BinaryExpression) expression.Body;
+                        var leftMethodCall = binary.Left as MethodCallExpression;
+                        var rightMethodCall = binary.Right as MethodCallExpression;
+                        if (leftMethodCall == null || rightMethodCall == null)
+                        {
+                            throw new ArgumentException("Expected MethodCall() == MethodCall()");
+                        }
+
+                        return new ParsedExpression(leftMethodCall, rightMethodCall);
+                    }
+
+                default:
+                    throw new Exception("boom");
+            }
+            /*
             var methodCallExpression = expression.Body as MethodCallExpression;
             if (methodCallExpression != null)
             {
-                return methodCallExpression.Method;
+                return new SupportedExpression(methodCallExpression, null);
             }
 
-            throw new ArgumentException("Expression is not a member access", nameof(expression));
+            var binaryExpression = expression.Body as BinaryExpression;
+            if (binaryExpression != null)
+            {
+                var methodCallLeft = expression.Body as MethodCallExpression;
+                if (methodCallExpression != null)
+                {
+                    return methodCallExpression.Method;
+                }
+            }*/
         }
 
-        public static MethodInfo GetMethodInfo<TArg>(Expression<Action<TArg>> expression)
+        public static MemberInfo GetMemberInfo(ParsedExpression expression)
         {
-            var methodCallExpression = expression.Body as MethodCallExpression;
-            if (methodCallExpression != null)
-                return methodCallExpression.Method;
-
-            throw new ArgumentException("Expression is not a member access", nameof(expression));
+            if (expression.TargetMethodCall != null)
+            {
+                return expression.TargetMethodCall.Method;
+            }
+            if (expression.TargetMemberAccess != null)
+            {
+                return expression.TargetMemberAccess.Member;
+            }
+            throw new ArgumentException("Unexpected expression structure", nameof(expression));
         }
 
         public static IEnumerable<ParameterAnnotationInfo> GetAnnotationInfoFromMethodCall(MethodCallExpression methodCallExpression)
@@ -39,17 +97,20 @@ namespace AnnotationGenerator
                 ExtractParameter);
         }
 
-        public static IEnumerable<ParameterAnnotationInfo> GetAnnotationInfoFromExpression<TClass>(Expression<Func<TClass, bool>> expression)
+        public static IEnumerable<ParameterAnnotationInfo> GetAnnotationInfoFromExpression(ParsedExpression expression)
         {
-            var methodCallExpression = expression.Body as MethodCallExpression;
-            if (methodCallExpression == null)
+            if (expression.TargetMethodCall != null)
             {
-                throw new ArgumentException("Expected a method call.", nameof(expression));
+                return GetAnnotationInfoFromMethodCall(expression.TargetMethodCall);
             }
-
-            return GetAnnotationInfoFromMethodCall(methodCallExpression);
+            if (expression.TargetMemberAccess != null)
+            {
+                // TODO
+            }
+            throw new ArgumentException("Unexpected expression structure", nameof(expression));
         }
 
+        /*
         public static IEnumerable<ParameterAnnotationInfo> GetAnnotationInfoFromExpression(Expression expressionBody)
         {
             var methodCallExpression = expressionBody as MethodCallExpression;
@@ -59,7 +120,7 @@ namespace AnnotationGenerator
             }
 
             return GetAnnotationInfoFromMethodCall(methodCallExpression);
-        }
+        }*/
 
         private static readonly string usageInfo = $"Should be a call on one of the methods of {nameof(ParameterNotes)}.";
 
@@ -76,7 +137,7 @@ namespace AnnotationGenerator
                     return new ParameterAnnotationInfo(parameter.Name, isFormatString: true, isNotNull: true);
 
                 case nameof(ParameterNotes.NullableFormatString):
-                    return new ParameterAnnotationInfo(parameter.Name, isFormatString: true);
+                    return new ParameterAnnotationInfo(parameter.Name, isFormatString: true, canBeNull: true);
 
                 case nameof(ParameterNotes.Some):
                     return new ParameterAnnotationInfo(parameter.Name);

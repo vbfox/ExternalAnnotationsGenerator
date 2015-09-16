@@ -68,7 +68,7 @@ namespace AnnotationGenerator
         }
     }
 
-    public class AssemblyAnnotator<TAsm> : FluentInterface
+    public class AssemblyAnnotator<TAssembly> : FluentInterface
     {
         private readonly AssemblyAnnotations annotations;
         //private readonly Annotator annotator;
@@ -83,7 +83,7 @@ namespace AnnotationGenerator
         {/*
             if (annotator == null) throw new ArgumentNullException(nameof(annotator));
             */
-            annotations = new AssemblyAnnotations(typeof (TAsm).Assembly);
+            annotations = new AssemblyAnnotations(typeof (TAssembly).Assembly);
             /*
             this.annotator = annotator;
 
@@ -104,11 +104,11 @@ namespace AnnotationGenerator
             rootElement.Add(element);
         }*/
 
-        public void AnnotateType<TType>([NotNull] Action<MemberAnnotator<TType,TAsm>> annotationActions)
+        public void AnnotateType<TType>([NotNull] Action<MemberAnnotator<TType,TAssembly>> annotationActions)
         {
             if (annotationActions == null) throw new ArgumentNullException(nameof(annotationActions));
 
-            var memberAnnotator = new MemberAnnotator<TType,TAsm>();
+            var memberAnnotator = new MemberAnnotator<TType,TAssembly>();
             annotationActions(memberAnnotator);
             annotations.AddRange(memberAnnotator.GetMembersAnnotations());
         }

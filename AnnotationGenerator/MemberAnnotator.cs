@@ -19,11 +19,6 @@ namespace AnnotationGenerator
         {
         }
 
-        public void Annotate<TResult>(Expression<Func<TClass, TResult>> expression)
-        {
-
-        }
-
         private MemberAnnotations GetMemberAnnotations(MemberInfo member)
         {
             var existing = membersAnnotations.FirstOrDefault(m => m.Member == member);
@@ -37,13 +32,23 @@ namespace AnnotationGenerator
             return newAnnotations;
         }
 
+        public void Annotate<TResult>(Expression<Func<TClass, TResult>> expression)
+        {
+            AnnotateCore(expression);
+        }
+
         public void Annotate(Expression<Action<TClass>> expression)
         {
-            var methodInfo = ExpressionHelpers.GetMethodInfo(expression);
-            var annotationInfos = ExpressionHelpers.GetAnnotationInfoFromExpression(expression).ToList();
+            AnnotateCore(expression);
+        }
+
+        private void AnnotateCore(LambdaExpression expression)
+        {
+            var parsed = ExpressionHelpers.Parse(expression);
+            var methodInfo = ExpressionHelpers.GetMemberInfo(parsed);
+            var annotationInfos = ExpressionHelpers.GetAnnotationInfoFromExpression(parsed).ToList();
             var memberAnnotations = GetMemberAnnotations(methodInfo);
             memberAnnotations.AddRange(annotationInfos);
-
         }
     }
 }

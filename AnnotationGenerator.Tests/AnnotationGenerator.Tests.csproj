@@ -58,6 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AnnotatorTests.cs" />
+    <Compile Include="FullWorkflowTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AnnotationXml\ResharperNamesBuilderTests.cs" />
   </ItemGroup>

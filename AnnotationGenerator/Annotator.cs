@@ -67,7 +67,12 @@ namespace AnnotationGenerator
         }
     }
 
-    public class Annotator : FluentInterface
+    public interface IAnnotatorAnnotations
+    {
+        IEnumerable<AssemblyAnnotations> GetAnnotations();
+    }
+
+    public class Annotator : FluentInterface, IAnnotatorAnnotations
     {
         readonly List<AssemblyAnnotations> annotations = new List<AssemblyAnnotations>();
 
@@ -81,6 +86,11 @@ namespace AnnotationGenerator
         public IEnumerable<AnnotationFile> GenerateFiles()
         {
             return annotations.Select(a => new AnnotationFileGenerator(a).Generate());
+        }
+
+        IEnumerable<AssemblyAnnotations> IAnnotatorAnnotations.GetAnnotations()
+        {
+            return annotations;
         }
 
         /*
