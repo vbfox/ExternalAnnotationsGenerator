@@ -2,11 +2,11 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Xml.XPath;
-using AnnotationGenerator.Core;
-using AnnotationGenerator.Core.FileGeneration;
+using ExternalAnnotationsGenerator.Core;
+using ExternalAnnotationsGenerator.Core.FileGeneration;
 using NUnit.Framework;
 
-namespace AnnotationGenerator.Tests
+namespace ExternalAnnotationsGenerator.Tests
 {
     [TestFixture]
     public class FullWorkflowTests
@@ -161,10 +161,10 @@ namespace AnnotationGenerator.Tests
 
             Assert.That(memberElement, Is.Not.Null);
             Assert.That(memberElement.Attribute("name").Value,
-                Is.EqualTo($"M:{TestClassFullname}.Info(System.String,System.Object[])"));
+                Is.EqualTo($"M:{testClassFullname}.Info(System.String,System.Object[])"));
         }
 
-        private static readonly string TestClassFullname = typeof (TestClass).FullName;
+        private static readonly string testClassFullname = typeof (TestClass).FullName;
 
         [SuppressMessage("ReSharper", "UnusedParameter.Global")]
         [SuppressMessage("ReSharper", "UnusedMember.Global")]

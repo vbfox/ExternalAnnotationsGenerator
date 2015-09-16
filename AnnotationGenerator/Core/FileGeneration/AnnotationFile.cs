@@ -2,7 +2,7 @@ using System;
 using System.Xml.Linq;
 using JetBrains.Annotations;
 
-namespace AnnotationGenerator.Core.FileGeneration
+namespace ExternalAnnotationsGenerator.Core.FileGeneration
 {
     public class AnnotationFile
     {

@@ -1,6 +1,6 @@
 ﻿using JetBrains.Annotations;
 
-namespace AnnotationGenerator
+namespace ExternalAnnotationsGenerator
 {
     /// <summary>
     /// Annotation marker methods for the Fluent syntax

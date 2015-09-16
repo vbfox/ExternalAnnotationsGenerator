@@ -1,6 +1,6 @@
-﻿using AnnotationGenerator.Core.Construction;
+﻿using ExternalAnnotationsGenerator.Core.Construction;
 
-namespace AnnotationGenerator
+namespace ExternalAnnotationsGenerator
 {
     public static class Annotator
     {

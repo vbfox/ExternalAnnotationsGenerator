@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using AnnotationGenerator.Core.Model;
+using ExternalAnnotationsGenerator.Core.Model;
 
-namespace AnnotationGenerator.Core.Construction
+namespace ExternalAnnotationsGenerator.Core.Construction
 {
     public class AnnotationsBuilder : IAnnotator
     {

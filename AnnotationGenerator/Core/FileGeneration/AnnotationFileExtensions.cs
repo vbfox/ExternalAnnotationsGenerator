@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using AnnotationGenerator.Core.Model;
+using ExternalAnnotationsGenerator.Core.Model;
 
-namespace AnnotationGenerator.Core.FileGeneration
+namespace ExternalAnnotationsGenerator.Core.FileGeneration
 {
     public static class AnnotationFileExtensions
     {

@@ -1,6 +1,6 @@
 using System.Xml.Linq;
 
-namespace AnnotationGenerator
+namespace ExternalAnnotationsGenerator
 {
     public class NugetSpec
     {

@@ -3,11 +3,10 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using AnnotationGenerator.Core.Construction;
+using ExternalAnnotationsGenerator.Core.Construction;
 using NUnit.Framework;
-using static AnnotationGenerator.Annotations;
 
-namespace AnnotationGenerator.Tests.Expressions
+namespace ExternalAnnotationsGenerator.Tests.Expressions
 {
     [TestFixture]
     public class ExpressionParserTests
@@ -28,7 +27,7 @@ namespace AnnotationGenerator.Tests.Expressions
         [Test]
         public void ParseCallToConstructorWithParameter()
         {
-            var result = Parse(() => new TestClass(NotNull<string>()));
+            var result = Parse(() => new TestClass(Annotations.NotNull<string>()));
 
             Assert.That(result.Member.MemberType, Is.EqualTo(MemberTypes.Constructor));
             var paramAnnotation = result.ParameterAnnotations.Single();
@@ -51,7 +50,7 @@ namespace AnnotationGenerator.Tests.Expressions
         [Test]
         public void ParseCallToVoidMethodWithSomeParameter()
         {
-            var result = Parse((TestClass t) => t.VoidMethod(Some<string>()));
+            var result = Parse((TestClass t) => t.VoidMethod(Annotations.Some<string>()));
 
             Assert.That(result.Member.MemberType, Is.EqualTo(MemberTypes.Method));
             Assert.That(result.Member.Name, Is.EqualTo("VoidMethod"));
@@ -66,7 +65,7 @@ namespace AnnotationGenerator.Tests.Expressions
         [Test]
         public void ParseCallToVoidMethodWithNotNullParameter()
         {
-            var result = Parse((TestClass t) => t.VoidMethod(NotNull<string>()));
+            var result = Parse((TestClass t) => t.VoidMethod(Annotations.NotNull<string>()));
 
             Assert.That(result.Member.MemberType, Is.EqualTo(MemberTypes.Method));
             Assert.That(result.Member.Name, Is.EqualTo("VoidMethod"));
@@ -81,7 +80,7 @@ namespace AnnotationGenerator.Tests.Expressions
         [Test]
         public void ParseCallToVoidMethodWithCanBeNullParameter()
         {
-            var result = Parse((TestClass t) => t.VoidMethod(CanBeNull<string>()));
+            var result = Parse((TestClass t) => t.VoidMethod(Annotations.CanBeNull<string>()));
 
             Assert.That(result.Member.MemberType, Is.EqualTo(MemberTypes.Method));
             Assert.That(result.Member.Name, Is.EqualTo("VoidMethod"));
@@ -97,7 +96,7 @@ namespace AnnotationGenerator.Tests.Expressions
         [Test]
         public void ParseCallToVoidMethodWithFormatStringParameter()
         {
-            var result = Parse((TestClass t) => t.VoidMethod(FormatString()));
+            var result = Parse((TestClass t) => t.VoidMethod(Annotations.FormatString()));
 
             Assert.That(result.Member.MemberType, Is.EqualTo(MemberTypes.Method));
             Assert.That(result.Member.Name, Is.EqualTo("VoidMethod"));
@@ -112,7 +111,7 @@ namespace AnnotationGenerator.Tests.Expressions
         [Test]
         public void ParseCallToVoidMethodWithNullableFormatStringParameter()
         {
-            var result = Parse((TestClass t) => t.VoidMethod(NullableFormatString()));
+            var result = Parse((TestClass t) => t.VoidMethod(Annotations.NullableFormatString()));
 
             Assert.That(result.Member.MemberType, Is.EqualTo(MemberTypes.Method));
             Assert.That(result.Member.Name, Is.EqualTo("VoidMethod"));
@@ -127,7 +126,7 @@ namespace AnnotationGenerator.Tests.Expressions
         [Test]
         public void ParseCallToGetStringMethodWithSome()
         {
-            var result = Parse((TestClass t) => t.GetString() == Some<string>());
+            var result = Parse((TestClass t) => t.GetString() == Annotations.Some<string>());
 
             Assert.That(result.Member.MemberType, Is.EqualTo(MemberTypes.Method));
             Assert.That(result.Member.Name, Is.EqualTo("GetString"));
@@ -140,7 +139,7 @@ namespace AnnotationGenerator.Tests.Expressions
         [Test]
         public void ParseCallToGetStringMethodWithNotNull()
         {
-            var result = Parse((TestClass t) => t.GetString() == NotNull<string>());
+            var result = Parse((TestClass t) => t.GetString() == Annotations.NotNull<string>());
 
             Assert.That(result.Member.MemberType, Is.EqualTo(MemberTypes.Method));
             Assert.That(result.Member.Name, Is.EqualTo("GetString"));
@@ -153,7 +152,7 @@ namespace AnnotationGenerator.Tests.Expressions
         [Test]
         public void ParseCallToGetStringMethodWithCanBeNull()
         {
-            var result = Parse((TestClass t) => t.GetString() == CanBeNull<string>());
+            var result = Parse((TestClass t) => t.GetString() == Annotations.CanBeNull<string>());
 
             Assert.That(result.Member.MemberType, Is.EqualTo(MemberTypes.Method));
             Assert.That(result.Member.Name, Is.EqualTo("GetString"));
@@ -166,7 +165,7 @@ namespace AnnotationGenerator.Tests.Expressions
         [Test]
         public void ParsePropertyWithSome()
         {
-            var result = Parse((TestClass t) => t.StringProperty == Some<string>());
+            var result = Parse((TestClass t) => t.StringProperty == Annotations.Some<string>());
 
             Assert.That(result.Member.MemberType, Is.EqualTo(MemberTypes.Property));
             Assert.That(result.Member.Name, Is.EqualTo("StringProperty"));
@@ -179,7 +178,7 @@ namespace AnnotationGenerator.Tests.Expressions
         [Test]
         public void ParsePropertyWithNotNull()
         {
-            var result = Parse((TestClass t) => t.StringProperty == NotNull<string>());
+            var result = Parse((TestClass t) => t.StringProperty == Annotations.NotNull<string>());
 
             Assert.That(result.Member.MemberType, Is.EqualTo(MemberTypes.Property));
             Assert.That(result.Member.Name, Is.EqualTo("StringProperty"));
@@ -192,7 +191,7 @@ namespace AnnotationGenerator.Tests.Expressions
         [Test]
         public void ParsePropertyWithCanBeNull()
         {
-            var result = Parse((TestClass t) => t.StringProperty == CanBeNull<string>());
+            var result = Parse((TestClass t) => t.StringProperty == Annotations.CanBeNull<string>());
 
             Assert.That(result.Member.MemberType, Is.EqualTo(MemberTypes.Property));
             Assert.That(result.Member.Name, Is.EqualTo("StringProperty"));
@@ -205,7 +204,7 @@ namespace AnnotationGenerator.Tests.Expressions
         [Test]
         public void ParseFieldWithSome()
         {
-            var result = Parse((TestClass t) => t.StringField == Some<string>());
+            var result = Parse((TestClass t) => t.StringField == Annotations.Some<string>());
 
             Assert.That(result.Member.MemberType, Is.EqualTo(MemberTypes.Field));
             Assert.That(result.Member.Name, Is.EqualTo("StringField"));
@@ -218,7 +217,7 @@ namespace AnnotationGenerator.Tests.Expressions
         [Test]
         public void ParseFieldWithNotNull()
         {
-            var result = Parse((TestClass t) => t.StringField == NotNull<string>());
+            var result = Parse((TestClass t) => t.StringField == Annotations.NotNull<string>());
 
             Assert.That(result.Member.MemberType, Is.EqualTo(MemberTypes.Field));
             Assert.That(result.Member.Name, Is.EqualTo("StringField"));
@@ -231,7 +230,7 @@ namespace AnnotationGenerator.Tests.Expressions
         [Test]
         public void ParseFieldWithCanBeNull()
         {
-            var result = Parse((TestClass t) => t.StringField == CanBeNull<string>());
+            var result = Parse((TestClass t) => t.StringField == Annotations.CanBeNull<string>());
 
             Assert.That(result.Member.MemberType, Is.EqualTo(MemberTypes.Field));
             Assert.That(result.Member.Name, Is.EqualTo("StringField"));

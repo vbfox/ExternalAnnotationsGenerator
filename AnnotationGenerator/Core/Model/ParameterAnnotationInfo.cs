@@ -1,7 +1,7 @@
 ﻿using System;
 using JetBrains.Annotations;
 
-namespace AnnotationGenerator.Core.Model
+namespace ExternalAnnotationsGenerator.Core.Model
 {
     public class ParameterAnnotationInfo
     {

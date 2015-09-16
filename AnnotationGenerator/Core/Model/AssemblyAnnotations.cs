@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using JetBrains.Annotations;
 
-namespace AnnotationGenerator.Core.Model
+namespace ExternalAnnotationsGenerator.Core.Model
 {
     public class AssemblyAnnotations : IEnumerable<MemberAnnotations>
     {

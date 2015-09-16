@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using AnnotationGenerator.Core.Construction;
-using AnnotationGenerator.Core.Model;
+using ExternalAnnotationsGenerator.Core.Construction;
+using ExternalAnnotationsGenerator.Core.Model;
 using JetBrains.Annotations;
 
-namespace AnnotationGenerator.Core
+namespace ExternalAnnotationsGenerator.Core
 {
     public static class CoreHelper
     {

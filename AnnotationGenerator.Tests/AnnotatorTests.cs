@@ -1,10 +1,9 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using AnnotationGenerator.Core.Construction;
+using ExternalAnnotationsGenerator.Core.Construction;
 using NUnit.Framework;
-using static AnnotationGenerator.Annotations;
 
-namespace AnnotationGenerator.Tests
+namespace ExternalAnnotationsGenerator.Tests
 {
     [TestFixture]
     [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
@@ -15,7 +14,7 @@ namespace AnnotationGenerator.Tests
         {
             var annotator = Annotator.Create();
 
-            annotator.AnnotateType<TestClass>(type => type.Annotate(i => i.VoidMethod(CanBeNull<string>())));
+            annotator.AnnotateType<TestClass>(type => type.Annotate(i => i.VoidMethod(Annotations.CanBeNull<string>())));
 
             var annotations = ((AnnotationsBuilder) annotator).GetAnnotations().First();
             var firstParamInfo = annotations.FirstOrDefault()?.ParameterAnnotations.FirstOrDefault();
@@ -33,7 +32,7 @@ namespace AnnotationGenerator.Tests
             var annotator = Annotator.Create();
 
             annotator.AnnotateType<TestClass>(
-                type => type.Annotate(i => i.GetString(NotNull<string>()) == CanBeNull<string>()));
+                type => type.Annotate(i => i.GetString(Annotations.NotNull<string>()) == Annotations.CanBeNull<string>()));
 
             var annotations = ((AnnotationsBuilder) annotator).GetAnnotations().First();
             var resultInfo = annotations.FirstOrDefault()?.Annotations.FirstOrDefault();
@@ -48,7 +47,7 @@ namespace AnnotationGenerator.Tests
         {
             var annotator = Annotator.Create();
 
-            annotator.AnnotateType<TestClass>(type => type.Annotate(i => i.StringProperty == CanBeNull<string>()));
+            annotator.AnnotateType<TestClass>(type => type.Annotate(i => i.StringProperty == Annotations.CanBeNull<string>()));
 
             var annotations = ((AnnotationsBuilder) annotator).GetAnnotations().First();
             var memberAnnotations = annotations.FirstOrDefault();
@@ -81,7 +80,7 @@ namespace AnnotationGenerator.Tests
             var annotator = Annotator.Create();
 
             annotator.AnnotateType<TestClass>(
-                type => type.Annotate(i => i.GetString(NotNull<string>()) == NotNull<string>()));
+                type => type.Annotate(i => i.GetString(Annotations.NotNull<string>()) == Annotations.NotNull<string>()));
 
             var annotations = ((AnnotationsBuilder) annotator).GetAnnotations().First();
             var memberAnnotations = annotations.FirstOrDefault();
@@ -109,7 +108,7 @@ namespace AnnotationGenerator.Tests
         {
             var annotator = Annotator.Create();
 
-            annotator.AnnotateType<TestClass>(type => type.Annotate(i => i.VoidMethod(FormatString())));
+            annotator.AnnotateType<TestClass>(type => type.Annotate(i => i.VoidMethod(Annotations.FormatString())));
 
             var annotations = ((AnnotationsBuilder) annotator).GetAnnotations().First();
             var firstParamInfo = annotations.FirstOrDefault()?.ParameterAnnotations.FirstOrDefault();
@@ -127,7 +126,7 @@ namespace AnnotationGenerator.Tests
             var annotator = Annotator.Create();
 
             annotator.AnnotateType<TestClass>(
-                type => type.Annotate(i => i.GetString(NotNull<string>()) == NotNull<string>()));
+                type => type.Annotate(i => i.GetString(Annotations.NotNull<string>()) == Annotations.NotNull<string>()));
 
             var annotations = ((AnnotationsBuilder) annotator).GetAnnotations().First();
             var resultInfo = annotations.FirstOrDefault()?.Annotations.FirstOrDefault();
@@ -142,7 +141,7 @@ namespace AnnotationGenerator.Tests
         {
             var annotator = Annotator.Create();
 
-            annotator.AnnotateType<TestClass>(type => type.Annotate(i => i.StringProperty == NotNull<string>()));
+            annotator.AnnotateType<TestClass>(type => type.Annotate(i => i.StringProperty == Annotations.NotNull<string>()));
 
             var annotations = ((AnnotationsBuilder) annotator).GetAnnotations().First();
             var memberAnnotations = annotations.FirstOrDefault();
@@ -160,7 +159,7 @@ namespace AnnotationGenerator.Tests
         {
             var annotator = Annotator.Create();
 
-            annotator.AnnotateType<TestClass>(type => type.Annotate(i => i.VoidMethod(NotNull<string>())));
+            annotator.AnnotateType<TestClass>(type => type.Annotate(i => i.VoidMethod(Annotations.NotNull<string>())));
 
             var annotations = ((AnnotationsBuilder) annotator).GetAnnotations().First();
             var firstParamInfo = annotations.FirstOrDefault()?.ParameterAnnotations.FirstOrDefault();
@@ -177,7 +176,7 @@ namespace AnnotationGenerator.Tests
         {
             var annotator = Annotator.Create();
 
-            annotator.AnnotateType<TestClass>(type => type.Annotate(i => i.VoidMethod(NullableFormatString())));
+            annotator.AnnotateType<TestClass>(type => type.Annotate(i => i.VoidMethod(Annotations.NullableFormatString())));
 
             var annotations = ((AnnotationsBuilder) annotator).GetAnnotations().First();
             var firstParamInfo = annotations.FirstOrDefault()?.ParameterAnnotations.FirstOrDefault();
@@ -195,7 +194,7 @@ namespace AnnotationGenerator.Tests
             var annotator = Annotator.Create();
 
             annotator.AnnotateType<TestClass>(
-                type => type.Annotate(i => i.GetString(NotNull<string>()) == Some<string>()));
+                type => type.Annotate(i => i.GetString(Annotations.NotNull<string>()) == Annotations.Some<string>()));
 
             var annotations = ((AnnotationsBuilder) annotator).GetAnnotations().First();
             var resultInfo = annotations.FirstOrDefault()?.Annotations.FirstOrDefault();
@@ -210,7 +209,7 @@ namespace AnnotationGenerator.Tests
         {
             var annotator = Annotator.Create();
 
-            annotator.AnnotateType<TestClass>(type => type.Annotate(i => i.VoidMethod(Some<string>())));
+            annotator.AnnotateType<TestClass>(type => type.Annotate(i => i.VoidMethod(Annotations.Some<string>())));
 
             var annotations = ((AnnotationsBuilder) annotator).GetAnnotations().First();
             var firstParamInfo = annotations.FirstOrDefault()?.ParameterAnnotations.FirstOrDefault();
@@ -227,7 +226,7 @@ namespace AnnotationGenerator.Tests
         {
             var annotator = Annotator.Create();
 
-            annotator.AnnotateType<TestClass>(type => type.Annotate(i => i.StringProperty == Some<string>()));
+            annotator.AnnotateType<TestClass>(type => type.Annotate(i => i.StringProperty == Annotations.Some<string>()));
 
             var annotations = ((AnnotationsBuilder) annotator).GetAnnotations().First();
             var memberAnnotations = annotations.FirstOrDefault();

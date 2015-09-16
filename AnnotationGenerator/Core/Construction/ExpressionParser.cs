@@ -4,10 +4,10 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using AnnotationGenerator.Core.Model;
+using ExternalAnnotationsGenerator.Core.Model;
 using JetBrains.Annotations;
 
-namespace AnnotationGenerator.Core.Construction
+namespace ExternalAnnotationsGenerator.Core.Construction
 {
     internal static class ExpressionParser
     {

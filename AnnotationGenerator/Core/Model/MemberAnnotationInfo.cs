@@ -1,4 +1,4 @@
-﻿namespace AnnotationGenerator.Core.Model
+﻿namespace ExternalAnnotationsGenerator.Core.Model
 {
     public class MemberAnnotationInfo
     {

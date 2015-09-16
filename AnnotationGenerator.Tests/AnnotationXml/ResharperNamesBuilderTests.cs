@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using AnnotationGenerator.Core.FileGeneration;
+using ExternalAnnotationsGenerator.Core.FileGeneration;
 using JetBrains.Annotations;
 using NUnit.Framework;
 
-namespace AnnotationGenerator.Tests.AnnotationXml
+namespace ExternalAnnotationsGenerator.Tests.AnnotationXml
 {
     [TestFixture]
     [SuppressMessage("ReSharper", "AssignNullToNotNullAttribute")]

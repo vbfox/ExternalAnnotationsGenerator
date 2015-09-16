@@ -1,7 +1,7 @@
 The MIT License (MIT)
 ---------------------
 
-**Copyright (c) 2015 Tom Rathbone**
+**Copyright (c) 2014 Tom Rathbone**
 **Copyright (c) 2015 Julien Roncaglia**
 
 Permission is hereby granted, free of charge, to any person obtaining a copy

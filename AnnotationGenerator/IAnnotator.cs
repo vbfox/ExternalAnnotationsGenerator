@@ -1,7 +1,7 @@
 ﻿using System;
 using JetBrains.Annotations;
 
-namespace AnnotationGenerator
+namespace ExternalAnnotationsGenerator
 {
     public interface IAnnotator : IFluentInterface
     {

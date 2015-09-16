@@ -1,10 +1,10 @@
 ﻿using System;
 using System.IO;
-using AnnotationGenerator.Core;
-using AnnotationGenerator.Core.FileGeneration;
+using ExternalAnnotationsGenerator.Core;
+using ExternalAnnotationsGenerator.Core.FileGeneration;
 using JetBrains.Annotations;
 
-namespace AnnotationGenerator
+namespace ExternalAnnotationsGenerator
 {
     public static class AnnotatorExtensions
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
 
-namespace AnnotationGenerator
+namespace ExternalAnnotationsGenerator
 {
     public interface ITypeAnnotator<TClass> : IFluentInterface
     {

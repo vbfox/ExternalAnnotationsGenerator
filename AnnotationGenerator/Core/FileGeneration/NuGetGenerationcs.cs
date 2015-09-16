@@ -3,7 +3,7 @@ using System.IO;
 using System.Text;
 using System.Xml;
 
-namespace AnnotationGenerator.Core.FileGeneration
+namespace ExternalAnnotationsGenerator.Core.FileGeneration
 {
     public static class NuGetGeneration
     {

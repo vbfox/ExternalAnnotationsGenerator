@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 
-namespace AnnotationGenerator
+namespace ExternalAnnotationsGenerator
 {
     [EditorBrowsable(EditorBrowsableState.Never)]
     public interface IFluentInterface
