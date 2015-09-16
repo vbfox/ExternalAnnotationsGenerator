@@ -1,19 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using JetBrains.Annotations;
 
 namespace AnnotationGenerator
 {
     public class Annotator : FluentInterface, IAnnotatorAnnotations
     {
         readonly List<AssemblyAnnotations> annotations = new List<AssemblyAnnotations>();
-
-        public void AnnotateAssemblyContaining<T>(Action<AssemblyAnnotator<T>> annotationActions)
-        {
-            var annotator = new AssemblyAnnotator<T>();
-            annotationActions(annotator);
-            annotations.Add(annotator.GetAnnotations());
-        }
 
         public IEnumerable<AnnotationFile> GenerateFiles()
         {
@@ -25,17 +20,31 @@ namespace AnnotationGenerator
             return annotations;
         }
 
+        private AssemblyAnnotations GetAssemblyAnnotations(Assembly assembly)
+        {
+            var existing = annotations.FirstOrDefault(m => m.Assembly == assembly);
+            if (existing != null)
+            {
+                return existing;
+            }
+
+            var newAnnotations = new AssemblyAnnotations(assembly);
+            annotations.Add(newAnnotations);
+            return newAnnotations;
+        }
+
+        public void AnnotateType<TType>([NotNull] Action<MemberAnnotator<TType>> annotationActions)
+        {
+            if (annotationActions == null) throw new ArgumentNullException(nameof(annotationActions));
+
+            var memberAnnotator = new MemberAnnotator<TType>();
+            annotationActions(memberAnnotator);
+
+            var assemblyAnnotations = GetAssemblyAnnotations(typeof (TType).Assembly);
+            assemblyAnnotations.AddRange(memberAnnotator.GetMembersAnnotations());
+        }
+
         /*
-        internal IEnumerable<XDocument> GetDocuments()
-        {
-            return documents;
-        }
-
-        internal void AddDocument(XDocument document)
-        {
-            documents.Add(document);
-        }
-
         public void CreateNugetPackage(NugetSpec spec)
         {
             var directory = Path.Combine(spec.Id, "ReSharper", "vAny", "annotations");

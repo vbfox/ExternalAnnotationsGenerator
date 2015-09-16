@@ -49,7 +49,6 @@
     <Compile Include="AnnotationFileGenerator.cs" />
     <Compile Include="Annotator.cs" />
     <Compile Include="AssemblyAnnotations.cs" />
-    <Compile Include="AssemblyAnnotator.cs" />
     <Compile Include="Expressions\ExpressionParser.cs" />
     <Compile Include="Expressions\ExpressionParsingResult.cs" />
     <Compile Include="FluentInterface.cs" />

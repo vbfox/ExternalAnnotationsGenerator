@@ -14,7 +14,8 @@ namespace AnnotationGenerator.Tests
         {
             var annotator = new Annotator();
 
-            annotator.AnnotateAssemblyContaining<ILogger>(asm => { });
+            annotator.AnnotateType<ILogger>(
+                type => type.Annotate(i => i.Info(ParameterNotes.FormatString(), ParameterNotes.Some<object[]>())));
 
             var doc = annotator.GenerateFiles().First().Content;
             var assemblyElement = doc.XPathSelectElement("/assembly");
@@ -23,16 +24,18 @@ namespace AnnotationGenerator.Tests
         }
 
         [Test]
-        public void SetsAssemblyElementNameAttribute()
+        public void CreatesMemberElementIfMethodAnnotated()
         {
             var annotator = new Annotator();
 
-            annotator.AnnotateAssemblyContaining<ILogger>(asm => { });
+            annotator.AnnotateType<ILoggerFactory>(
+                type =>
+                    type.Annotate(i => i.GetLogger(ParameterNotes.Some<Type>()) == ParameterNotes.NotNull<ILogger>()));
 
             var doc = annotator.GenerateFiles().First().Content;
-            var assemblyElement = doc.XPathSelectElement("/assembly[@name=\"Ninject.Extensions.Logging\"]");
+            var memberElement = doc.XPathSelectElement("/assembly/member");
 
-            Assert.That(assemblyElement, Is.Not.Null);
+            Assert.That(memberElement, Is.Not.Null);
         }
 
         [Test]
@@ -40,10 +43,8 @@ namespace AnnotationGenerator.Tests
         {
             var annotator = new Annotator();
 
-            annotator.AnnotateAssemblyContaining<ILogger>(asm =>
-            {
-                asm.AnnotateType<ILogger>(type => type.Annotate(i => i.Info(ParameterNotes.FormatString(), ParameterNotes.Some<object[]>())));
-            });
+            annotator.AnnotateType<ILogger>(
+                type => type.Annotate(i => i.Info(ParameterNotes.FormatString(), ParameterNotes.Some<object[]>())));
 
             var doc = annotator.GenerateFiles().First().Content;
             var memberElement = doc.XPathSelectElement("/assembly/member");
@@ -52,36 +53,50 @@ namespace AnnotationGenerator.Tests
         }
 
         [Test]
-        public void SetsMemberElementName()
+        public void CreatesNotNullAnnotationWhenAppliedToMethod()
         {
             var annotator = new Annotator();
 
-            annotator.AnnotateAssemblyContaining<ILogger>(asm =>
-            {
-                asm.AnnotateType<ILogger>(type => type.Annotate(i => i.Info(ParameterNotes.FormatString(), ParameterNotes.Some<object[]>())));
-            });
+            annotator.AnnotateType<ILoggerFactory>(
+                type =>
+                    type.Annotate(i => i.GetLogger(ParameterNotes.Some<Type>()) == ParameterNotes.NotNull<ILogger>()));
 
             var doc = annotator.GenerateFiles().First().Content;
-            var memberElement = doc.XPathSelectElement("/assembly/member");
+            var attributeElement = doc.XPathSelectElement("/assembly/member/attribute");
 
-            Assert.That(memberElement, Is.Not.Null);
-            Assert.That(memberElement.Attribute("name").Value, Is.EqualTo("M:Ninject.Extensions.Logging.ILogger.Info(System.String,System.Object[])"));
+            Assert.That(attributeElement, Is.Not.Null);
+            Assert.That(attributeElement.Attribute("ctor").Value,
+                Is.EqualTo("M:JetBrains.Annotations.NotNullAttribute.#ctor"));
         }
 
         [Test]
-        public void CreatesMemberElementIfMethodAnnotated()
+        public void CreatesStringFormatMethodArgumentElement()
         {
             var annotator = new Annotator();
 
-            annotator.AnnotateAssemblyContaining<ILogger>(asm =>
-            {
-                asm.AnnotateType<ILoggerFactory>(type => type.Annotate(i => i.GetLogger(ParameterNotes.Some<Type>()) == ParameterNotes.NotNull<ILogger>()));
-            });
+            annotator.AnnotateType<ILogger>(
+                type => type.Annotate(i => i.Info(ParameterNotes.FormatString(), ParameterNotes.Some<object[]>())));
 
             var doc = annotator.GenerateFiles().First().Content;
-            var memberElement = doc.XPathSelectElement("/assembly/member");
+            var argumentElement = doc.XPathSelectElement("/assembly/member/attribute/argument");
 
-            Assert.That(memberElement, Is.Not.Null);
+            Assert.That(argumentElement, Is.Not.Null);
+            Assert.That(argumentElement.FirstNode.ToString(), Is.EqualTo("format"),
+                "content should match method argument name");
+        }
+
+        [Test]
+        public void CreatesStringFormatMethodAttribute()
+        {
+            var annotator = new Annotator();
+
+            annotator.AnnotateType<ILogger>(
+                type => type.Annotate(i => i.Info(ParameterNotes.FormatString(), ParameterNotes.Some<object[]>())));
+
+            var doc = annotator.GenerateFiles().First().Content;
+            var attributeElement = doc.XPathSelectElement("/assembly/member/attribute");
+
+            Assert.That(attributeElement, Is.Not.Null);
         }
 
         [Test]
@@ -91,27 +106,23 @@ namespace AnnotationGenerator.Tests
             {
                 var annotator = new Annotator();
 
-                annotator.AnnotateAssemblyContaining<ILogger>(asm =>
-                {
-                    asm.AnnotateType<ILogger>(type => type.Annotate(i => i.Info(ParameterNotes.Some<string>(), ParameterNotes.Some<object[]>())));
-                });
+                annotator.AnnotateType<ILogger>(
+                    type => type.Annotate(i => i.Info(ParameterNotes.Some<string>(), ParameterNotes.Some<object[]>())));
             });
         }
 
         [Test]
-        public void CreatesStringFormatMethodAttribute()
+        public void SetsAssemblyElementNameAttribute()
         {
             var annotator = new Annotator();
 
-            annotator.AnnotateAssemblyContaining<ILogger>(asm =>
-            {
-                asm.AnnotateType<ILogger>(type => type.Annotate(i => i.Info(ParameterNotes.FormatString(), ParameterNotes.Some<object[]>())));
-            });
+            annotator.AnnotateType<ILogger>(
+                type => type.Annotate(i => i.Info(ParameterNotes.FormatString(), ParameterNotes.Some<object[]>())));
 
             var doc = annotator.GenerateFiles().First().Content;
-            var attributeElement = doc.XPathSelectElement("/assembly/member/attribute");
+            var assemblyElement = doc.XPathSelectElement("/assembly[@name=\"Ninject.Extensions.Logging\"]");
 
-            Assert.That(attributeElement, Is.Not.Null);
+            Assert.That(assemblyElement, Is.Not.Null);
         }
 
         [Test]
@@ -119,51 +130,31 @@ namespace AnnotationGenerator.Tests
         {
             var annotator = new Annotator();
 
-            annotator.AnnotateAssemblyContaining<ILogger>(asm =>
-            {
-                asm.AnnotateType<ILogger>(type => type.Annotate(i => i.Info(ParameterNotes.FormatString(), ParameterNotes.Some<object[]>())));
-            });
+            annotator.AnnotateType<ILogger>(
+                type => type.Annotate(i => i.Info(ParameterNotes.FormatString(), ParameterNotes.Some<object[]>())));
 
             var doc = annotator.GenerateFiles().First().Content;
             var attributeElement = doc.XPathSelectElement("/assembly/member/attribute");
 
             Assert.That(attributeElement, Is.Not.Null);
-            Assert.That(attributeElement.Attribute("ctor").Value, Is.EqualTo("M:JetBrains.Annotations.StringFormatMethodAttribute.#ctor(System.String)"));
+            Assert.That(attributeElement.Attribute("ctor").Value,
+                Is.EqualTo("M:JetBrains.Annotations.StringFormatMethodAttribute.#ctor(System.String)"));
         }
 
         [Test]
-        public void CreatesStringFormatMethodArgumentElement()
+        public void SetsMemberElementName()
         {
             var annotator = new Annotator();
 
-            annotator.AnnotateAssemblyContaining<ILogger>(asm =>
-            {
-                asm.AnnotateType<ILogger>(type => type.Annotate(i => i.Info(ParameterNotes.FormatString(), ParameterNotes.Some<object[]>())));
-            });
+            annotator.AnnotateType<ILogger>(
+                type => type.Annotate(i => i.Info(ParameterNotes.FormatString(), ParameterNotes.Some<object[]>())));
 
             var doc = annotator.GenerateFiles().First().Content;
-            var argumentElement = doc.XPathSelectElement("/assembly/member/attribute/argument");
+            var memberElement = doc.XPathSelectElement("/assembly/member");
 
-            Assert.That(argumentElement, Is.Not.Null);
-            Assert.That(argumentElement.FirstNode.ToString(), Is.EqualTo("format"), "content should match method argument name");
+            Assert.That(memberElement, Is.Not.Null);
+            Assert.That(memberElement.Attribute("name").Value,
+                Is.EqualTo("M:Ninject.Extensions.Logging.ILogger.Info(System.String,System.Object[])"));
         }
-
-        [Test]
-        public void CreatesNotNullAnnotationWhenAppliedToMethod()
-        {
-            var annotator = new Annotator();
-
-            annotator.AnnotateAssemblyContaining<ILogger>(asm =>
-            {
-                asm.AnnotateType<ILoggerFactory>(type => type.Annotate(i => i.GetLogger(ParameterNotes.Some<Type>()) == ParameterNotes.NotNull<ILogger>()));
-            });
-
-            var doc = annotator.GenerateFiles().First().Content;
-            var attributeElement = doc.XPathSelectElement("/assembly/member/attribute");
-
-            Assert.That(attributeElement, Is.Not.Null);
-            Assert.That(attributeElement.Attribute("ctor").Value, Is.EqualTo("M:JetBrains.Annotations.NotNullAttribute.#ctor"));
-        }
-
     }
 }
