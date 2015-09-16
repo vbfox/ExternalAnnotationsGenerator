@@ -7,11 +7,11 @@ using System.Reflection;
 using AnnotationGenerator.Notes;
 using JetBrains.Annotations;
 
-namespace AnnotationGenerator
+namespace AnnotationGenerator.Expressions
 {
-    static class ExpressionHelpers
+    internal static class ExpressionParser
     {
-        public class ParsedExpression
+        private class IntermediateExpression
         {
             [CanBeNull]
             public MethodCallExpression TargetMethodCall { get; }
@@ -22,7 +22,7 @@ namespace AnnotationGenerator
             [CanBeNull]
             public MethodCallExpression EqualsMethodCall { get; }
 
-            public ParsedExpression([NotNull] MethodCallExpression targetMethodCall,
+            public IntermediateExpression([NotNull] MethodCallExpression targetMethodCall,
                 [CanBeNull] MethodCallExpression equalsMethodCall)
             {
                 if (targetMethodCall == null) throw new ArgumentNullException(nameof(targetMethodCall));
@@ -32,28 +32,37 @@ namespace AnnotationGenerator
             }
         }
 
-        public static ParsedExpression Parse(LambdaExpression expression)
+        public static ExpressionParsingResult Parse(LambdaExpression expression)
+        {
+            var parsed = GetIntermediateExpression(expression);
+            var annotationInfos = GetAnnotationInfoFromExpression(parsed).ToList();
+
+            var methodInfo = GetMemberInfo(parsed);
+            return new ExpressionParsingResult(methodInfo, annotationInfos.Cast<IAnnotationInfo>().ToList());
+        }
+
+        private static IntermediateExpression GetIntermediateExpression(LambdaExpression expression)
         {
             switch (expression.Body.NodeType)
             {
                 case ExpressionType.Call:
-                    {
-                        var call = (MethodCallExpression)expression.Body;
-                        return new ParsedExpression(call, null);
-                    }
+                {
+                    var call = (MethodCallExpression) expression.Body;
+                    return new IntermediateExpression(call, null);
+                }
 
                 case ExpressionType.Equal:
+                {
+                    var binary = (BinaryExpression) expression.Body;
+                    var leftMethodCall = binary.Left as MethodCallExpression;
+                    var rightMethodCall = binary.Right as MethodCallExpression;
+                    if (leftMethodCall == null || rightMethodCall == null)
                     {
-                        var binary = (BinaryExpression) expression.Body;
-                        var leftMethodCall = binary.Left as MethodCallExpression;
-                        var rightMethodCall = binary.Right as MethodCallExpression;
-                        if (leftMethodCall == null || rightMethodCall == null)
-                        {
-                            throw new ArgumentException("Expected MethodCall() == MethodCall()");
-                        }
-
-                        return new ParsedExpression(leftMethodCall, rightMethodCall);
+                        throw new ArgumentException("Expected MethodCall() == MethodCall()");
                     }
+
+                    return new IntermediateExpression(leftMethodCall, rightMethodCall);
+                }
 
                 default:
                     throw new Exception("boom");
@@ -76,7 +85,7 @@ namespace AnnotationGenerator
             }*/
         }
 
-        public static MemberInfo GetMemberInfo(ParsedExpression expression)
+        private static MemberInfo GetMemberInfo(IntermediateExpression expression)
         {
             if (expression.TargetMethodCall != null)
             {
@@ -89,15 +98,14 @@ namespace AnnotationGenerator
             throw new ArgumentException("Unexpected expression structure", nameof(expression));
         }
 
-        public static IEnumerable<ParameterAnnotationInfo> GetAnnotationInfoFromMethodCall(MethodCallExpression methodCallExpression)
+        public static IEnumerable<ParameterAnnotationInfo> GetAnnotationInfoFromMethodCall(
+            MethodCallExpression methodCallExpression)
         {
-            return Enumerable.Zip(
-                methodCallExpression.Arguments,
-                methodCallExpression.Method.GetParameters(),
+            return methodCallExpression.Arguments.Zip(methodCallExpression.Method.GetParameters(),
                 ExtractParameter);
         }
 
-        public static IEnumerable<ParameterAnnotationInfo> GetAnnotationInfoFromExpression(ParsedExpression expression)
+        private static IEnumerable<ParameterAnnotationInfo> GetAnnotationInfoFromExpression(IntermediateExpression expression)
         {
             if (expression.TargetMethodCall != null)
             {

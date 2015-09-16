@@ -10,40 +10,6 @@ namespace AnnotationGenerator.Tests
     [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
     public class AnnotatorTests
     {
-        public class TestClass
-        {
-            public string StringProperty { get; set; }
-
-            public void VoidMethod()
-            {
-            }
-
-            public void VoidMethod(string str)
-            {
-            }
-
-            public int GetInt()
-            {
-                return default(int);
-            }
-
-            public int GetInt(string str)
-            {
-                return default(int);
-            }
-
-            public string GetString()
-            {
-                return default(string);
-            }
-
-            public string GetString(string str)
-            {
-                return default(string);
-            }
-        }
-
-
         [Test]
         public void CreatesAssemblyAnnotations()
         {
@@ -322,6 +288,39 @@ namespace AnnotationGenerator.Tests
             Assert.That(resultInfo, Is.Not.Null);
             Assert.That(resultInfo.IsNotNull, Is.False);
             Assert.That(resultInfo.CanBeNull, Is.True);
+        }
+
+        public class TestClass
+        {
+            public string StringProperty { get; set; }
+
+            public void VoidMethod()
+            {
+            }
+
+            public void VoidMethod(string str)
+            {
+            }
+
+            public int GetInt()
+            {
+                return default(int);
+            }
+
+            public int GetInt(string str)
+            {
+                return default(int);
+            }
+
+            public string GetString()
+            {
+                return default(string);
+            }
+
+            public string GetString(string str)
+            {
+                return default(string);
+            }
         }
     }
 }

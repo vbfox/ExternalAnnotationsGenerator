@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using AnnotationGenerator.Expressions;
 
 namespace AnnotationGenerator
 {
@@ -44,11 +45,9 @@ namespace AnnotationGenerator
 
         private void AnnotateCore(LambdaExpression expression)
         {
-            var parsed = ExpressionHelpers.Parse(expression);
-            var methodInfo = ExpressionHelpers.GetMemberInfo(parsed);
-            var annotationInfos = ExpressionHelpers.GetAnnotationInfoFromExpression(parsed).ToList();
-            var memberAnnotations = GetMemberAnnotations(methodInfo);
-            memberAnnotations.AddRange(annotationInfos);
+            var result = ExpressionParser.Parse(expression);
+            var memberAnnotations = GetMemberAnnotations(result.Member);
+            memberAnnotations.AddRange(result.Annotations);
         }
     }
 }
