@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>AnnotationGenerator</RootNamespace>
-    <AssemblyName>AnnotationGenerator</AssemblyName>
+    <AssemblyName>BlackFox.AnnotationGenerator</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
