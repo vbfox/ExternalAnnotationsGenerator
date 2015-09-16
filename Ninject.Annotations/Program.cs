@@ -5,7 +5,7 @@ using static AnnotationGenerator.ParameterNotes;
 
 namespace Ninject.Annotations
 {
-    class Program
+    static class Program
     {
         static void Main(string[] args)
         {

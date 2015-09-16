@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Xml.Linq;
-using static AnnotationGenerator.Notes.ResharperXmlBuilder;
+using static AnnotationGenerator.AnnotationXml.ResharperXmlBuilder;
 
 namespace AnnotationGenerator.Notes
 {

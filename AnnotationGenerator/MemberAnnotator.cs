@@ -7,7 +7,7 @@ using AnnotationGenerator.Expressions;
 
 namespace AnnotationGenerator
 {
-    public class MemberAnnotator<TClass, TAssembly> : FluentInterface
+    public class MemberAnnotator<TClass> : FluentInterface
     {
         private readonly List<MemberAnnotations> membersAnnotations = new List<MemberAnnotations>();
 

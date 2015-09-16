@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using AnnotationGenerator.Notes;
+using AnnotationGenerator.AnnotationXml;
 using JetBrains.Annotations;
 using NUnit.Framework;
 
@@ -11,6 +11,13 @@ namespace AnnotationGenerator.Tests.AnnotationXml
     [SuppressMessage("ReSharper", "AssignNullToNotNullAttribute")]
     public class ResharperNamesBuilderTests
     {
+        [SuppressMessage("ReSharper", "UnusedParameter.Global")]
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+        [SuppressMessage("ReSharper", "UnassignedField.Global")]
+        [SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
+        [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
+        [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
+        [SuppressMessage("ReSharper", "UnusedParameter.Local")]
         public class TestClass
         {
             public TestClass()
@@ -34,7 +41,6 @@ namespace AnnotationGenerator.Tests.AnnotationXml
                 return null;
             }
 
-            [NotNull]
             public void MethodWithStandardArgs([NotNull] string str, int integer)
             {
                 Console.WriteLine("hi");
@@ -55,7 +61,7 @@ namespace AnnotationGenerator.Tests.AnnotationXml
             }
 
             [NotNull]
-            public double? MethodWithTypedArg<T>([NotNull] T x, [NotNull] T? y, [NotNull] List<T> lst)
+            public double? MethodWithTypedArg<T>(T x, [NotNull] T? y, [NotNull] List<T> lst)
                 where T : struct
             {
                 return 0;

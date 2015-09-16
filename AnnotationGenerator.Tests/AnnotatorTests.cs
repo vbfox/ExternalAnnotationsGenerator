@@ -290,6 +290,12 @@ namespace AnnotationGenerator.Tests
             Assert.That(resultInfo.CanBeNull, Is.True);
         }
 
+        [SuppressMessage("ReSharper", "UnusedParameter.Global")]
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+        [SuppressMessage("ReSharper", "UnassignedField.Global")]
+        [SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
+        [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
+        [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
         public class TestClass
         {
             public string StringProperty { get; set; }

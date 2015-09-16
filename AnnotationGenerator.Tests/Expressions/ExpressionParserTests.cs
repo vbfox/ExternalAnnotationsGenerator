@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -218,6 +219,12 @@ namespace AnnotationGenerator.Tests.Expressions
             Assert.That(paramAnnotation.IsNotNull, Is.False);
         }
 
+        [SuppressMessage("ReSharper", "UnusedParameter.Global")]
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+        [SuppressMessage("ReSharper", "UnassignedField.Global")]
+        [SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
+        [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
+        [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
         public class TestClass
         {
             public string StringProperty { get; set; }

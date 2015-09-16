@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
-using System.Xml.Linq;
 using AnnotationGenerator.Notes;
 using JetBrains.Annotations;
 
@@ -104,11 +103,11 @@ namespace AnnotationGenerator
             rootElement.Add(element);
         }*/
 
-        public void AnnotateType<TType>([NotNull] Action<MemberAnnotator<TType,TAssembly>> annotationActions)
+        public void AnnotateType<TType>([NotNull] Action<MemberAnnotator<TType>> annotationActions)
         {
             if (annotationActions == null) throw new ArgumentNullException(nameof(annotationActions));
 
-            var memberAnnotator = new MemberAnnotator<TType,TAssembly>();
+            var memberAnnotator = new MemberAnnotator<TType>();
             annotationActions(memberAnnotator);
             annotations.AddRange(memberAnnotator.GetMembersAnnotations());
         }

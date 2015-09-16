@@ -1,4 +1,5 @@
 ﻿using System;
+// ReSharper disable ClassNeverInstantiated.Global
 
 #pragma warning disable 1591
 // ReSharper disable UnusedMember.Global

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Xml.Linq;
 using JetBrains.Annotations;
-using static AnnotationGenerator.Notes.ResharperXmlBuilder;
+using static AnnotationGenerator.AnnotationXml.ResharperXmlBuilder;
 
 namespace AnnotationGenerator.Notes
 {

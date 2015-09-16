@@ -50,7 +50,6 @@
     <Compile Include="Expressions\ExpressionParser.cs" />
     <Compile Include="Expressions\ExpressionParsingResult.cs" />
     <Compile Include="FluentInterface.cs" />
-    <Compile Include="NotesInfoExtractor.cs" />
     <Compile Include="MemberAnnotator.cs" />
     <Compile Include="Notes\MemberAnnotationInfo.cs" />
     <Compile Include="Notes\ParameterAnnotationInfo.cs" />

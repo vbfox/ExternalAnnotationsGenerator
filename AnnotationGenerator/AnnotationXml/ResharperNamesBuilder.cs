@@ -4,7 +4,7 @@ using System.Reflection;
 using System.Text;
 using JetBrains.Annotations;
 
-namespace AnnotationGenerator.Notes
+namespace AnnotationGenerator.AnnotationXml
 {
     /// <summary>
     /// Build type and method names in a way compatible with R# Annotations XML format
