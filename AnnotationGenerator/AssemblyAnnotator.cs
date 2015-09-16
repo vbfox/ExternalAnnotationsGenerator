@@ -1,72 +1,8 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Reflection;
-using AnnotationGenerator.Notes;
 using JetBrains.Annotations;
 
 namespace AnnotationGenerator
 {
-    public class AssemblyAnnotations : IEnumerable<MemberAnnotations>
-    {
-        public Assembly Assembly { get; }
-
-        private readonly List<MemberAnnotations> membersAnnotations = new List<MemberAnnotations>();
-
-        public AssemblyAnnotations([NotNull] Assembly assembly)
-        {
-            if (assembly == null) throw new ArgumentNullException(nameof(assembly));
-
-            Assembly = assembly;
-        }
-
-        public void AddRange([NotNull] IEnumerable<MemberAnnotations> memberAnnotations)
-        {
-            if (memberAnnotations == null) throw new ArgumentNullException(nameof(memberAnnotations));
-
-            membersAnnotations.AddRange(memberAnnotations);
-        }
-
-        public IEnumerator<MemberAnnotations> GetEnumerator()
-        {
-            return membersAnnotations.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return membersAnnotations.GetEnumerator();
-        }
-    }
-
-    public class MemberAnnotations : IEnumerable<IAnnotationInfo>
-    {
-        public MemberInfo Member { get; }
-
-        private readonly List<IAnnotationInfo> annotationInfos = new List<IAnnotationInfo>();
-
-        public MemberAnnotations(MemberInfo member)
-        {
-            Member = member;
-        }
-
-        public void AddRange([NotNull] IEnumerable<IAnnotationInfo> annotations)
-        {
-            if (annotations == null) throw new ArgumentNullException(nameof(annotations));
-
-            annotationInfos.AddRange(annotations);
-        }
-
-        public IEnumerator<IAnnotationInfo> GetEnumerator()
-        {
-            return annotationInfos.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return annotationInfos.GetEnumerator();
-        }
-    }
-
     public class AssemblyAnnotator<TAssembly> : FluentInterface
     {
         private readonly AssemblyAnnotations annotations;

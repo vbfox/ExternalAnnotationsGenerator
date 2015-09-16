@@ -45,11 +45,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AnnotationFile.cs" />
+    <Compile Include="AnnotationFileGenerator.cs" />
     <Compile Include="Annotator.cs" />
+    <Compile Include="AssemblyAnnotations.cs" />
     <Compile Include="AssemblyAnnotator.cs" />
     <Compile Include="Expressions\ExpressionParser.cs" />
     <Compile Include="Expressions\ExpressionParsingResult.cs" />
     <Compile Include="FluentInterface.cs" />
+    <Compile Include="IAnnotatorAnnotations.cs" />
+    <Compile Include="MemberAnnotations.cs" />
     <Compile Include="MemberAnnotator.cs" />
     <Compile Include="Notes\MemberAnnotationInfo.cs" />
     <Compile Include="Notes\ParameterAnnotationInfo.cs" />
