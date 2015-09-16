@@ -111,17 +111,15 @@ Target "Build" <| fun _ ->
 Target "RunTests" <| fun _ ->
     CreateDir testsDir
 
-    let outputFile = testsDir </> "TestResults.xml"
-
     !! testAssemblies
       |> NUnit (fun p ->
           {p with
              ToolPath = nunitPath
              DisableShadowCopy = true
              TimeOut = TimeSpan.FromMinutes 20.
-             OutputFile = outputFile })
+             OutputFile = testsDir </> "TestResults.xml" })
 
-    AppVeyor.UploadTestResultsXml AppVeyor.TestResultsType.NUnit outputFile
+    AppVeyor.UploadTestResultsXml AppVeyor.TestResultsType.NUnit testsDir
 
 #if MONO
 #else
