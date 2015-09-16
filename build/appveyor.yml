@@ -1,0 +1,6 @@
+version: 1.0.{build}
+nuget:
+  disable_publish_on_pr: true
+build_script:
+- build.cmd
+test: off
