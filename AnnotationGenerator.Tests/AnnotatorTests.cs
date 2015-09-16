@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using AnnotationGenerator.Construction;
+using AnnotationGenerator.Core.Construction;
 using NUnit.Framework;
 using static AnnotationGenerator.Annotations;
 

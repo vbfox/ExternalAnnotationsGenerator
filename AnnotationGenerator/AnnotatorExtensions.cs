@@ -1,21 +1,34 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using AnnotationGenerator.Construction;
-using AnnotationGenerator.FileGeneration;
+using System.IO;
+using AnnotationGenerator.Core;
+using AnnotationGenerator.Core.FileGeneration;
 using JetBrains.Annotations;
 
 namespace AnnotationGenerator
 {
     public static class AnnotatorExtensions
     {
-        public static IEnumerable<AnnotationFile> GenerateFiles([NotNull] this IAnnotator annotator)
+        public static void SaveToDirectory([NotNull] this IAnnotator annotator, DirectoryInfo directory)
         {
-            if (annotator == null) throw new ArgumentNullException(nameof(annotator));
-            var builder = annotator as AnnotationsBuilder;
-            if (builder == null) throw new ArgumentException("Expected a builder", nameof(annotator));
-
-            return builder.GetAnnotations().Select(a => new AnnotationFileGenerator(a).Generate());
+            CoreHelper.GetAnnotations(annotator).GenerateFiles().SaveToDirectory(directory);
         }
+
+        public static void SaveAlongAssemblies([NotNull] this IAnnotator annotator)
+        {
+            foreach (var annotation in CoreHelper.GetAnnotations(annotator))
+            {
+                var directoryName = Path.GetDirectoryName(annotation.Assembly.Location);
+                if (directoryName == null)
+                {
+                    throw new InvalidOperationException(
+                        $"Can't get assembly directory for {annotation.Assembly.FullName}");
+                }
+
+                var dir = new DirectoryInfo(directoryName);
+                annotation.GenerateFile().SaveToDirectory(dir);
+            }
+        }
+
+
     }
 }

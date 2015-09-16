@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using AnnotationGenerator.FileGeneration;
+using AnnotationGenerator.Core.FileGeneration;
 using JetBrains.Annotations;
 using NUnit.Framework;
 

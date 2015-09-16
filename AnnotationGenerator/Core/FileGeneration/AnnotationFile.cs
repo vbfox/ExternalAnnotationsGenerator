@@ -2,7 +2,7 @@ using System;
 using System.Xml.Linq;
 using JetBrains.Annotations;
 
-namespace AnnotationGenerator
+namespace AnnotationGenerator.Core.FileGeneration
 {
     public class AnnotationFile
     {
@@ -10,20 +10,20 @@ namespace AnnotationGenerator
         public string FileNameAlongDll { get; }
 
         [NotNull]
-        public string FileNameInNuget { get; }
+        public string FileNameInNuGet { get; }
 
         [NotNull]
         public XDocument Content { get; }
 
-        public AnnotationFile([NotNull] string fileNameAlongDll, [NotNull] string fileNameInNuget,
+        public AnnotationFile([NotNull] string fileNameAlongDll, [NotNull] string fileNameInNuGet,
             [NotNull] XDocument content)
         {
             if (fileNameAlongDll == null) throw new ArgumentNullException(nameof(fileNameAlongDll));
-            if (fileNameInNuget == null) throw new ArgumentNullException(nameof(fileNameInNuget));
+            if (fileNameInNuGet == null) throw new ArgumentNullException(nameof(fileNameInNuGet));
             if (content == null) throw new ArgumentNullException(nameof(content));
 
             FileNameAlongDll = fileNameAlongDll;
-            FileNameInNuget = fileNameInNuget;
+            FileNameInNuGet = fileNameInNuGet;
             Content = content;
         }
     }

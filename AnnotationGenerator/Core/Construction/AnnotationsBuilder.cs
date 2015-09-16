@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using AnnotationGenerator.Model;
-using JetBrains.Annotations;
+using AnnotationGenerator.Core.Model;
 
-namespace AnnotationGenerator.Construction
+namespace AnnotationGenerator.Core.Construction
 {
     internal class AnnotationsBuilder : IAnnotator
     {

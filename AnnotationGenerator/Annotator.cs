@@ -1,4 +1,4 @@
-﻿using AnnotationGenerator.Construction;
+﻿using AnnotationGenerator.Core.Construction;
 
 namespace AnnotationGenerator
 {

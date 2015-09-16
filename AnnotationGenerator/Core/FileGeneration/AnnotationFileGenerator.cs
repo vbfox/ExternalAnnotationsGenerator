@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Xml.Linq;
-using AnnotationGenerator.Model;
+using AnnotationGenerator.Core.Model;
 using JetBrains.Annotations;
 
-namespace AnnotationGenerator.FileGeneration
+namespace AnnotationGenerator.Core.FileGeneration
 {
     internal class AnnotationFileGenerator
     {

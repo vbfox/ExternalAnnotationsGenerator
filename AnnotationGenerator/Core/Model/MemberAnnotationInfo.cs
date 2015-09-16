@@ -1,6 +1,6 @@
-﻿namespace AnnotationGenerator.Model
+﻿namespace AnnotationGenerator.Core.Model
 {
-    internal class MemberAnnotationInfo
+    public class MemberAnnotationInfo
     {
         public bool IsNotNull { get; }
         public bool CanBeNull { get; }

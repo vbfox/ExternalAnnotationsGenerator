@@ -1,9 +1,9 @@
 ﻿using System;
 using JetBrains.Annotations;
 
-namespace AnnotationGenerator.Model
+namespace AnnotationGenerator.Core.Model
 {
-    internal class ParameterAnnotationInfo
+    public class ParameterAnnotationInfo
     {
         public string ParameterName { get; }
         public bool IsFormatString { get; }

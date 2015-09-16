@@ -45,23 +45,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AnnotationFile.cs" />
+    <Compile Include="Core\AnnotatorCoreExtensions.cs" />
+    <Compile Include="Core\FileGeneration\AnnotationFile.cs" />
     <Compile Include="AnnotatorExtensions.cs" />
-    <Compile Include="FileGeneration\AnnotationFileGenerator.cs" />
-    <Compile Include="Construction\AnnotationsBuilder.cs" />
+    <Compile Include="Core\FileGeneration\AnnotationFileGenerator.cs" />
+    <Compile Include="Core\Construction\AnnotationsBuilder.cs" />
     <Compile Include="Annotator.cs" />
-    <Compile Include="Model\AssemblyAnnotations.cs" />
-    <Compile Include="Construction\ExpressionParser.cs" />
-    <Compile Include="Construction\ExpressionParsingResult.cs" />
+    <Compile Include="Core\FileGeneration\AnnotationFileExtensions.cs" />
+    <Compile Include="Core\Model\AssemblyAnnotations.cs" />
+    <Compile Include="Core\Construction\ExpressionParser.cs" />
+    <Compile Include="Core\Construction\ExpressionParsingResult.cs" />
     <Compile Include="IFluentInterface.cs" />
     <Compile Include="IAnnotator.cs" />
     <Compile Include="ITypeAnnotator.cs" />
-    <Compile Include="Model\MemberAnnotations.cs" />
-    <Compile Include="Construction\TypeAnnotationsBuilder.cs" />
-    <Compile Include="Model\MemberAnnotationInfo.cs" />
-    <Compile Include="Model\ParameterAnnotationInfo.cs" />
-    <Compile Include="FileGeneration\ResharperNamesBuilder.cs" />
-    <Compile Include="FileGeneration\ResharperXmlBuilder.cs" />
+    <Compile Include="Core\Model\MemberAnnotations.cs" />
+    <Compile Include="Core\Construction\TypeAnnotationsBuilder.cs" />
+    <Compile Include="Core\Model\MemberAnnotationInfo.cs" />
+    <Compile Include="Core\Model\ParameterAnnotationInfo.cs" />
+    <Compile Include="Core\FileGeneration\ResharperNamesBuilder.cs" />
+    <Compile Include="Core\FileGeneration\ResharperXmlBuilder.cs" />
     <Compile Include="Annotations.cs" />
     <Compile Include="NugetSpec.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -3,7 +3,7 @@ using System.Reflection;
 using System.Xml.Linq;
 using JetBrains.Annotations;
 
-namespace AnnotationGenerator.FileGeneration
+namespace AnnotationGenerator.Core.FileGeneration
 {
     /// <summary>
     /// Build XML nodes for the R# Annotations XML format

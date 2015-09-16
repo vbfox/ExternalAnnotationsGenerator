@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Reflection;
 using JetBrains.Annotations;
 
-namespace AnnotationGenerator.Model
+namespace AnnotationGenerator.Core.Model
 {
-    internal class MemberAnnotations
+    public class MemberAnnotations
     {
         public MemberInfo Member { get; }
         public List<ParameterAnnotationInfo> ParameterAnnotations { get; } = new List<ParameterAnnotationInfo>();

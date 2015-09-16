@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Reflection;
 using JetBrains.Annotations;
 
-namespace AnnotationGenerator.Model
+namespace AnnotationGenerator.Core.Model
 {
-    internal class AssemblyAnnotations : IEnumerable<MemberAnnotations>
+    public class AssemblyAnnotations : IEnumerable<MemberAnnotations>
     {
         public Assembly Assembly { get; }
 
