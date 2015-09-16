@@ -22,12 +22,24 @@ namespace AnnotationGenerator.FileGeneration
         [NotNull]
         public AnnotationFile Generate()
         {
-            return new AnnotationFile("", CreateDocument());
+            return new AnnotationFile(GenerateFileNameForAlongDll(), GenerateFileNameForNuget(), CreateDocument());
+        }
+
+        private string AssemblyName => annotations.Assembly.GetName().Name;
+
+        private string GenerateFileNameForAlongDll()
+        {
+            return $"{AssemblyName}.ExternalAnnotations.xml";
+        }
+
+        private string GenerateFileNameForNuget()
+        {
+            return $"{AssemblyName}.xml";
         }
 
         private XDocument CreateDocument()
         {
-            var document = ResharperXmlBuilder.BuildDocument(annotations.Assembly.GetName().Name);
+            var document = ResharperXmlBuilder.BuildDocument(AssemblyName);
             Debug.Assert(document.Root != null);
 
             foreach (var annotatedMember in annotations)

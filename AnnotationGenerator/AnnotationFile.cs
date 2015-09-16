@@ -7,17 +7,23 @@ namespace AnnotationGenerator
     public class AnnotationFile
     {
         [NotNull]
-        public string FileName { get; }
+        public string FileNameAlongDll { get; }
+
+        [NotNull]
+        public string FileNameInNuget { get; }
 
         [NotNull]
         public XDocument Content { get; }
 
-        public AnnotationFile([NotNull] string fileName, [NotNull] XDocument content)
+        public AnnotationFile([NotNull] string fileNameAlongDll, [NotNull] string fileNameInNuget,
+            [NotNull] XDocument content)
         {
-            if (fileName == null) throw new ArgumentNullException(nameof(fileName));
+            if (fileNameAlongDll == null) throw new ArgumentNullException(nameof(fileNameAlongDll));
+            if (fileNameInNuget == null) throw new ArgumentNullException(nameof(fileNameInNuget));
             if (content == null) throw new ArgumentNullException(nameof(content));
 
-            FileName = fileName;
+            FileNameAlongDll = fileNameAlongDll;
+            FileNameInNuget = fileNameInNuget;
             Content = content;
         }
     }

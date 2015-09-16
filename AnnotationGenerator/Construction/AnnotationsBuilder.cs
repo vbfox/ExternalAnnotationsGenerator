@@ -29,7 +29,7 @@ namespace AnnotationGenerator.Construction
             return newAnnotations;
         }
 
-        public void AnnotateType<TType>([NotNull] Action<ITypeAnnotator<TType>> annotationActions)
+        public void AnnotateType<TType>(Action<ITypeAnnotator<TType>> annotationActions)
         {
             if (annotationActions == null) throw new ArgumentNullException(nameof(annotationActions));
 
