@@ -1,9 +1,9 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Xml.XPath;
 using AnnotationGenerator.Core;
 using AnnotationGenerator.Core.FileGeneration;
-using Ninject.Extensions.Logging;
 using NUnit.Framework;
 
 namespace AnnotationGenerator.Tests
@@ -16,7 +16,7 @@ namespace AnnotationGenerator.Tests
         {
             var annotator = Annotator.Create();
 
-            annotator.AnnotateType<ILogger>(
+            annotator.AnnotateType<TestClass>(
                 type => type.Annotate(i => i.Info(Annotations.FormatString(), Annotations.Some<object[]>())));
 
             var doc = GetFirstFile(annotator).Content;
@@ -30,9 +30,9 @@ namespace AnnotationGenerator.Tests
         {
             var annotator = Annotator.Create();
 
-            annotator.AnnotateType<ILoggerFactory>(
+            annotator.AnnotateType<TestClass>(
                 type =>
-                    type.Annotate(i => i.GetLogger(Annotations.Some<Type>()) == Annotations.NotNull<ILogger>()));
+                    type.Annotate(i => i.GetLogger(Annotations.Some<Type>()) == Annotations.NotNull<string>()));
 
             var doc = GetFirstFile(annotator).Content;
             var memberElement = doc.XPathSelectElement("/assembly/member");
@@ -50,7 +50,7 @@ namespace AnnotationGenerator.Tests
         {
             var annotator = Annotator.Create();
 
-            annotator.AnnotateType<ILogger>(
+            annotator.AnnotateType<TestClass>(
                 type => type.Annotate(i => i.Info(Annotations.FormatString(), Annotations.Some<object[]>())));
 
             var doc = GetFirstFile(annotator).Content;
@@ -64,9 +64,9 @@ namespace AnnotationGenerator.Tests
         {
             var annotator = Annotator.Create();
 
-            annotator.AnnotateType<ILoggerFactory>(
+            annotator.AnnotateType<TestClass>(
                 type =>
-                    type.Annotate(i => i.GetLogger(Annotations.Some<Type>()) == Annotations.NotNull<ILogger>()));
+                    type.Annotate(i => i.GetLogger(Annotations.Some<Type>()) == Annotations.NotNull<string>()));
 
             var doc = GetFirstFile(annotator).Content;
             var attributeElement = doc.XPathSelectElement("/assembly/member/attribute");
@@ -81,7 +81,7 @@ namespace AnnotationGenerator.Tests
         {
             var annotator = Annotator.Create();
 
-            annotator.AnnotateType<ILogger>(
+            annotator.AnnotateType<TestClass>(
                 type => type.Annotate(i => i.Info(Annotations.FormatString(), Annotations.Some<object[]>())));
 
             var doc = GetFirstFile(annotator).Content;
@@ -97,7 +97,7 @@ namespace AnnotationGenerator.Tests
         {
             var annotator = Annotator.Create();
 
-            annotator.AnnotateType<ILogger>(
+            annotator.AnnotateType<TestClass>(
                 type => type.Annotate(i => i.Info(Annotations.FormatString(), Annotations.Some<object[]>())));
 
             var doc = GetFirstFile(annotator).Content;
@@ -113,7 +113,7 @@ namespace AnnotationGenerator.Tests
             {
                 var annotator = Annotator.Create();
 
-                annotator.AnnotateType<ILogger>(
+                annotator.AnnotateType<TestClass>(
                     type => type.Annotate(i => i.Info(Annotations.Some<string>(), Annotations.Some<object[]>())));
             });
         }
@@ -123,11 +123,11 @@ namespace AnnotationGenerator.Tests
         {
             var annotator = Annotator.Create();
 
-            annotator.AnnotateType<ILogger>(
+            annotator.AnnotateType<TestClass>(
                 type => type.Annotate(i => i.Info(Annotations.FormatString(), Annotations.Some<object[]>())));
 
             var doc = GetFirstFile(annotator).Content;
-            var assemblyElement = doc.XPathSelectElement("/assembly[@name=\"Ninject.Extensions.Logging\"]");
+            var assemblyElement = doc.XPathSelectElement("/assembly[@name=\"AnnotationGenerator.Tests\"]");
 
             Assert.That(assemblyElement, Is.Not.Null);
         }
@@ -137,7 +137,7 @@ namespace AnnotationGenerator.Tests
         {
             var annotator = Annotator.Create();
 
-            annotator.AnnotateType<ILogger>(
+            annotator.AnnotateType<TestClass>(
                 type => type.Annotate(i => i.Info(Annotations.FormatString(), Annotations.Some<object[]>())));
 
             var doc = GetFirstFile(annotator).Content;
@@ -153,7 +153,7 @@ namespace AnnotationGenerator.Tests
         {
             var annotator = Annotator.Create();
 
-            annotator.AnnotateType<ILogger>(
+            annotator.AnnotateType<TestClass>(
                 type => type.Annotate(i => i.Info(Annotations.FormatString(), Annotations.Some<object[]>())));
 
             var doc = GetFirstFile(annotator).Content;
@@ -161,7 +161,28 @@ namespace AnnotationGenerator.Tests
 
             Assert.That(memberElement, Is.Not.Null);
             Assert.That(memberElement.Attribute("name").Value,
-                Is.EqualTo("M:Ninject.Extensions.Logging.ILogger.Info(System.String,System.Object[])"));
+                Is.EqualTo($"M:{TestClassFullname}.Info(System.String,System.Object[])"));
+        }
+
+        private static readonly string TestClassFullname = typeof (TestClass).FullName;
+
+        [SuppressMessage("ReSharper", "UnusedParameter.Global")]
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+        [SuppressMessage("ReSharper", "UnassignedField.Global")]
+        [SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
+        [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
+        [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
+        public class TestClass
+        {
+            public string GetLogger(Type type)
+            {
+                return default(string);
+            }
+
+            public void Info(string format, params object[] args)
+            {
+
+            }
         }
     }
 }
