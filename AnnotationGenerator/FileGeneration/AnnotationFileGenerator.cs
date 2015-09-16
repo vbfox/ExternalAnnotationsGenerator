@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Xml.Linq;
 using AnnotationGenerator.Model;
 using JetBrains.Annotations;
@@ -33,14 +34,9 @@ namespace AnnotationGenerator.FileGeneration
             {
                 var memberName = ResharperNamesBuilder.GetMemberNameString(annotatedMember.Member);
                 var memberElement = new XElement("member", new XAttribute("name", memberName));
-                foreach (var info in annotatedMember.Annotations)
-                {
-                    memberElement.Add(AnnotationInfoToXml(info));
-                }
-                foreach (var info in annotatedMember.ParameterAnnotations)
-                {
-                    memberElement.Add(AnnotationInfoToXml(info));
-                }
+
+                memberElement.Add(annotatedMember.Annotations.Select(AnnotationInfoToXml));
+                memberElement.Add(annotatedMember.ParameterAnnotations.Select(AnnotationInfoToXml));
                 document.Root.Add(memberElement);
             }
 
