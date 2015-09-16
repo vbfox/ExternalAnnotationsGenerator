@@ -3,10 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExternalAnnotationsGenerator", "AnnotationGenerator\ExternalAnnotationsGenerator.csproj", "{4C5ACADA-D925-4056-9C8E-D7C4B464C19F}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExternalAnnotationsGenerator.Tests", "AnnotationGenerator.Tests\ExternalAnnotationsGenerator.Tests.csproj", "{F4CF9A6C-CB48-4297-9326-A86CF7D8A033}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3E8A588C-C320-4224-8C38-D444D75E8E4E}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
@@ -15,6 +11,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 		Release Notes.md = Release Notes.md
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExternalAnnotationsGenerator", "src\ExternalAnnotationsGenerator\ExternalAnnotationsGenerator.csproj", "{4C5ACADA-D925-4056-9C8E-D7C4B464C19F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExternalAnnotationsGenerator.Tests", "tests\ExternalAnnotationsGenerator.Tests\ExternalAnnotationsGenerator.Tests.csproj", "{F4CF9A6C-CB48-4297-9326-A86CF7D8A033}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
