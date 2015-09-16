@@ -43,7 +43,9 @@ namespace AnnotationGenerator.Construction
         {
             var result = ExpressionParser.Parse(expression);
             var memberAnnotations = GetMemberAnnotations(result.Member);
-            memberAnnotations.AddRange(result.Annotations);
+
+            memberAnnotations.Annotations.AddRange(result.Annotations);
+            memberAnnotations.ParameterAnnotations.AddRange(result.ParameterAnnotations);
         }
     }
 }

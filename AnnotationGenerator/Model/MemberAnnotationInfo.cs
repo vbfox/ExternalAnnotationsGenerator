@@ -1,10 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Xml.Linq;
-using AnnotationGenerator.FileGeneration;
-
-namespace AnnotationGenerator.Model
+﻿namespace AnnotationGenerator.Model
 {
-    internal class MemberAnnotationInfo : IAnnotationInfo
+    internal class MemberAnnotationInfo
     {
         public bool IsNotNull { get; }
         public bool CanBeNull { get; }
@@ -13,18 +9,6 @@ namespace AnnotationGenerator.Model
         {
             IsNotNull = isNotNull;
             CanBeNull = canBeNull;
-        }
-
-        public IEnumerable<XElement> GetAttributesXml()
-        {
-            if (IsNotNull)
-            {
-                yield return ResharperXmlBuilder.BuilNotNullAttribute();
-            }
-            if (CanBeNull)
-            {
-                yield return ResharperXmlBuilder.BuilCanBeNullAttribute();
-            }
         }
     }
 }

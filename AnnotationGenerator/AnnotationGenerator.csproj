@@ -63,7 +63,6 @@
     <Compile Include="FileGeneration\ResharperNamesBuilder.cs" />
     <Compile Include="FileGeneration\ResharperXmlBuilder.cs" />
     <Compile Include="Annotations.cs" />
-    <Compile Include="Model\IAnnotationInfo.cs" />
     <Compile Include="NugetSpec.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResharperAnnotations.cs" />

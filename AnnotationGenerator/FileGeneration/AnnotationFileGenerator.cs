@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Xml.Linq;
 using AnnotationGenerator.Model;
@@ -32,14 +33,52 @@ namespace AnnotationGenerator.FileGeneration
             {
                 var memberName = ResharperNamesBuilder.GetMemberNameString(annotatedMember.Member);
                 var memberElement = new XElement("member", new XAttribute("name", memberName));
-                foreach (var info in annotatedMember)
+                foreach (var info in annotatedMember.Annotations)
                 {
-                    memberElement.Add(info.GetAttributesXml());
+                    memberElement.Add(AnnotationInfoToXml(info));
+                }
+                foreach (var info in annotatedMember.ParameterAnnotations)
+                {
+                    memberElement.Add(AnnotationInfoToXml(info));
                 }
                 document.Root.Add(memberElement);
             }
 
             return document;
+        }
+
+        private static IEnumerable<XElement> AnnotationInfoToXml(ParameterAnnotationInfo parameter)
+        {
+            if (parameter.IsFormatString)
+            {
+                yield return ResharperXmlBuilder.BuilStringFormatMethodAttribute(parameter.ParameterName);
+            }
+
+            if (parameter.IsNotNull || parameter.CanBeNull)
+            {
+                var element = ResharperXmlBuilder.BuildParameterElement(parameter.ParameterName);
+                if (parameter.IsNotNull)
+                {
+                    element.Add(ResharperXmlBuilder.BuilNotNullAttribute());
+                }
+                if (parameter.CanBeNull)
+                {
+                    element.Add(ResharperXmlBuilder.BuilCanBeNullAttribute());
+                }
+                yield return element;
+            }
+        }
+
+        private static IEnumerable<XElement> AnnotationInfoToXml(MemberAnnotationInfo member)
+        {
+            if (member.IsNotNull)
+            {
+                yield return ResharperXmlBuilder.BuilNotNullAttribute();
+            }
+            if (member.CanBeNull)
+            {
+                yield return ResharperXmlBuilder.BuilCanBeNullAttribute();
+            }
         }
     }
 }

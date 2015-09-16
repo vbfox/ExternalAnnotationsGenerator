@@ -40,10 +40,11 @@ namespace AnnotationGenerator.Construction
         public static ExpressionParsingResult Parse(LambdaExpression expression)
         {
             var intermediate = GetIntermediate(expression);
-            var annotationInfos = GetAnnotationInfoFromExpression(intermediate).ToList();
+            var annotations = GetAnnotationInfoFromExpression(intermediate).ToList();
+            var parameterAnnotations = GetParameterAnnotationInfoFromExpression(intermediate).ToList();
 
             var methodInfo = GetMemberInfo(intermediate);
-            return new ExpressionParsingResult(methodInfo, annotationInfos.ToList());
+            return new ExpressionParsingResult(methodInfo, annotations, parameterAnnotations);
         }
 
         private static IntermediateExpression GetIntermediate(LambdaExpression expression)
@@ -135,47 +136,53 @@ namespace AnnotationGenerator.Construction
             throw new ArgumentException("Unexpected expression structure", nameof(expression));
         }
 
-        private static IEnumerable<IAnnotationInfo> GetAnnotationInfoFromMethodCall(
+        private static IEnumerable<ParameterAnnotationInfo> GetAnnotationInfoFromMethodCall(
             MethodCallExpression methodCallExpression)
         {
             if (methodCallExpression == null)
             {
-                return Enumerable.Empty<IAnnotationInfo>();
+                return Enumerable.Empty<ParameterAnnotationInfo>();
             }
 
             return methodCallExpression.Arguments.Zip(methodCallExpression.Method.GetParameters(),
                 ExtractParameter);
         }
 
-        private static IEnumerable<IAnnotationInfo> GetAnnotationInfoFromNew(NewExpression newExpression)
+        private static IEnumerable<ParameterAnnotationInfo> GetAnnotationInfoFromNew(NewExpression newExpression)
         {
             if (newExpression == null)
             {
-                return Enumerable.Empty<IAnnotationInfo>();
+                return Enumerable.Empty<ParameterAnnotationInfo>();
             }
 
             return newExpression.Arguments.Zip(newExpression.Constructor.GetParameters(),
                 ExtractParameter);
         }
 
-        private static IEnumerable<IAnnotationInfo> GetAnnotationInfoFromMemberEquals(
+        private static IEnumerable<MemberAnnotationInfo> GetAnnotationInfoFromMemberEquals(
             MethodCallExpression methodCallExpression)
         {
             if (methodCallExpression == null)
             {
-                return Enumerable.Empty<IAnnotationInfo>();
+                return Enumerable.Empty<MemberAnnotationInfo>();
             }
 
             return new[] {ExtractMember(methodCallExpression)};
         }
 
-        private static IEnumerable<IAnnotationInfo> GetAnnotationInfoFromExpression(IntermediateExpression expression)
+        private static IEnumerable<MemberAnnotationInfo> GetAnnotationInfoFromExpression(IntermediateExpression expression)
+        {
+            var fromEquals = GetAnnotationInfoFromMemberEquals(expression.EqualsMethodCall);
+
+            return fromEquals;
+        }
+
+        private static IEnumerable<ParameterAnnotationInfo> GetParameterAnnotationInfoFromExpression(IntermediateExpression expression)
         {
             var fromCall = GetAnnotationInfoFromMethodCall(expression.TargetMethodCall);
             var fromNew = GetAnnotationInfoFromNew(expression.TargetNew);
-            var fromEquals = GetAnnotationInfoFromMemberEquals(expression.EqualsMethodCall);
 
-            return fromCall.Concat(fromNew).Concat(fromEquals);
+            return fromCall.Concat(fromNew);
         }
 
         private static readonly string usageInfo = $"Should be a call on one of the methods of {nameof(Annotations)}.";

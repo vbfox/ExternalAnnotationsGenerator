@@ -4,7 +4,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using AnnotationGenerator.Construction;
-using AnnotationGenerator.Model;
 using NUnit.Framework;
 using static AnnotationGenerator.Annotations;
 
@@ -32,7 +31,7 @@ namespace AnnotationGenerator.Tests.Expressions
             var result = Parse(() => new TestClass(NotNull<string>()));
 
             Assert.That(result.Member.MemberType, Is.EqualTo(MemberTypes.Constructor));
-            var paramAnnotation = (ParameterAnnotationInfo)result.Annotations.Single();
+            var paramAnnotation = result.ParameterAnnotations.Single();
             Assert.That(paramAnnotation.ParameterName, Is.EqualTo("str"));
             Assert.That(paramAnnotation.CanBeNull, Is.False);
             Assert.That(paramAnnotation.IsFormatString, Is.False);
@@ -56,8 +55,8 @@ namespace AnnotationGenerator.Tests.Expressions
 
             Assert.That(result.Member.MemberType, Is.EqualTo(MemberTypes.Method));
             Assert.That(result.Member.Name, Is.EqualTo("VoidMethod"));
-            Assert.That(result.Annotations, Has.Count.EqualTo(1));
-            var paramAnnotation = (ParameterAnnotationInfo)result.Annotations.Single();
+            Assert.That(result.ParameterAnnotations, Has.Count.EqualTo(1));
+            var paramAnnotation = result.ParameterAnnotations.Single();
             Assert.That(paramAnnotation.ParameterName, Is.EqualTo("str"));
             Assert.That(paramAnnotation.CanBeNull, Is.False);
             Assert.That(paramAnnotation.IsFormatString, Is.False);
@@ -71,8 +70,8 @@ namespace AnnotationGenerator.Tests.Expressions
 
             Assert.That(result.Member.MemberType, Is.EqualTo(MemberTypes.Method));
             Assert.That(result.Member.Name, Is.EqualTo("VoidMethod"));
-            Assert.That(result.Annotations, Has.Count.EqualTo(1));
-            var paramAnnotation = (ParameterAnnotationInfo)result.Annotations.Single();
+            Assert.That(result.ParameterAnnotations, Has.Count.EqualTo(1));
+            var paramAnnotation = result.ParameterAnnotations.Single();
             Assert.That(paramAnnotation.ParameterName, Is.EqualTo("str"));
             Assert.That(paramAnnotation.CanBeNull, Is.False);
             Assert.That(paramAnnotation.IsFormatString, Is.False);
@@ -86,8 +85,8 @@ namespace AnnotationGenerator.Tests.Expressions
 
             Assert.That(result.Member.MemberType, Is.EqualTo(MemberTypes.Method));
             Assert.That(result.Member.Name, Is.EqualTo("VoidMethod"));
-            Assert.That(result.Annotations, Has.Count.EqualTo(1));
-            var paramAnnotation = (ParameterAnnotationInfo)result.Annotations.Single();
+            Assert.That(result.ParameterAnnotations, Has.Count.EqualTo(1));
+            var paramAnnotation = result.ParameterAnnotations.Single();
             Assert.That(paramAnnotation.ParameterName, Is.EqualTo("str"));
             Assert.That(paramAnnotation.CanBeNull, Is.True);
             Assert.That(paramAnnotation.IsFormatString, Is.False);
@@ -102,8 +101,8 @@ namespace AnnotationGenerator.Tests.Expressions
 
             Assert.That(result.Member.MemberType, Is.EqualTo(MemberTypes.Method));
             Assert.That(result.Member.Name, Is.EqualTo("VoidMethod"));
-            Assert.That(result.Annotations, Has.Count.EqualTo(1));
-            var paramAnnotation = (ParameterAnnotationInfo)result.Annotations.Single();
+            Assert.That(result.ParameterAnnotations, Has.Count.EqualTo(1));
+            var paramAnnotation = result.ParameterAnnotations.Single();
             Assert.That(paramAnnotation.ParameterName, Is.EqualTo("str"));
             Assert.That(paramAnnotation.CanBeNull, Is.False);
             Assert.That(paramAnnotation.IsFormatString, Is.True);
@@ -117,8 +116,8 @@ namespace AnnotationGenerator.Tests.Expressions
 
             Assert.That(result.Member.MemberType, Is.EqualTo(MemberTypes.Method));
             Assert.That(result.Member.Name, Is.EqualTo("VoidMethod"));
-            Assert.That(result.Annotations, Has.Count.EqualTo(1));
-            var paramAnnotation = (ParameterAnnotationInfo)result.Annotations.Single();
+            Assert.That(result.ParameterAnnotations, Has.Count.EqualTo(1));
+            var paramAnnotation = result.ParameterAnnotations.Single();
             Assert.That(paramAnnotation.ParameterName, Is.EqualTo("str"));
             Assert.That(paramAnnotation.CanBeNull, Is.True);
             Assert.That(paramAnnotation.IsFormatString, Is.True);
@@ -133,7 +132,7 @@ namespace AnnotationGenerator.Tests.Expressions
             Assert.That(result.Member.MemberType, Is.EqualTo(MemberTypes.Method));
             Assert.That(result.Member.Name, Is.EqualTo("GetString"));
             Assert.That(result.Annotations, Has.Count.EqualTo(1));
-            var paramAnnotation = (MemberAnnotationInfo)result.Annotations.Single();
+            var paramAnnotation = result.Annotations.Single();
             Assert.That(paramAnnotation.CanBeNull, Is.False);
             Assert.That(paramAnnotation.IsNotNull, Is.False);
         }
@@ -146,7 +145,7 @@ namespace AnnotationGenerator.Tests.Expressions
             Assert.That(result.Member.MemberType, Is.EqualTo(MemberTypes.Method));
             Assert.That(result.Member.Name, Is.EqualTo("GetString"));
             Assert.That(result.Annotations, Has.Count.EqualTo(1));
-            var paramAnnotation = (MemberAnnotationInfo)result.Annotations.Single();
+            var paramAnnotation = result.Annotations.Single();
             Assert.That(paramAnnotation.CanBeNull, Is.False);
             Assert.That(paramAnnotation.IsNotNull, Is.True);
         }
@@ -159,7 +158,7 @@ namespace AnnotationGenerator.Tests.Expressions
             Assert.That(result.Member.MemberType, Is.EqualTo(MemberTypes.Method));
             Assert.That(result.Member.Name, Is.EqualTo("GetString"));
             Assert.That(result.Annotations, Has.Count.EqualTo(1));
-            var paramAnnotation = (MemberAnnotationInfo)result.Annotations.Single();
+            var paramAnnotation = result.Annotations.Single();
             Assert.That(paramAnnotation.CanBeNull, Is.True);
             Assert.That(paramAnnotation.IsNotNull, Is.False);
         }
@@ -172,7 +171,7 @@ namespace AnnotationGenerator.Tests.Expressions
             Assert.That(result.Member.MemberType, Is.EqualTo(MemberTypes.Property));
             Assert.That(result.Member.Name, Is.EqualTo("StringProperty"));
             Assert.That(result.Annotations, Has.Count.EqualTo(1));
-            var paramAnnotation = (MemberAnnotationInfo)result.Annotations.Single();
+            var paramAnnotation = result.Annotations.Single();
             Assert.That(paramAnnotation.CanBeNull, Is.False);
             Assert.That(paramAnnotation.IsNotNull, Is.False);
         }
@@ -185,7 +184,7 @@ namespace AnnotationGenerator.Tests.Expressions
             Assert.That(result.Member.MemberType, Is.EqualTo(MemberTypes.Property));
             Assert.That(result.Member.Name, Is.EqualTo("StringProperty"));
             Assert.That(result.Annotations, Has.Count.EqualTo(1));
-            var paramAnnotation = (MemberAnnotationInfo)result.Annotations.Single();
+            var paramAnnotation = result.Annotations.Single();
             Assert.That(paramAnnotation.CanBeNull, Is.False);
             Assert.That(paramAnnotation.IsNotNull, Is.True);
         }
@@ -198,7 +197,7 @@ namespace AnnotationGenerator.Tests.Expressions
             Assert.That(result.Member.MemberType, Is.EqualTo(MemberTypes.Property));
             Assert.That(result.Member.Name, Is.EqualTo("StringProperty"));
             Assert.That(result.Annotations, Has.Count.EqualTo(1));
-            var paramAnnotation = (MemberAnnotationInfo)result.Annotations.Single();
+            var paramAnnotation = result.Annotations.Single();
             Assert.That(paramAnnotation.CanBeNull, Is.True);
             Assert.That(paramAnnotation.IsNotNull, Is.False);
         }
@@ -211,7 +210,7 @@ namespace AnnotationGenerator.Tests.Expressions
             Assert.That(result.Member.MemberType, Is.EqualTo(MemberTypes.Field));
             Assert.That(result.Member.Name, Is.EqualTo("StringField"));
             Assert.That(result.Annotations, Has.Count.EqualTo(1));
-            var paramAnnotation = (MemberAnnotationInfo)result.Annotations.Single();
+            var paramAnnotation = result.Annotations.Single();
             Assert.That(paramAnnotation.CanBeNull, Is.False);
             Assert.That(paramAnnotation.IsNotNull, Is.False);
         }
@@ -224,7 +223,7 @@ namespace AnnotationGenerator.Tests.Expressions
             Assert.That(result.Member.MemberType, Is.EqualTo(MemberTypes.Field));
             Assert.That(result.Member.Name, Is.EqualTo("StringField"));
             Assert.That(result.Annotations, Has.Count.EqualTo(1));
-            var paramAnnotation = (MemberAnnotationInfo)result.Annotations.Single();
+            var paramAnnotation = result.Annotations.Single();
             Assert.That(paramAnnotation.CanBeNull, Is.False);
             Assert.That(paramAnnotation.IsNotNull, Is.True);
         }
@@ -237,7 +236,7 @@ namespace AnnotationGenerator.Tests.Expressions
             Assert.That(result.Member.MemberType, Is.EqualTo(MemberTypes.Field));
             Assert.That(result.Member.Name, Is.EqualTo("StringField"));
             Assert.That(result.Annotations, Has.Count.EqualTo(1));
-            var paramAnnotation = (MemberAnnotationInfo)result.Annotations.Single();
+            var paramAnnotation = result.Annotations.Single();
             Assert.That(paramAnnotation.CanBeNull, Is.True);
             Assert.That(paramAnnotation.IsNotNull, Is.False);
         }

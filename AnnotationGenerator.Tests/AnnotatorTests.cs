@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using AnnotationGenerator.Construction;
-using AnnotationGenerator.Model;
 using NUnit.Framework;
 using static AnnotationGenerator.Annotations;
 
@@ -19,7 +18,7 @@ namespace AnnotationGenerator.Tests
             annotator.AnnotateType<TestClass>(type => type.Annotate(i => i.VoidMethod(CanBeNull<string>())));
 
             var annotations = ((AnnotationsBuilder) annotator).GetAnnotations().First();
-            var firstParamInfo = annotations.FirstOrDefault()?.FirstOrDefault() as ParameterAnnotationInfo;
+            var firstParamInfo = annotations.FirstOrDefault()?.ParameterAnnotations.FirstOrDefault();
 
             Assert.That(firstParamInfo, Is.Not.Null);
             Assert.That(firstParamInfo.ParameterName, Is.EqualTo("str"));
@@ -37,7 +36,7 @@ namespace AnnotationGenerator.Tests
                 type => type.Annotate(i => i.GetString(NotNull<string>()) == CanBeNull<string>()));
 
             var annotations = ((AnnotationsBuilder) annotator).GetAnnotations().First();
-            var resultInfo = annotations.FirstOrDefault()?.OfType<MemberAnnotationInfo>().FirstOrDefault();
+            var resultInfo = annotations.FirstOrDefault()?.Annotations.FirstOrDefault();
 
             Assert.That(resultInfo, Is.Not.Null);
             Assert.That(resultInfo.IsNotNull, Is.False);
@@ -53,7 +52,7 @@ namespace AnnotationGenerator.Tests
 
             var annotations = ((AnnotationsBuilder) annotator).GetAnnotations().First();
             var memberAnnotations = annotations.FirstOrDefault();
-            var resultInfo = memberAnnotations?.OfType<MemberAnnotationInfo>().FirstOrDefault();
+            var resultInfo = memberAnnotations?.Annotations.FirstOrDefault();
 
             Assert.That(memberAnnotations, Is.Not.Null);
             Assert.That(memberAnnotations.Member.Name, Is.EqualTo("StringProperty"));
@@ -113,7 +112,7 @@ namespace AnnotationGenerator.Tests
             annotator.AnnotateType<TestClass>(type => type.Annotate(i => i.VoidMethod(FormatString())));
 
             var annotations = ((AnnotationsBuilder) annotator).GetAnnotations().First();
-            var firstParamInfo = annotations.FirstOrDefault()?.FirstOrDefault() as ParameterAnnotationInfo;
+            var firstParamInfo = annotations.FirstOrDefault()?.ParameterAnnotations.FirstOrDefault();
 
             Assert.That(firstParamInfo, Is.Not.Null);
             Assert.That(firstParamInfo.ParameterName, Is.EqualTo("str"));
@@ -131,7 +130,7 @@ namespace AnnotationGenerator.Tests
                 type => type.Annotate(i => i.GetString(NotNull<string>()) == NotNull<string>()));
 
             var annotations = ((AnnotationsBuilder) annotator).GetAnnotations().First();
-            var resultInfo = annotations.FirstOrDefault()?.OfType<MemberAnnotationInfo>().FirstOrDefault();
+            var resultInfo = annotations.FirstOrDefault()?.Annotations.FirstOrDefault();
 
             Assert.That(resultInfo, Is.Not.Null);
             Assert.That(resultInfo.IsNotNull, Is.True);
@@ -147,7 +146,7 @@ namespace AnnotationGenerator.Tests
 
             var annotations = ((AnnotationsBuilder) annotator).GetAnnotations().First();
             var memberAnnotations = annotations.FirstOrDefault();
-            var resultInfo = memberAnnotations?.OfType<MemberAnnotationInfo>().FirstOrDefault();
+            var resultInfo = memberAnnotations?.Annotations.FirstOrDefault();
 
             Assert.That(memberAnnotations, Is.Not.Null);
             Assert.That(memberAnnotations.Member.Name, Is.EqualTo("StringProperty"));
@@ -164,7 +163,7 @@ namespace AnnotationGenerator.Tests
             annotator.AnnotateType<TestClass>(type => type.Annotate(i => i.VoidMethod(NotNull<string>())));
 
             var annotations = ((AnnotationsBuilder) annotator).GetAnnotations().First();
-            var firstParamInfo = annotations.FirstOrDefault()?.FirstOrDefault() as ParameterAnnotationInfo;
+            var firstParamInfo = annotations.FirstOrDefault()?.ParameterAnnotations.FirstOrDefault();
 
             Assert.That(firstParamInfo, Is.Not.Null);
             Assert.That(firstParamInfo.ParameterName, Is.EqualTo("str"));
@@ -181,7 +180,7 @@ namespace AnnotationGenerator.Tests
             annotator.AnnotateType<TestClass>(type => type.Annotate(i => i.VoidMethod(NullableFormatString())));
 
             var annotations = ((AnnotationsBuilder) annotator).GetAnnotations().First();
-            var firstParamInfo = annotations.FirstOrDefault()?.FirstOrDefault() as ParameterAnnotationInfo;
+            var firstParamInfo = annotations.FirstOrDefault()?.ParameterAnnotations.FirstOrDefault();
 
             Assert.That(firstParamInfo, Is.Not.Null);
             Assert.That(firstParamInfo.ParameterName, Is.EqualTo("str"));
@@ -199,7 +198,7 @@ namespace AnnotationGenerator.Tests
                 type => type.Annotate(i => i.GetString(NotNull<string>()) == Some<string>()));
 
             var annotations = ((AnnotationsBuilder) annotator).GetAnnotations().First();
-            var resultInfo = annotations.FirstOrDefault()?.OfType<MemberAnnotationInfo>().FirstOrDefault();
+            var resultInfo = annotations.FirstOrDefault()?.Annotations.FirstOrDefault();
 
             Assert.That(resultInfo, Is.Not.Null);
             Assert.That(resultInfo.IsNotNull, Is.False);
@@ -214,7 +213,7 @@ namespace AnnotationGenerator.Tests
             annotator.AnnotateType<TestClass>(type => type.Annotate(i => i.VoidMethod(Some<string>())));
 
             var annotations = ((AnnotationsBuilder) annotator).GetAnnotations().First();
-            var firstParamInfo = annotations.FirstOrDefault()?.FirstOrDefault() as ParameterAnnotationInfo;
+            var firstParamInfo = annotations.FirstOrDefault()?.ParameterAnnotations.FirstOrDefault();
 
             Assert.That(firstParamInfo, Is.Not.Null);
             Assert.That(firstParamInfo.ParameterName, Is.EqualTo("str"));
@@ -232,7 +231,7 @@ namespace AnnotationGenerator.Tests
 
             var annotations = ((AnnotationsBuilder) annotator).GetAnnotations().First();
             var memberAnnotations = annotations.FirstOrDefault();
-            var resultInfo = memberAnnotations?.OfType<MemberAnnotationInfo>().FirstOrDefault();
+            var resultInfo = memberAnnotations?.Annotations.FirstOrDefault();
 
             Assert.That(memberAnnotations, Is.Not.Null);
             Assert.That(memberAnnotations.Member.Name, Is.EqualTo("StringProperty"));

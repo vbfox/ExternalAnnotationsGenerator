@@ -8,19 +8,25 @@ namespace AnnotationGenerator.Construction
 {
     internal class ExpressionParsingResult
     {
-        [NotNull]
-        public MemberInfo Member { get; }
-
-        [NotNull]
-        public ICollection<IAnnotationInfo> Annotations { get; }
-
-        public ExpressionParsingResult([NotNull] MemberInfo member, [NotNull] ICollection<IAnnotationInfo> annotations)
+        public ExpressionParsingResult([NotNull] MemberInfo member,
+            [NotNull] ICollection<MemberAnnotationInfo> annotations,
+            [NotNull] ICollection<ParameterAnnotationInfo> parameterAnnotations)
         {
             if (member == null) throw new ArgumentNullException(nameof(member));
             if (annotations == null) throw new ArgumentNullException(nameof(annotations));
 
             Member = member;
             Annotations = annotations;
+            ParameterAnnotations = parameterAnnotations;
         }
+
+        [NotNull]
+        public MemberInfo Member { get; }
+
+        [NotNull]
+        public ICollection<MemberAnnotationInfo> Annotations { get; }
+
+        [NotNull]
+        public ICollection<ParameterAnnotationInfo> ParameterAnnotations { get; }
     }
 }
