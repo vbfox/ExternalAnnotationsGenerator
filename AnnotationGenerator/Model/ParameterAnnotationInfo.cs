@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Xml.Linq;
+using AnnotationGenerator.FileGeneration;
 using JetBrains.Annotations;
-using static AnnotationGenerator.AnnotationXml.ResharperXmlBuilder;
 
-namespace AnnotationGenerator.Notes
+namespace AnnotationGenerator.Model
 {
     public class ParameterAnnotationInfo : IAnnotationInfo
     {
@@ -27,19 +27,19 @@ namespace AnnotationGenerator.Notes
         {
             if (IsFormatString)
             {
-                yield return BuilStringFormatMethodAttribute(ParameterName);
+                yield return ResharperXmlBuilder.BuilStringFormatMethodAttribute(ParameterName);
             }
 
             if (IsNotNull || CanBeNull)
             {
-                var element = BuildParameterElement(ParameterName);
+                var element = ResharperXmlBuilder.BuildParameterElement(ParameterName);
                 if (IsNotNull)
                 {
-                    element.Add(BuilNotNullAttribute());
+                    element.Add(ResharperXmlBuilder.BuilNotNullAttribute());
                 }
                 if (CanBeNull)
                 {
-                    element.Add(BuilCanBeNullAttribute());
+                    element.Add(ResharperXmlBuilder.BuilCanBeNullAttribute());
                 }
                 yield return element;
             }

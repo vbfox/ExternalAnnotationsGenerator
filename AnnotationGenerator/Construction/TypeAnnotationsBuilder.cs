@@ -3,21 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using AnnotationGenerator.Expressions;
+using AnnotationGenerator.Model;
 
-namespace AnnotationGenerator
+namespace AnnotationGenerator.Construction
 {
-    public class MemberAnnotator<TClass> : FluentInterface
+    internal class TypeAnnotationsBuilder<TClass> : ITypeAnnotator<TClass>
     {
         private readonly List<MemberAnnotations> membersAnnotations = new List<MemberAnnotations>();
 
         internal IEnumerable<MemberAnnotations> GetMembersAnnotations()
         {
             return membersAnnotations;
-        }
-
-        internal MemberAnnotator()
-        {
         }
 
         private MemberAnnotations GetMemberAnnotations(MemberInfo member)

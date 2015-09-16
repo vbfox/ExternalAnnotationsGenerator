@@ -2,10 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
-using AnnotationGenerator.Notes;
 using JetBrains.Annotations;
 
-namespace AnnotationGenerator
+namespace AnnotationGenerator.Model
 {
     public class MemberAnnotations : IEnumerable<IAnnotationInfo>
     {

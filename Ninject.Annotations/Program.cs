@@ -1,7 +1,7 @@
 ﻿using System;
 using AnnotationGenerator;
 using Ninject.Extensions.Logging;
-using static AnnotationGenerator.ParameterNotes;
+using static AnnotationGenerator.Annotations;
 
 namespace Ninject.Annotations
 {
@@ -9,7 +9,7 @@ namespace Ninject.Annotations
     {
         static void Main(string[] args)
         {
-            var annotator = new Annotator();
+            var annotator = Annotator.Create();
 
             annotator.AnnotateType<ILogger>(type =>
             {

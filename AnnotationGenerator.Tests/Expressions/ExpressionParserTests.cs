@@ -3,10 +3,10 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using AnnotationGenerator.Expressions;
-using AnnotationGenerator.Notes;
+using AnnotationGenerator.Construction;
+using AnnotationGenerator.Model;
 using NUnit.Framework;
-using static AnnotationGenerator.ParameterNotes;
+using static AnnotationGenerator.Annotations;
 
 namespace AnnotationGenerator.Tests.Expressions
 {
@@ -14,7 +14,30 @@ namespace AnnotationGenerator.Tests.Expressions
     public class ExpressionParserTests
     {
         private ExpressionParsingResult Parse<T>(Expression<Action<T>> expression) => ExpressionParser.Parse(expression);
+        private ExpressionParsingResult Parse<T>(Expression<Func<T>> expression) => ExpressionParser.Parse(expression);
         private ExpressionParsingResult Parse<TIn, TOut>(Expression<Func<TIn, TOut>> expression) => ExpressionParser.Parse(expression);
+
+        [Test]
+        public void ParseCallToConstructor()
+        {
+            var result = Parse(() => new TestClass());
+
+            Assert.That(result.Member.MemberType, Is.EqualTo(MemberTypes.Constructor));
+            Assert.That(result.Annotations, Is.Empty);
+        }
+
+        [Test]
+        public void ParseCallToConstructorWithParameter()
+        {
+            var result = Parse(() => new TestClass(NotNull<string>()));
+
+            Assert.That(result.Member.MemberType, Is.EqualTo(MemberTypes.Constructor));
+            var paramAnnotation = (ParameterAnnotationInfo)result.Annotations.Single();
+            Assert.That(paramAnnotation.ParameterName, Is.EqualTo("str"));
+            Assert.That(paramAnnotation.CanBeNull, Is.False);
+            Assert.That(paramAnnotation.IsFormatString, Is.False);
+            Assert.That(paramAnnotation.IsNotNull, Is.True);
+        }
 
         [Test]
         public void ParseCallToVoidMethod()
@@ -225,11 +248,23 @@ namespace AnnotationGenerator.Tests.Expressions
         [SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
         [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
         [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
+        [SuppressMessage("ReSharper", "FieldCanBeMadeReadOnly.Global")]
+        [SuppressMessage("ReSharper", "AutoPropertyCanBeMadeGetOnly.Global")]
         public class TestClass
         {
             public string StringProperty { get; set; }
 
             public string StringField;
+
+            public TestClass()
+            {
+            }
+
+            public TestClass(string str)
+            {
+                StringProperty = str;
+                StringField = str;
+            }
 
             public void VoidMethod()
             {

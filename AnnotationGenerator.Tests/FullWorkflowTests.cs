@@ -12,10 +12,10 @@ namespace AnnotationGenerator.Tests
         [Test]
         public void CreatesAssemblyElement()
         {
-            var annotator = new Annotator();
+            var annotator = Annotator.Create();
 
             annotator.AnnotateType<ILogger>(
-                type => type.Annotate(i => i.Info(ParameterNotes.FormatString(), ParameterNotes.Some<object[]>())));
+                type => type.Annotate(i => i.Info(Annotations.FormatString(), Annotations.Some<object[]>())));
 
             var doc = annotator.GenerateFiles().First().Content;
             var assemblyElement = doc.XPathSelectElement("/assembly");
@@ -26,11 +26,11 @@ namespace AnnotationGenerator.Tests
         [Test]
         public void CreatesMemberElementIfMethodAnnotated()
         {
-            var annotator = new Annotator();
+            var annotator = Annotator.Create();
 
             annotator.AnnotateType<ILoggerFactory>(
                 type =>
-                    type.Annotate(i => i.GetLogger(ParameterNotes.Some<Type>()) == ParameterNotes.NotNull<ILogger>()));
+                    type.Annotate(i => i.GetLogger(Annotations.Some<Type>()) == Annotations.NotNull<ILogger>()));
 
             var doc = annotator.GenerateFiles().First().Content;
             var memberElement = doc.XPathSelectElement("/assembly/member");
@@ -41,10 +41,10 @@ namespace AnnotationGenerator.Tests
         [Test]
         public void CreatesMemberElementIfParameterAnnotated()
         {
-            var annotator = new Annotator();
+            var annotator = Annotator.Create();
 
             annotator.AnnotateType<ILogger>(
-                type => type.Annotate(i => i.Info(ParameterNotes.FormatString(), ParameterNotes.Some<object[]>())));
+                type => type.Annotate(i => i.Info(Annotations.FormatString(), Annotations.Some<object[]>())));
 
             var doc = annotator.GenerateFiles().First().Content;
             var memberElement = doc.XPathSelectElement("/assembly/member");
@@ -55,11 +55,11 @@ namespace AnnotationGenerator.Tests
         [Test]
         public void CreatesNotNullAnnotationWhenAppliedToMethod()
         {
-            var annotator = new Annotator();
+            var annotator = Annotator.Create();
 
             annotator.AnnotateType<ILoggerFactory>(
                 type =>
-                    type.Annotate(i => i.GetLogger(ParameterNotes.Some<Type>()) == ParameterNotes.NotNull<ILogger>()));
+                    type.Annotate(i => i.GetLogger(Annotations.Some<Type>()) == Annotations.NotNull<ILogger>()));
 
             var doc = annotator.GenerateFiles().First().Content;
             var attributeElement = doc.XPathSelectElement("/assembly/member/attribute");
@@ -72,10 +72,10 @@ namespace AnnotationGenerator.Tests
         [Test]
         public void CreatesStringFormatMethodArgumentElement()
         {
-            var annotator = new Annotator();
+            var annotator = Annotator.Create();
 
             annotator.AnnotateType<ILogger>(
-                type => type.Annotate(i => i.Info(ParameterNotes.FormatString(), ParameterNotes.Some<object[]>())));
+                type => type.Annotate(i => i.Info(Annotations.FormatString(), Annotations.Some<object[]>())));
 
             var doc = annotator.GenerateFiles().First().Content;
             var argumentElement = doc.XPathSelectElement("/assembly/member/attribute/argument");
@@ -88,10 +88,10 @@ namespace AnnotationGenerator.Tests
         [Test]
         public void CreatesStringFormatMethodAttribute()
         {
-            var annotator = new Annotator();
+            var annotator = Annotator.Create();
 
             annotator.AnnotateType<ILogger>(
-                type => type.Annotate(i => i.Info(ParameterNotes.FormatString(), ParameterNotes.Some<object[]>())));
+                type => type.Annotate(i => i.Info(Annotations.FormatString(), Annotations.Some<object[]>())));
 
             var doc = annotator.GenerateFiles().First().Content;
             var attributeElement = doc.XPathSelectElement("/assembly/member/attribute");
@@ -104,20 +104,20 @@ namespace AnnotationGenerator.Tests
         {
             Assert.DoesNotThrow(() =>
             {
-                var annotator = new Annotator();
+                var annotator = Annotator.Create();
 
                 annotator.AnnotateType<ILogger>(
-                    type => type.Annotate(i => i.Info(ParameterNotes.Some<string>(), ParameterNotes.Some<object[]>())));
+                    type => type.Annotate(i => i.Info(Annotations.Some<string>(), Annotations.Some<object[]>())));
             });
         }
 
         [Test]
         public void SetsAssemblyElementNameAttribute()
         {
-            var annotator = new Annotator();
+            var annotator = Annotator.Create();
 
             annotator.AnnotateType<ILogger>(
-                type => type.Annotate(i => i.Info(ParameterNotes.FormatString(), ParameterNotes.Some<object[]>())));
+                type => type.Annotate(i => i.Info(Annotations.FormatString(), Annotations.Some<object[]>())));
 
             var doc = annotator.GenerateFiles().First().Content;
             var assemblyElement = doc.XPathSelectElement("/assembly[@name=\"Ninject.Extensions.Logging\"]");
@@ -128,10 +128,10 @@ namespace AnnotationGenerator.Tests
         [Test]
         public void SetsAttributeCtorAttribute()
         {
-            var annotator = new Annotator();
+            var annotator = Annotator.Create();
 
             annotator.AnnotateType<ILogger>(
-                type => type.Annotate(i => i.Info(ParameterNotes.FormatString(), ParameterNotes.Some<object[]>())));
+                type => type.Annotate(i => i.Info(Annotations.FormatString(), Annotations.Some<object[]>())));
 
             var doc = annotator.GenerateFiles().First().Content;
             var attributeElement = doc.XPathSelectElement("/assembly/member/attribute");
@@ -144,10 +144,10 @@ namespace AnnotationGenerator.Tests
         [Test]
         public void SetsMemberElementName()
         {
-            var annotator = new Annotator();
+            var annotator = Annotator.Create();
 
             annotator.AnnotateType<ILogger>(
-                type => type.Annotate(i => i.Info(ParameterNotes.FormatString(), ParameterNotes.Some<object[]>())));
+                type => type.Annotate(i => i.Info(Annotations.FormatString(), Annotations.Some<object[]>())));
 
             var doc = annotator.GenerateFiles().First().Content;
             var memberElement = doc.XPathSelectElement("/assembly/member");

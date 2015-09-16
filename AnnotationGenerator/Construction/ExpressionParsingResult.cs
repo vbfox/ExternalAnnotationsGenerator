@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using AnnotationGenerator.Notes;
+using AnnotationGenerator.Model;
 using JetBrains.Annotations;
 
-namespace AnnotationGenerator.Expressions
+namespace AnnotationGenerator.Construction
 {
     internal class ExpressionParsingResult
     {

@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Xml.Linq;
-using static AnnotationGenerator.AnnotationXml.ResharperXmlBuilder;
+using AnnotationGenerator.FileGeneration;
 
-namespace AnnotationGenerator.Notes
+namespace AnnotationGenerator.Model
 {
     class MemberAnnotationInfo : IAnnotationInfo
     {
@@ -19,11 +19,11 @@ namespace AnnotationGenerator.Notes
         {
             if (IsNotNull)
             {
-                yield return BuilNotNullAttribute();
+                yield return ResharperXmlBuilder.BuilNotNullAttribute();
             }
             if (CanBeNull)
             {
-                yield return BuilCanBeNullAttribute();
+                yield return ResharperXmlBuilder.BuilCanBeNullAttribute();
             }
         }
     }

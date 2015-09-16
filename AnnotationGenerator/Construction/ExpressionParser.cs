@@ -4,10 +4,10 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using AnnotationGenerator.Notes;
+using AnnotationGenerator.Model;
 using JetBrains.Annotations;
 
-namespace AnnotationGenerator.Expressions
+namespace AnnotationGenerator.Construction
 {
     internal static class ExpressionParser
     {
@@ -17,6 +17,9 @@ namespace AnnotationGenerator.Expressions
             public MethodCallExpression TargetMethodCall { get; }
 
             [CanBeNull]
+            public NewExpression TargetNew { get; }
+
+            [CanBeNull]
             public MemberExpression TargetMemberAccess { get; }
 
             [CanBeNull]
@@ -24,10 +27,12 @@ namespace AnnotationGenerator.Expressions
 
             public IntermediateExpression([CanBeNull] MethodCallExpression targetMethodCall,
                 [CanBeNull] MemberExpression targetMemberAccess,
+                [CanBeNull] NewExpression targetNew,
                 [CanBeNull] MethodCallExpression equalsMethodCall)
             {
                 TargetMethodCall = targetMethodCall;
                 TargetMemberAccess = targetMemberAccess;
+                TargetNew = targetNew;
                 EqualsMethodCall = equalsMethodCall;
             }
         }
@@ -54,8 +59,11 @@ namespace AnnotationGenerator.Expressions
                 case ExpressionType.MemberAccess:
                     return GetIntermediateFromMemberAccess(expression);
 
+                case ExpressionType.New:
+                    return GetIntermediateFromNew(expression);
+
                 default:
-                    throw new Exception("boom");
+                    throw new Exception($"Expression type isn't supported : {expression.Body.NodeType}");
             }
         }
 
@@ -82,26 +90,32 @@ namespace AnnotationGenerator.Expressions
             switch (target.NodeType)
             {
                 case ExpressionType.MemberAccess:
-                    return new IntermediateExpression(null, (MemberExpression) target, annotation);
+                    return new IntermediateExpression(null, (MemberExpression) target, null, annotation);
 
                 case ExpressionType.Call:
-                    return new IntermediateExpression((MethodCallExpression)target, null, annotation);
+                    return new IntermediateExpression((MethodCallExpression)target, null, null, annotation);
 
                 default:
                     throw new ArgumentException("Expected condition on method call or member access");
             }
         }
 
+        private static IntermediateExpression GetIntermediateFromNew(LambdaExpression expression)
+        {
+            var newExpression = (NewExpression)expression.Body;
+            return new IntermediateExpression(null, null, newExpression, null);
+        }
+
         private static IntermediateExpression GetIntermediateFromMemberAccess(LambdaExpression expression)
         {
             var member = (MemberExpression)expression.Body;
-            return new IntermediateExpression(null, member, null);
+            return new IntermediateExpression(null, member, null, null);
         }
 
         private static IntermediateExpression GetIntermediateFromCall(LambdaExpression expression)
         {
             var call = (MethodCallExpression) expression.Body;
-            return new IntermediateExpression(call, null, null);
+            return new IntermediateExpression(call, null, null, null);
         }
 
         private static MemberInfo GetMemberInfo(IntermediateExpression expression)
@@ -114,27 +128,42 @@ namespace AnnotationGenerator.Expressions
             {
                 return expression.TargetMemberAccess.Member;
             }
+            if (expression.TargetNew != null)
+            {
+                return expression.TargetNew.Constructor;
+            }
             throw new ArgumentException("Unexpected expression structure", nameof(expression));
         }
 
-        private static IEnumerable<ParameterAnnotationInfo> GetAnnotationInfoFromMethodCall(
+        private static IEnumerable<IAnnotationInfo> GetAnnotationInfoFromMethodCall(
             MethodCallExpression methodCallExpression)
         {
             if (methodCallExpression == null)
             {
-                return Enumerable.Empty<ParameterAnnotationInfo>();
+                return Enumerable.Empty<IAnnotationInfo>();
             }
 
             return methodCallExpression.Arguments.Zip(methodCallExpression.Method.GetParameters(),
                 ExtractParameter);
         }
 
-        private static IEnumerable<MemberAnnotationInfo> GetAnnotationInfoFromMemberEquals(
+        private static IEnumerable<IAnnotationInfo> GetAnnotationInfoFromNew(NewExpression newExpression)
+        {
+            if (newExpression == null)
+            {
+                return Enumerable.Empty<IAnnotationInfo>();
+            }
+
+            return newExpression.Arguments.Zip(newExpression.Constructor.GetParameters(),
+                ExtractParameter);
+        }
+
+        private static IEnumerable<IAnnotationInfo> GetAnnotationInfoFromMemberEquals(
             MethodCallExpression methodCallExpression)
         {
             if (methodCallExpression == null)
             {
-                return Enumerable.Empty<MemberAnnotationInfo>();
+                return Enumerable.Empty<IAnnotationInfo>();
             }
 
             return new[] {ExtractMember(methodCallExpression)};
@@ -143,12 +172,13 @@ namespace AnnotationGenerator.Expressions
         private static IEnumerable<IAnnotationInfo> GetAnnotationInfoFromExpression(IntermediateExpression expression)
         {
             var fromCall = GetAnnotationInfoFromMethodCall(expression.TargetMethodCall);
+            var fromNew = GetAnnotationInfoFromNew(expression.TargetNew);
             var fromEquals = GetAnnotationInfoFromMemberEquals(expression.EqualsMethodCall);
 
-            return fromCall.Cast<IAnnotationInfo>().Concat(fromEquals);
+            return fromCall.Concat(fromNew).Concat(fromEquals);
         }
 
-        private static readonly string usageInfo = $"Should be a call on one of the methods of {nameof(ParameterNotes)}.";
+        private static readonly string usageInfo = $"Should be a call on one of the methods of {nameof(Annotations)}.";
 
         [CanBeNull]
         [SuppressMessage("ReSharper", "RedundantArgumentNameForLiteralExpression")]
@@ -159,19 +189,19 @@ namespace AnnotationGenerator.Expressions
             var methodName = methodCallExpression.Method.Name;
             switch (methodName)
             {
-                case nameof(ParameterNotes.FormatString):
+                case nameof(Annotations.FormatString):
                     return new ParameterAnnotationInfo(parameter.Name, isFormatString: true, isNotNull: true);
 
-                case nameof(ParameterNotes.NullableFormatString):
+                case nameof(Annotations.NullableFormatString):
                     return new ParameterAnnotationInfo(parameter.Name, isFormatString: true, canBeNull: true);
 
-                case nameof(ParameterNotes.Some):
+                case nameof(Annotations.Some):
                     return new ParameterAnnotationInfo(parameter.Name);
 
-                case nameof(ParameterNotes.NotNull):
+                case nameof(Annotations.NotNull):
                     return new ParameterAnnotationInfo(parameter.Name, isNotNull: true);
 
-                case nameof(ParameterNotes.CanBeNull):
+                case nameof(Annotations.CanBeNull):
                     return new ParameterAnnotationInfo(parameter.Name, canBeNull: true);
 
                 default:
@@ -183,7 +213,7 @@ namespace AnnotationGenerator.Expressions
         private static bool IsMethodCallOnSpecialClass(Expression expression)
         {
             var methodCallExpression = expression as MethodCallExpression;
-            return methodCallExpression?.Method.DeclaringType == typeof (ParameterNotes);
+            return methodCallExpression?.Method.DeclaringType == typeof (Annotations);
         }
 
         private static MethodCallExpression AssertCallOnSpecialClass(Expression expression)
@@ -194,7 +224,7 @@ namespace AnnotationGenerator.Expressions
                 throw new ArgumentException($"Expression '{expression}' isn't a method call. {usageInfo}", nameof(expression));
             }
 
-            if (typeof(ParameterNotes) != methodCallExpression.Method.DeclaringType)
+            if (typeof(Annotations) != methodCallExpression.Method.DeclaringType)
             {
                 throw new ArgumentException($"Expression '{expression}' doesn't call a method on the correct type. {usageInfo}",
                     nameof(expression));
@@ -209,13 +239,13 @@ namespace AnnotationGenerator.Expressions
             var methodName = methodCallExpression.Method.Name;
             switch (methodName)
             {
-                case nameof(ParameterNotes.Some):
+                case nameof(Annotations.Some):
                     return new MemberAnnotationInfo();
 
-                case nameof(ParameterNotes.NotNull):
+                case nameof(Annotations.NotNull):
                     return new MemberAnnotationInfo(isNotNull: true);
 
-                case nameof(ParameterNotes.CanBeNull):
+                case nameof(Annotations.CanBeNull):
                     return new MemberAnnotationInfo(canBeNull: true);
 
                 default:

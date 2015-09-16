@@ -1,10 +1,9 @@
 using System;
 using System.Diagnostics;
 using System.Xml.Linq;
-using AnnotationGenerator.AnnotationXml;
 using JetBrains.Annotations;
 
-namespace AnnotationGenerator
+namespace AnnotationGenerator.FileGeneration
 {
     public class AnnotationFileGenerator
     {

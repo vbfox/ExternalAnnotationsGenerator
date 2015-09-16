@@ -1,8 +1,9 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using AnnotationGenerator.Notes;
+using AnnotationGenerator.Construction;
+using AnnotationGenerator.Model;
 using NUnit.Framework;
-using static AnnotationGenerator.ParameterNotes;
+using static AnnotationGenerator.Annotations;
 
 namespace AnnotationGenerator.Tests
 {
@@ -13,11 +14,11 @@ namespace AnnotationGenerator.Tests
         [Test]
         public void CanBeAnnotationOnParameter()
         {
-            var annotator = new Annotator();
+            var annotator = Annotator.Create();
 
             annotator.AnnotateType<TestClass>(type => type.Annotate(i => i.VoidMethod(CanBeNull<string>())));
 
-            var annotations = ((IAnnotatorAnnotations) annotator).GetAnnotations().First();
+            var annotations = ((AnnotationsBuilder) annotator).GetAnnotations().First();
             var firstParamInfo = annotations.FirstOrDefault()?.FirstOrDefault() as ParameterAnnotationInfo;
 
             Assert.That(firstParamInfo, Is.Not.Null);
@@ -30,12 +31,12 @@ namespace AnnotationGenerator.Tests
         [Test]
         public void CanBeNullAnnotationOnMethodResult()
         {
-            var annotator = new Annotator();
+            var annotator = Annotator.Create();
 
             annotator.AnnotateType<TestClass>(
                 type => type.Annotate(i => i.GetString(NotNull<string>()) == CanBeNull<string>()));
 
-            var annotations = ((IAnnotatorAnnotations) annotator).GetAnnotations().First();
+            var annotations = ((AnnotationsBuilder) annotator).GetAnnotations().First();
             var resultInfo = annotations.FirstOrDefault()?.OfType<MemberAnnotationInfo>().FirstOrDefault();
 
             Assert.That(resultInfo, Is.Not.Null);
@@ -46,11 +47,11 @@ namespace AnnotationGenerator.Tests
         [Test]
         public void CanBeNullAnnotationOnProperty()
         {
-            var annotator = new Annotator();
+            var annotator = Annotator.Create();
 
             annotator.AnnotateType<TestClass>(type => type.Annotate(i => i.StringProperty == CanBeNull<string>()));
 
-            var annotations = ((IAnnotatorAnnotations) annotator).GetAnnotations().First();
+            var annotations = ((AnnotationsBuilder) annotator).GetAnnotations().First();
             var memberAnnotations = annotations.FirstOrDefault();
             var resultInfo = memberAnnotations?.OfType<MemberAnnotationInfo>().FirstOrDefault();
 
@@ -64,11 +65,11 @@ namespace AnnotationGenerator.Tests
         [Test]
         public void CreatesMemberAnnotationsForNonVoidDelegate()
         {
-            var annotator = new Annotator();
+            var annotator = Annotator.Create();
 
             annotator.AnnotateType<TestClass>(type => type.Annotate(i => i.GetInt()));
 
-            var annotations = ((IAnnotatorAnnotations) annotator).GetAnnotations().First();
+            var annotations = ((AnnotationsBuilder) annotator).GetAnnotations().First();
             var memberAnnotations = annotations.FirstOrDefault();
 
             Assert.That(memberAnnotations, Is.Not.Null);
@@ -78,12 +79,12 @@ namespace AnnotationGenerator.Tests
         [Test]
         public void CreatesMemberAnnotationsForNonVoidDelegateWithResultAnnotated()
         {
-            var annotator = new Annotator();
+            var annotator = Annotator.Create();
 
             annotator.AnnotateType<TestClass>(
                 type => type.Annotate(i => i.GetString(NotNull<string>()) == NotNull<string>()));
 
-            var annotations = ((IAnnotatorAnnotations) annotator).GetAnnotations().First();
+            var annotations = ((AnnotationsBuilder) annotator).GetAnnotations().First();
             var memberAnnotations = annotations.FirstOrDefault();
 
             Assert.That(memberAnnotations, Is.Not.Null);
@@ -93,11 +94,11 @@ namespace AnnotationGenerator.Tests
         [Test]
         public void CreatesMemberAnnotationsForVoidMethod()
         {
-            var annotator = new Annotator();
+            var annotator = Annotator.Create();
 
             annotator.AnnotateType<TestClass>(type => type.Annotate(i => i.VoidMethod()));
 
-            var annotations = ((IAnnotatorAnnotations) annotator).GetAnnotations().First();
+            var annotations = ((AnnotationsBuilder) annotator).GetAnnotations().First();
             var memberAnnotations = annotations.FirstOrDefault();
 
             Assert.That(memberAnnotations, Is.Not.Null);
@@ -107,11 +108,11 @@ namespace AnnotationGenerator.Tests
         [Test]
         public void FormatStringAnnotationOnParameter()
         {
-            var annotator = new Annotator();
+            var annotator = Annotator.Create();
 
             annotator.AnnotateType<TestClass>(type => type.Annotate(i => i.VoidMethod(FormatString())));
 
-            var annotations = ((IAnnotatorAnnotations) annotator).GetAnnotations().First();
+            var annotations = ((AnnotationsBuilder) annotator).GetAnnotations().First();
             var firstParamInfo = annotations.FirstOrDefault()?.FirstOrDefault() as ParameterAnnotationInfo;
 
             Assert.That(firstParamInfo, Is.Not.Null);
@@ -124,12 +125,12 @@ namespace AnnotationGenerator.Tests
         [Test]
         public void NonNullAnnotationOnMethodResult()
         {
-            var annotator = new Annotator();
+            var annotator = Annotator.Create();
 
             annotator.AnnotateType<TestClass>(
                 type => type.Annotate(i => i.GetString(NotNull<string>()) == NotNull<string>()));
 
-            var annotations = ((IAnnotatorAnnotations) annotator).GetAnnotations().First();
+            var annotations = ((AnnotationsBuilder) annotator).GetAnnotations().First();
             var resultInfo = annotations.FirstOrDefault()?.OfType<MemberAnnotationInfo>().FirstOrDefault();
 
             Assert.That(resultInfo, Is.Not.Null);
@@ -140,11 +141,11 @@ namespace AnnotationGenerator.Tests
         [Test]
         public void NonNullAnnotationOnProperty()
         {
-            var annotator = new Annotator();
+            var annotator = Annotator.Create();
 
             annotator.AnnotateType<TestClass>(type => type.Annotate(i => i.StringProperty == NotNull<string>()));
 
-            var annotations = ((IAnnotatorAnnotations) annotator).GetAnnotations().First();
+            var annotations = ((AnnotationsBuilder) annotator).GetAnnotations().First();
             var memberAnnotations = annotations.FirstOrDefault();
             var resultInfo = memberAnnotations?.OfType<MemberAnnotationInfo>().FirstOrDefault();
 
@@ -158,11 +159,11 @@ namespace AnnotationGenerator.Tests
         [Test]
         public void NotNullAnnotationOnParameter()
         {
-            var annotator = new Annotator();
+            var annotator = Annotator.Create();
 
             annotator.AnnotateType<TestClass>(type => type.Annotate(i => i.VoidMethod(NotNull<string>())));
 
-            var annotations = ((IAnnotatorAnnotations) annotator).GetAnnotations().First();
+            var annotations = ((AnnotationsBuilder) annotator).GetAnnotations().First();
             var firstParamInfo = annotations.FirstOrDefault()?.FirstOrDefault() as ParameterAnnotationInfo;
 
             Assert.That(firstParamInfo, Is.Not.Null);
@@ -175,11 +176,11 @@ namespace AnnotationGenerator.Tests
         [Test]
         public void NullableFormatStringAnnotationOnParameter()
         {
-            var annotator = new Annotator();
+            var annotator = Annotator.Create();
 
             annotator.AnnotateType<TestClass>(type => type.Annotate(i => i.VoidMethod(NullableFormatString())));
 
-            var annotations = ((IAnnotatorAnnotations) annotator).GetAnnotations().First();
+            var annotations = ((AnnotationsBuilder) annotator).GetAnnotations().First();
             var firstParamInfo = annotations.FirstOrDefault()?.FirstOrDefault() as ParameterAnnotationInfo;
 
             Assert.That(firstParamInfo, Is.Not.Null);
@@ -192,12 +193,12 @@ namespace AnnotationGenerator.Tests
         [Test]
         public void SomeAnnotationOnMethodResult()
         {
-            var annotator = new Annotator();
+            var annotator = Annotator.Create();
 
             annotator.AnnotateType<TestClass>(
                 type => type.Annotate(i => i.GetString(NotNull<string>()) == Some<string>()));
 
-            var annotations = ((IAnnotatorAnnotations) annotator).GetAnnotations().First();
+            var annotations = ((AnnotationsBuilder) annotator).GetAnnotations().First();
             var resultInfo = annotations.FirstOrDefault()?.OfType<MemberAnnotationInfo>().FirstOrDefault();
 
             Assert.That(resultInfo, Is.Not.Null);
@@ -208,11 +209,11 @@ namespace AnnotationGenerator.Tests
         [Test]
         public void SomeAnnotationOnParameter()
         {
-            var annotator = new Annotator();
+            var annotator = Annotator.Create();
 
             annotator.AnnotateType<TestClass>(type => type.Annotate(i => i.VoidMethod(Some<string>())));
 
-            var annotations = ((IAnnotatorAnnotations) annotator).GetAnnotations().First();
+            var annotations = ((AnnotationsBuilder) annotator).GetAnnotations().First();
             var firstParamInfo = annotations.FirstOrDefault()?.FirstOrDefault() as ParameterAnnotationInfo;
 
             Assert.That(firstParamInfo, Is.Not.Null);
@@ -225,11 +226,11 @@ namespace AnnotationGenerator.Tests
         [Test]
         public void SomeAnnotationOnProperty()
         {
-            var annotator = new Annotator();
+            var annotator = Annotator.Create();
 
             annotator.AnnotateType<TestClass>(type => type.Annotate(i => i.StringProperty == Some<string>()));
 
-            var annotations = ((IAnnotatorAnnotations) annotator).GetAnnotations().First();
+            var annotations = ((AnnotationsBuilder) annotator).GetAnnotations().First();
             var memberAnnotations = annotations.FirstOrDefault();
             var resultInfo = memberAnnotations?.OfType<MemberAnnotationInfo>().FirstOrDefault();
 
