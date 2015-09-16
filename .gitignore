@@ -30,3 +30,4 @@ _ReSharper*/
 *.ncrunch*
 /.paket/paket.exe
 /.fake/
+/paket-files/
