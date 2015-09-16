@@ -14,14 +14,11 @@ namespace AnnotationGenerator.Expressions
         [NotNull]
         public ICollection<IAnnotationInfo> Annotations { get; }
 
-        public bool IsSuccess { get; }
-
         public ExpressionParsingResult([NotNull] MemberInfo member, [NotNull] ICollection<IAnnotationInfo> annotations)
         {
             if (member == null) throw new ArgumentNullException(nameof(member));
             if (annotations == null) throw new ArgumentNullException(nameof(annotations));
 
-            IsSuccess = true;
             Member = member;
             Annotations = annotations;
         }

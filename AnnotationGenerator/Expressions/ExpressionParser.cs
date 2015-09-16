@@ -22,67 +22,86 @@ namespace AnnotationGenerator.Expressions
             [CanBeNull]
             public MethodCallExpression EqualsMethodCall { get; }
 
-            public IntermediateExpression([NotNull] MethodCallExpression targetMethodCall,
+            public IntermediateExpression([CanBeNull] MethodCallExpression targetMethodCall,
+                [CanBeNull] MemberExpression targetMemberAccess,
                 [CanBeNull] MethodCallExpression equalsMethodCall)
             {
-                if (targetMethodCall == null) throw new ArgumentNullException(nameof(targetMethodCall));
-
                 TargetMethodCall = targetMethodCall;
+                TargetMemberAccess = targetMemberAccess;
                 EqualsMethodCall = equalsMethodCall;
             }
         }
 
         public static ExpressionParsingResult Parse(LambdaExpression expression)
         {
-            var parsed = GetIntermediateExpression(expression);
-            var annotationInfos = GetAnnotationInfoFromExpression(parsed).ToList();
+            var intermediate = GetIntermediate(expression);
+            var annotationInfos = GetAnnotationInfoFromExpression(intermediate).ToList();
 
-            var methodInfo = GetMemberInfo(parsed);
-            return new ExpressionParsingResult(methodInfo, annotationInfos.Cast<IAnnotationInfo>().ToList());
+            var methodInfo = GetMemberInfo(intermediate);
+            return new ExpressionParsingResult(methodInfo, annotationInfos.ToList());
         }
 
-        private static IntermediateExpression GetIntermediateExpression(LambdaExpression expression)
+        private static IntermediateExpression GetIntermediate(LambdaExpression expression)
         {
             switch (expression.Body.NodeType)
             {
                 case ExpressionType.Call:
-                {
-                    var call = (MethodCallExpression) expression.Body;
-                    return new IntermediateExpression(call, null);
-                }
+                    return GetIntermediateFromCall(expression);
 
                 case ExpressionType.Equal:
-                {
-                    var binary = (BinaryExpression) expression.Body;
-                    var leftMethodCall = binary.Left as MethodCallExpression;
-                    var rightMethodCall = binary.Right as MethodCallExpression;
-                    if (leftMethodCall == null || rightMethodCall == null)
-                    {
-                        throw new ArgumentException("Expected MethodCall() == MethodCall()");
-                    }
+                    return GetIntermediateFromEqual(expression);
 
-                    return new IntermediateExpression(leftMethodCall, rightMethodCall);
-                }
+                case ExpressionType.MemberAccess:
+                    return GetIntermediateFromMemberAccess(expression);
 
                 default:
                     throw new Exception("boom");
             }
-            /*
-            var methodCallExpression = expression.Body as MethodCallExpression;
-            if (methodCallExpression != null)
+        }
+
+        private static IntermediateExpression GetIntermediateFromEqual(LambdaExpression expression)
+        {
+            var binary = (BinaryExpression) expression.Body;
+
+            var leftIsSpecial = IsMethodCallOnSpecialClass(binary.Left);
+            var rightIsSpecial = IsMethodCallOnSpecialClass(binary.Right);
+
+            if (leftIsSpecial && rightIsSpecial)
             {
-                return new SupportedExpression(methodCallExpression, null);
+                throw new ArgumentException("Both sides of '==' are annotations.");
             }
 
-            var binaryExpression = expression.Body as BinaryExpression;
-            if (binaryExpression != null)
+            if (!(leftIsSpecial || rightIsSpecial))
             {
-                var methodCallLeft = expression.Body as MethodCallExpression;
-                if (methodCallExpression != null)
-                {
-                    return methodCallExpression.Method;
-                }
-            }*/
+                throw new ArgumentException("No annotation found on any side of '=='.");
+            }
+
+            var annotation = (leftIsSpecial ? binary.Left : binary.Right) as MethodCallExpression;
+            var target = leftIsSpecial ? binary.Right : binary.Left;
+
+            switch (target.NodeType)
+            {
+                case ExpressionType.MemberAccess:
+                    return new IntermediateExpression(null, (MemberExpression) target, annotation);
+
+                case ExpressionType.Call:
+                    return new IntermediateExpression((MethodCallExpression)target, null, annotation);
+
+                default:
+                    throw new ArgumentException("Expected condition on method call or member access");
+            }
+        }
+
+        private static IntermediateExpression GetIntermediateFromMemberAccess(LambdaExpression expression)
+        {
+            var member = (MemberExpression)expression.Body;
+            return new IntermediateExpression(null, member, null);
+        }
+
+        private static IntermediateExpression GetIntermediateFromCall(LambdaExpression expression)
+        {
+            var call = (MethodCallExpression) expression.Body;
+            return new IntermediateExpression(call, null, null);
         }
 
         private static MemberInfo GetMemberInfo(IntermediateExpression expression)
@@ -98,43 +117,42 @@ namespace AnnotationGenerator.Expressions
             throw new ArgumentException("Unexpected expression structure", nameof(expression));
         }
 
-        public static IEnumerable<ParameterAnnotationInfo> GetAnnotationInfoFromMethodCall(
+        private static IEnumerable<ParameterAnnotationInfo> GetAnnotationInfoFromMethodCall(
             MethodCallExpression methodCallExpression)
         {
+            if (methodCallExpression == null)
+            {
+                return Enumerable.Empty<ParameterAnnotationInfo>();
+            }
+
             return methodCallExpression.Arguments.Zip(methodCallExpression.Method.GetParameters(),
                 ExtractParameter);
         }
 
-        private static IEnumerable<ParameterAnnotationInfo> GetAnnotationInfoFromExpression(IntermediateExpression expression)
+        private static IEnumerable<MemberAnnotationInfo> GetAnnotationInfoFromMemberEquals(
+            MethodCallExpression methodCallExpression)
         {
-            if (expression.TargetMethodCall != null)
-            {
-                return GetAnnotationInfoFromMethodCall(expression.TargetMethodCall);
-            }
-            if (expression.TargetMemberAccess != null)
-            {
-                // TODO
-            }
-            throw new ArgumentException("Unexpected expression structure", nameof(expression));
-        }
-
-        /*
-        public static IEnumerable<ParameterAnnotationInfo> GetAnnotationInfoFromExpression(Expression expressionBody)
-        {
-            var methodCallExpression = expressionBody as MethodCallExpression;
             if (methodCallExpression == null)
             {
-                throw new ArgumentException("Expected a method call.", nameof(expressionBody));
+                return Enumerable.Empty<MemberAnnotationInfo>();
             }
 
-            return GetAnnotationInfoFromMethodCall(methodCallExpression);
-        }*/
+            return new[] {ExtractMember(methodCallExpression)};
+        }
+
+        private static IEnumerable<IAnnotationInfo> GetAnnotationInfoFromExpression(IntermediateExpression expression)
+        {
+            var fromCall = GetAnnotationInfoFromMethodCall(expression.TargetMethodCall);
+            var fromEquals = GetAnnotationInfoFromMemberEquals(expression.EqualsMethodCall);
+
+            return fromCall.Cast<IAnnotationInfo>().Concat(fromEquals);
+        }
 
         private static readonly string usageInfo = $"Should be a call on one of the methods of {nameof(ParameterNotes)}.";
 
         [CanBeNull]
         [SuppressMessage("ReSharper", "RedundantArgumentNameForLiteralExpression")]
-        public static ParameterAnnotationInfo ExtractParameter(Expression expression, ParameterInfo parameter)
+        private static ParameterAnnotationInfo ExtractParameter(Expression expression, ParameterInfo parameter)
         {
             var methodCallExpression = AssertCallOnSpecialClass(expression);
 
@@ -162,6 +180,12 @@ namespace AnnotationGenerator.Expressions
             }
         }
 
+        private static bool IsMethodCallOnSpecialClass(Expression expression)
+        {
+            var methodCallExpression = expression as MethodCallExpression;
+            return methodCallExpression?.Method.DeclaringType == typeof (ParameterNotes);
+        }
+
         private static MethodCallExpression AssertCallOnSpecialClass(Expression expression)
         {
             var methodCallExpression = expression as MethodCallExpression;
@@ -180,10 +204,8 @@ namespace AnnotationGenerator.Expressions
 
         [CanBeNull]
         [SuppressMessage("ReSharper", "RedundantArgumentNameForLiteralExpression")]
-        public static MemberAnnotationInfo ExtractMember(Expression expression, MemberInfo member)
+        private static MemberAnnotationInfo ExtractMember(MethodCallExpression methodCallExpression)
         {
-            var methodCallExpression = AssertCallOnSpecialClass(expression);
-
             var methodName = methodCallExpression.Method.Name;
             switch (methodName)
             {
@@ -197,8 +219,8 @@ namespace AnnotationGenerator.Expressions
                     return new MemberAnnotationInfo(canBeNull: true);
 
                 default:
-                    throw new ArgumentException($"Expression '{expression}' call an unsupported method : {methodName}. {usageInfo}",
-                        nameof(expression));
+                    throw new ArgumentException($"Expression '{methodCallExpression}' call an unsupported method : {methodName}. {usageInfo}",
+                        nameof(methodCallExpression));
             }
         }
     }
