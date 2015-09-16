@@ -1,7 +1,7 @@
 #### ReSharper external annotations generator Library
 
 [![Join the chat in Gitter][GitterBadge]][Gitter]
-[![MIT License][LicenseBadge]](LICENSE.md)
+[![MIT License][LicenseBadge]](License.md)
 [![Build status][AppVeyorBadge]][AppVeyor]
 
 Fluent Library for generating [JetBrain's ReSharper][R#] External annotation files.
