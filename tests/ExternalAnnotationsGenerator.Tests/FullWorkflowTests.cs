@@ -127,7 +127,7 @@ namespace ExternalAnnotationsGenerator.Tests
                 type => type.Annotate(i => i.Info(Annotations.FormatString(), Annotations.Some<object[]>())));
 
             var doc = GetFirstFile(annotator).Content;
-            var assemblyElement = doc.XPathSelectElement("/assembly[@name=\"AnnotationGenerator.Tests\"]");
+            var assemblyElement = doc.XPathSelectElement("/assembly[@name=\"ExternalAnnotationsGenerator.Tests\"]");
 
             Assert.That(assemblyElement, Is.Not.Null);
         }
