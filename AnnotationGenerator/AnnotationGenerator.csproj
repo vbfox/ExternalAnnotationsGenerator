@@ -52,6 +52,7 @@
     <Compile Include="Core\Construction\AnnotationsBuilder.cs" />
     <Compile Include="Annotator.cs" />
     <Compile Include="Core\FileGeneration\AnnotationFileExtensions.cs" />
+    <Compile Include="Core\FileGeneration\NuGetGenerationcs.cs" />
     <Compile Include="Core\Model\AssemblyAnnotations.cs" />
     <Compile Include="Core\Construction\ExpressionParser.cs" />
     <Compile Include="Core\Construction\ExpressionParsingResult.cs" />

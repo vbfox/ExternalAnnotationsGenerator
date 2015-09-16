@@ -29,6 +29,11 @@ namespace AnnotationGenerator
             }
         }
 
-
+        public static void CreateNugetPackage([NotNull] this IAnnotator annotator, NugetSpec spec,
+            DirectoryInfo directory)
+        {
+            var annotationFiles = CoreHelper.GetAnnotations(annotator).GenerateFiles();
+            NuGetGeneration.CreateNugetPackage(spec, annotationFiles, directory);
+        }
     }
 }
