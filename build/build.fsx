@@ -109,6 +109,8 @@ Target "Build" <| fun _ ->
 // Run the unit tests using test runner
 
 Target "RunTests" <| fun _ ->
+    CreateDir testsDir
+
     !! testAssemblies
       |> NUnit (fun p ->
           {p with
