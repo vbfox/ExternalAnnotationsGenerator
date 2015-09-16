@@ -18,7 +18,7 @@ namespace AnnotationGenerator.FileGeneration
 
             foreach (var arg in args)
             {
-                element.Add(new XElement(arg.ToString()));
+                element.Add(new XElement("argument", arg.ToString()));
             }
 
             return element;
