@@ -9,7 +9,7 @@ First release as an independent project.
 * Generic classes and methods are correctly handled.
 * Converted package management from NuGet to [Paket](https://fsprojects.github.io/Paket/).
 
-### Original version
+### Original version (0.0.0.0)
 
 Forked from [@chillitom][chillitom] project [at commit ba9cf8b852][ba9cf8b852].
 

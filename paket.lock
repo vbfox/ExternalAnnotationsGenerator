@@ -1,4 +1,27 @@
+
+
+GROUP build
+NUGET
+  remote: https://www.nuget.org/api/v2
+  specs:
+    FAKE (4.4.1)
+    Microsoft.Bcl (1.1.10)
+      Microsoft.Bcl.Build (>= 1.0.14)
+    Microsoft.Bcl.Build (1.0.21)
+    Microsoft.Net.Http (2.2.29)
+      Microsoft.Bcl (>= 1.1.10)
+      Microsoft.Bcl.Build (>= 1.0.14)
+    Octokit (0.15.0)
+      Microsoft.Net.Http
+    SourceLink.Fake (1.1.0)
+GITHUB
+  remote: fsharp/FAKE
+  specs:
+    modules/Octokit/Octokit.fsx (b5b55ccbe81c9fda6e025e6c16f041601b8c76df)
+      Octokit
+GROUP tests
 NUGET
   remote: https://www.nuget.org/api/v2
   specs:
     NUnit (2.6.4) - framework: >= net45
+    NUnit.Runners (2.6.4)

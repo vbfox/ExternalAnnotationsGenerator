@@ -1,3 +1,12 @@
-source https://www.nuget.org/api/v2/
+group tests
+    source https://www.nuget.org/api/v2/
 
-nuget NUnit ~> 2.6 framework: >= net45
+    nuget NUnit framework: >= net45
+    nuget NUnit.Runners
+
+group build
+    source https://www.nuget.org/api/v2/
+
+    nuget FAKE
+    nuget SourceLink.Fake
+    github fsharp/FAKE modules/Octokit/Octokit.fsx
