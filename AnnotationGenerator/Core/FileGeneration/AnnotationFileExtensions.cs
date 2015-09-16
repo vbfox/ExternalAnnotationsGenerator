@@ -5,7 +5,7 @@ using AnnotationGenerator.Core.Model;
 
 namespace AnnotationGenerator.Core.FileGeneration
 {
-    static class AnnotationFileExtensions
+    public static class AnnotationFileExtensions
     {
         public static AnnotationFile GenerateFile(this AssemblyAnnotations assembly)
         {

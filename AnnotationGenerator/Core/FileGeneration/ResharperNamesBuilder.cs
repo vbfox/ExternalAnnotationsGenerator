@@ -9,7 +9,7 @@ namespace AnnotationGenerator.Core.FileGeneration
     /// <summary>
     /// Build type and method names in a way compatible with R# Annotations XML format
     /// </summary>
-    static class ResharperNamesBuilder
+    public static class ResharperNamesBuilder
     {
         public static string GetAssemblyNameString([NotNull] Assembly assembly)
         {

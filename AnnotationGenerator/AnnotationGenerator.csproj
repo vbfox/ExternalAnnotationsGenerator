@@ -45,7 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Core\AnnotatorCoreExtensions.cs" />
+    <Compile Include="Core\CoreHelper.cs" />
     <Compile Include="Core\FileGeneration\AnnotationFile.cs" />
     <Compile Include="AnnotatorExtensions.cs" />
     <Compile Include="Core\FileGeneration\AnnotationFileGenerator.cs" />

@@ -6,7 +6,7 @@ using AnnotationGenerator.Core.Model;
 
 namespace AnnotationGenerator.Core.Construction
 {
-    internal class AnnotationsBuilder : IAnnotator
+    public class AnnotationsBuilder : IAnnotator
     {
         readonly List<AssemblyAnnotations> annotations = new List<AssemblyAnnotations>();
 

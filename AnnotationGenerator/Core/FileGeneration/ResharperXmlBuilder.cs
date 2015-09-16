@@ -8,7 +8,7 @@ namespace AnnotationGenerator.Core.FileGeneration
     /// <summary>
     /// Build XML nodes for the R# Annotations XML format
     /// </summary>
-    static class ResharperXmlBuilder
+    public static class ResharperXmlBuilder
     {
         public static XElement BuildAttribute([NotNull] string ctor, params object[] args)
         {

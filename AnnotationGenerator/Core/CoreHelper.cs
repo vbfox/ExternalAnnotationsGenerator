@@ -13,10 +13,18 @@ namespace AnnotationGenerator.Core
         /// </summary>
         public static IEnumerable<AssemblyAnnotations> GetAnnotations([NotNull] IAnnotator annotator)
         {
+            return GetBuilder(annotator).GetAnnotations();
+        }
+
+        /// <summary>
+        /// Get the annotations builder hidden behind the public interface.
+        /// </summary>
+        public static AnnotationsBuilder GetBuilder([NotNull] IAnnotator annotator)
+        {
             if (annotator == null) throw new ArgumentNullException(nameof(annotator));
             var builder = annotator as AnnotationsBuilder;
             if (builder == null) throw new ArgumentException("Expected a builder", nameof(annotator));
-            return builder.GetAnnotations();
+            return builder;
         }
     }
 }

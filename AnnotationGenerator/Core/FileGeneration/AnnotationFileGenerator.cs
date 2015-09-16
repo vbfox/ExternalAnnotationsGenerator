@@ -8,7 +8,7 @@ using JetBrains.Annotations;
 
 namespace AnnotationGenerator.Core.FileGeneration
 {
-    internal class AnnotationFileGenerator
+    public class AnnotationFileGenerator
     {
         private readonly AssemblyAnnotations annotations;
 
