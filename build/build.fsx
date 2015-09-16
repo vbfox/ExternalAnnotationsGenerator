@@ -115,7 +115,7 @@ Target "RunTests" <| fun _ ->
              ToolPath = nunitPath
              DisableShadowCopy = true
              TimeOut = TimeSpan.FromMinutes 20.
-             OutputFile = testsDir + "TestResults.xml" })
+             OutputFile = testsDir </> "TestResults.xml" })
 
 #if MONO
 #else
