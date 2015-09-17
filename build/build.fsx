@@ -132,7 +132,7 @@ Target "SourceLink" (fun _ ->
     !! "src/**/*.??proj"
     |> Seq.iter (fun projFile ->
         let proj = VsProj.LoadRelease projFile 
-        SourceLink.Index proj.CompilesNotLinked proj.OutputFilePdb __SOURCE_DIRECTORY__ baseUrl
+        SourceLink.Index proj.CompilesNotLinked proj.OutputFilePdb rootDir baseUrl
     )
 )
 
