@@ -1,22 +1,23 @@
-*			text=auto
+# Git don't touch my files please
+*			-text 
 
 # Custom for Visual Studio
-*.cs		text diff=csharp eol=crlf
-*.sln		text merge=union
-*.csproj	text merge=union
-*.vbproj	text merge=union
-*.fsproj	text merge=union
-*.dbproj	text merge=union
+*.cs		diff=csharp
+*.sln		merge=union
+*.csproj	merge=union
+*.vbproj	merge=union
+*.fsproj	merge=union
+*.dbproj	merge=union
 
 # Standard to msysgit
-*.exe		-text -diff
-*.doc		-text diff=astextplain
-*.DOC		-text diff=astextplain
-*.docx		-text diff=astextplain
-*.DOCX		-text diff=astextplain
-*.dot		-text diff=astextplain
-*.DOT		-text diff=astextplain
-*.pdf		-text diff=astextplain
-*.PDF		-text diff=astextplain
-*.rtf		-text diff=astextplain
-*.RTF		-text diff=astextplain
+*.exe		-diff
+*.doc		diff=astext plain
+*.DOC		diff=astext plain
+*.docx		diff=astext plain
+*.DOCX		diff=astext plain
+*.dot		diff=astext plain
+*.DOT		diff=astext plain
+*.pdf		diff=astext plain
+*.PDF		diff=astext plain
+*.rtf		diff=astext plain
+*.RTF		diff=astext plain
