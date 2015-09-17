@@ -235,6 +235,7 @@ let finalBinaries =
 
 finalBinaries
     ==> "Zip"
+    ==> "GitRelease"
     ==> "GitHubRelease"
     ==> "Release"
     
