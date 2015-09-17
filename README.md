@@ -4,7 +4,8 @@
 [![MIT License][LicenseBadge]](License.md)
 [![Build status][AppVeyorBadge]][AppVeyor]
 
-Fluent Library for generating [JetBrain's ReSharper][R#] External annotation files.
+Fluent Library for generating [JetBrain's ReSharper][R#] External annotation
+files.
 
 ## Syntax
 
@@ -26,10 +27,14 @@ annotator.AnnotateType<ILoggerFactory>(type =>
 
 The annotations that can be found in `AnnotationGenerator.Annotations` are :
 * `Some<T>`: Used as a marker for a parameter without any special attribute.
-* `NotNull<T>`: Adds `[NotNullAttribute]` to either a parameter, member or method result.
-* `CanBeNull<T>`: Adds `[CanBeNullAttribute]` to either a parameter, member or method result.
-* `FormatString`: Adds `[StringFormatMethodAttribute]` to the method with the corresponding parameter name and `[NotNullAttribute]` to the parameter.
-* `NullableFormatString`: Adds `[StringFormatMethodAttribute]` to the method with the corresponding parameter name and `[CanBeNullAttribute]` to the parameter.
+* `NotNull<T>`: Adds `[NotNullAttribute]` to either a parameter, member or
+  method result.
+* `CanBeNull<T>`: Adds `[CanBeNullAttribute]` to either a parameter, member or
+  method result.
+* `FormatString`: Adds `[StringFormatMethodAttribute]` to the method with the
+  corresponding parameter name and `[NotNullAttribute]` to the parameter.
+* `NullableFormatString`: Adds `[StringFormatMethodAttribute]` to the method
+  with the corresponding parameter name and `[CanBeNullAttribute]` to the parameter.
 
 ## Thanks
 
