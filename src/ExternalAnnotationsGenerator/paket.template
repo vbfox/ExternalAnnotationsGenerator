@@ -19,3 +19,5 @@ description
     Fluent Library for generating ReSharper External annotation files
 files
     ../../bin/ExternalAnnotationsGenerator/*.dll ==> lib/net46
+    ../../bin/ExternalAnnotationsGenerator/*.xml ==> lib/net46
+    ../../bin/ExternalAnnotationsGenerator/*.pdb ==> lib/net46
