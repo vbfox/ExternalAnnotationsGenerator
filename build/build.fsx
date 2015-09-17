@@ -10,7 +10,7 @@ open System.IO
 open SourceLink
 #endif
 
-let rootDir = __SOURCE_DIRECTORY__ </> ".."
+let rootDir =  FullName (__SOURCE_DIRECTORY__ </> "..")
 let nunitPath = rootDir </> "packages/tests/NUnit.Runners/tools"
 let binDir = rootDir </> "bin"
 let testsDir = binDir </> "tests"
