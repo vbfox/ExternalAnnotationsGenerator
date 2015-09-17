@@ -1,8 +1,8 @@
 version: 1.0.{build}
 os: Visual Studio 2015
 cache:
-- '%LOCALAPPDATA%\NuGet\Cache'
-- paket-files
+- '%LOCALAPPDATA%\NuGet\Cache -> paket.lock'
+- paket-files -> paket.lock
 - .paket\paket.exe
 nuget:
   disable_publish_on_pr: true
