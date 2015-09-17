@@ -47,7 +47,7 @@ let getParam name =
         | _ -> Some(str)
 
 // Read additional information from the release notes document
-let release = LoadReleaseNotes "Release Notes.md"
+let release = LoadReleaseNotes (rootDir </> "Release Notes.md")
 
 // Helper active pattern for project types
 let (|Fsproj|Csproj|Vbproj|) (projFileName:string) = 
