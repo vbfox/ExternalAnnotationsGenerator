@@ -7,6 +7,11 @@ cache:
 nuget:
   disable_publish_on_pr: true
 build_script:
-- build.cmd NuGet
+- build.cmd CI
 test: off
+artifacts:
+- path: bin\*.nupkg
+  name: NuGet Package
+- path: bin\*.zip
+  name: Zip Archive
 deploy: off

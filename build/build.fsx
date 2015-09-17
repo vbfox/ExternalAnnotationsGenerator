@@ -213,6 +213,7 @@ Target "GitHubRelease" (fun _ ->
 
 Target "Default" <| fun _ -> trace "Default target executed"
 Target "Release" <| fun _ -> trace "Release target executed"
+Target "CI" <| fun _ -> trace "CI target executed"
 
 Target "Paket" <| fun _ -> trace "Paket should have been executed"
 
@@ -232,6 +233,14 @@ let finalBinaries =
 #else
     =?> ("SourceLink", Pdbstr.tryFind().IsSome )
 #endif
+
+finalBinaries
+    ==> "Zip"
+    ==> "CI"
+
+finalBinaries
+    ==> "NuGet"
+    ==> "CI"
 
 finalBinaries
     ==> "Zip"
