@@ -1,4 +1,6 @@
 ### New in 1.1.0.0
+* Add xml documentation files to the package
+* Add pdb files to the package with [SourceLink](https://ctaggart.github.io/SourceLink/).
 
 ### New in 1.0.0.0
 
