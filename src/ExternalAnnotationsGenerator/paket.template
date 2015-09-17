@@ -1,0 +1,21 @@
+﻿type file
+id
+    ExternalAnnotationsGenerator
+owner
+    Julien Roncaglia
+authors
+    Tom Rathbone, Julien Roncaglia
+projectUrl
+    https://github.com/vbfox/ExternalAnnotationsGenerator
+licenseUrl
+    https://github.com/vbfox/ExternalAnnotationsGenerator/blob/master/License.md
+requireLicenseAcceptance
+    false
+copyright
+    Tom Rathbone 2014, Julien Roncaglia 2015
+summary
+    Fluent Library for generating ReSharper External annotation files
+description
+    Fluent Library for generating ReSharper External annotation files
+files
+    ../../bin/ExternalAnnotationsGenerator/*.dll ==> lib/net46
