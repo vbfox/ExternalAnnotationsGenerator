@@ -7,6 +7,6 @@ cache:
 nuget:
   disable_publish_on_pr: true
 build_script:
-- build.cmd
+- build.cmd NuGet
 test: off
 deploy: off
