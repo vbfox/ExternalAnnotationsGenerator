@@ -15,14 +15,14 @@ namespace ExternalAnnotationsGenerator.Tests.AnnotationXml
         {
             public class DoubleNestedTyped<T1>
             {
-                public bool NormalMethod()
+                public bool NormalMethod(T1 t1)
                 {
                     return default(bool);
                 }
 
-                public T2 GenericMethod<T2>(T2 arg, string otherArg)
+                public T2 GenericMethod<T2>(T1 t1, T2 t2, string otherArg)
                 {
-                    return arg;
+                    return t2;
                 }
             }
 
@@ -31,9 +31,9 @@ namespace ExternalAnnotationsGenerator.Tests.AnnotationXml
                 return default(bool);
             }
 
-            public T1 GenericMethod<T1>(T1 arg, string otherArg)
+            public T1 GenericMethod<T1>(T1 t1, string otherArg)
             {
-                return arg;
+                return t1;
             }
         }
 
@@ -45,25 +45,38 @@ namespace ExternalAnnotationsGenerator.Tests.AnnotationXml
         {
             public class DoubleNestedTyped<T2>
             {
+                public bool NormalMethod(T1 t1, T2 t2)
+                {
+                    return default(bool);
+                }
+
+                public T3 GenericMethod<T3>(T1 t1, T2 t2, T3 t3, string otherArg)
+                {
+                    return t3;
+                }
+            }
+
+            public class DoubleNested
+            {
                 public bool NormalMethod()
                 {
                     return default(bool);
                 }
 
-                public T3 GenericMethod<T3>(T3 arg, string otherArg)
+                public T2 GenericMethod<T2>(T1 t1, T2 t2, string otherArg)
                 {
-                    return arg;
+                    return t2;
                 }
             }
 
-            public bool NormalMethod()
+            public bool NormalMethod(T1 t1)
             {
                 return default(bool);
             }
 
-            public T2 GenericMethod<T2>(T2 arg, string otherArg)
+            public T2 GenericMethod<T2>(T1 t1, T2 t2, string otherArg)
             {
-                return arg;
+                return t2;
             }
         }
 
