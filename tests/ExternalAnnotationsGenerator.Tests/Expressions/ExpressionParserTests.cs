@@ -13,8 +13,8 @@ namespace ExternalAnnotationsGenerator.Tests.Expressions
     public class ExpressionParserTests
     {
         private static ExpressionParsingResult Parse(Expression<Action> expression) => ExpressionParser.Parse(expression);
-        private static ExpressionParsingResult Parse<T>(Expression<Action<T>> expression) => ExpressionParser.Parse(expression);
-        private static ExpressionParsingResult Parse<T>(Expression<Func<T>> expression) => ExpressionParser.Parse(expression);
+        private static ExpressionParsingResult Parse<TIn>(Expression<Action<TIn>> expression) => ExpressionParser.Parse(expression);
+        private static ExpressionParsingResult Parse<TOut>(Expression<Func<TOut>> expression) => ExpressionParser.Parse(expression);
         private static ExpressionParsingResult Parse<TIn, TOut>(Expression<Func<TIn, TOut>> expression) => ExpressionParser.Parse(expression);
 
         [Test]
