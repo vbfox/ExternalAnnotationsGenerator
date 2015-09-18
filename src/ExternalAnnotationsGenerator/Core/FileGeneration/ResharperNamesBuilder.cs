@@ -78,16 +78,22 @@ namespace ExternalAnnotationsGenerator.Core.FileGeneration
             }
         }
 
-        private static string GetParametersString([NotNull] MethodBase methodInfo)
+        private static string GetParametersString([NotNull] MethodBase methodBase)
         {
-            var parameters = methodInfo.GetParameters();
+            var methodInfo = methodBase as MethodInfo;
+            if (methodInfo != null && methodInfo.IsGenericMethod)
+            {
+                methodBase = methodInfo.GetGenericMethodDefinition();
+            }
+
+            var parameters = methodBase.GetParameters();
             if (parameters.Length <= 0)
             {
                 return "";
             }
 
             var parametersSeparated = string.Join(",",
-                methodInfo.GetParameters().Select(p => GetParameterTypeName(p.ParameterType)));
+                methodBase.GetParameters().Select(p => GetParameterTypeName(p.ParameterType)));
 
             return $"({parametersSeparated})";
         }
