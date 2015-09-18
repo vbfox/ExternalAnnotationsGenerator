@@ -61,6 +61,12 @@ namespace ExternalAnnotationsGenerator.Tests.AnnotationXml
             }
 
             [NotNull]
+            public double? MethodWithTypedArgSimple<TArg>(TArg x, [NotNull] List<TArg> lst)
+            {
+                return 0;
+            }
+
+            [NotNull]
             public double? MethodWithTypedArg<TArg>(TArg x, [NotNull] TArg? y, [NotNull] List<TArg> lst)
                 where TArg : struct
             {
@@ -79,14 +85,14 @@ namespace ExternalAnnotationsGenerator.Tests.AnnotationXml
         }
 
         private static readonly Type testType = typeof(TestClass);
-        private static readonly string testTypeName = testType.FullName;
+        public static readonly string TestTypeName = testType.FullName;
         private static readonly Type innerTestType = typeof(TestClass.InnerClass<>);
         private static readonly string innerTestTypeName = innerTestType.FullName;
 
         [Test]
         public void CanGetEmptyCtorName()
         {
-            var expected = $"M:{testTypeName}.#ctor";
+            var expected = $"M:{TestTypeName}.#ctor";
             var actual = ResharperNamesBuilder.GetMethodNameString(testType.GetConstructor(Type.EmptyTypes));
             Assert.That(actual, Is.EqualTo(expected));
         }
@@ -94,7 +100,7 @@ namespace ExternalAnnotationsGenerator.Tests.AnnotationXml
         [Test]
         public void CanGetCtorWithParameterName()
         {
-            var expected = $"M:{testTypeName}.#ctor(System.String)";
+            var expected = $"M:{TestTypeName}.#ctor(System.String)";
             var actual = ResharperNamesBuilder.GetMethodNameString(testType.GetConstructor(new[] { typeof(string) }));
             Assert.That(actual, Is.EqualTo(expected));
         }
@@ -102,7 +108,7 @@ namespace ExternalAnnotationsGenerator.Tests.AnnotationXml
         [Test]
         public void CanGetMethodWithNullableArgName()
         {
-            var expected = $"M:{testTypeName}.MethodWithNullableArg(System.Nullable{{System.Int32}})";
+            var expected = $"M:{TestTypeName}.MethodWithNullableArg(System.Nullable{{System.Int32}})";
             var actual = ResharperNamesBuilder.GetMethodNameString(testType.GetMethod("MethodWithNullableArg"));
             Assert.That(actual, Is.EqualTo(expected));
         }
@@ -110,7 +116,7 @@ namespace ExternalAnnotationsGenerator.Tests.AnnotationXml
         [Test]
         public void CanGetMethodWithTypedArgName()
         {
-            var expected = $"M:{testTypeName}.MethodWithTypedArg``1(``0,System.Nullable{{``0}},System.Collections.Generic.List{{``0}})";
+            var expected = $"M:{TestTypeName}.MethodWithTypedArg``1(``0,System.Nullable{{``0}},System.Collections.Generic.List{{``0}})";
             var actual = ResharperNamesBuilder.GetMethodNameString(testType.GetMethod("MethodWithTypedArg"));
             Assert.That(actual, Is.EqualTo(expected));
         }

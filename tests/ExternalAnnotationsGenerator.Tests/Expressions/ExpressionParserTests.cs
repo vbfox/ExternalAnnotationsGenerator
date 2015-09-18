@@ -1,22 +1,15 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Reflection;
-using ExternalAnnotationsGenerator.Core.Construction;
 using NUnit.Framework;
 using static ExternalAnnotationsGenerator.Annotations;
+using static ExternalAnnotationsGenerator.Tests.Expressions.ParseHelper;
 
 namespace ExternalAnnotationsGenerator.Tests.Expressions
 {
     [TestFixture]
     public class ExpressionParserTests
     {
-        private static ExpressionParsingResult Parse(Expression<Action> expression) => ExpressionParser.Parse(expression);
-        private static ExpressionParsingResult Parse<TIn>(Expression<Action<TIn>> expression) => ExpressionParser.Parse(expression);
-        private static ExpressionParsingResult Parse<TOut>(Expression<Func<TOut>> expression) => ExpressionParser.Parse(expression);
-        private static ExpressionParsingResult Parse<TIn, TOut>(Expression<Func<TIn, TOut>> expression) => ExpressionParser.Parse(expression);
-
         [Test]
         public void ParseCallToStaticVoidMethod()
         {
