@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -39,21 +40,21 @@ namespace ExternalAnnotationsGenerator.Core.FileGeneration
                 throw new ArgumentException("The method is required to have a declaring type", nameof(methodInfo));
             }
 
-            var methodName = methodInfo.IsConstructor ? "#ctor" : methodInfo.Name;
-            var parameterString = GetParametersString(methodInfo);
-            var typeParameterCount = methodInfo.IsGenericMethod ? "``" + methodInfo.GetGenericArguments().Length : "";
-
-            return $"M:{declaringType.FullName}.{methodName}{typeParameterCount}{parameterString}";
-        }
-
-        private static string GetParameterTypeName(Type type)
-        {
-            var builder = new StringBuilder();
-            AddParameterTypeName(type, builder);
+            var builder = new StringBuilder("M:");
+            AppendRootTypeName(declaringType, builder);
+            builder.Append(".");
+            builder.Append(methodInfo.IsConstructor ? "#ctor" : methodInfo.Name);
+            builder.Append(methodInfo.IsGenericMethod ? "``" + methodInfo.GetGenericArguments().Length : "");
+            AppendParametersString(methodInfo, builder);
             return builder.ToString();
         }
 
-        private static void AddParameterTypeName(Type type, StringBuilder builder)
+        private static void AppendRootTypeName(Type type, StringBuilder builder)
+        {
+            builder.Append(type.FullName);
+        }
+
+        private static void AppendParameterTypeName(Type type, StringBuilder builder)
         {
             if (type.IsGenericType)
             {
@@ -63,7 +64,7 @@ namespace ExternalAnnotationsGenerator.Core.FileGeneration
                 builder.Append("{");
                 foreach (var genericArgument in type.GetGenericArguments())
                 {
-                    AddParameterTypeName(genericArgument, builder);
+                    AppendParameterTypeName(genericArgument, builder);
                 }
                 builder.Append("}");
             }
@@ -78,7 +79,7 @@ namespace ExternalAnnotationsGenerator.Core.FileGeneration
             }
         }
 
-        private static string GetParametersString([NotNull] MethodBase methodBase)
+        private static void AppendParametersString([NotNull] MethodBase methodBase, StringBuilder builder)
         {
             var methodInfo = methodBase as MethodInfo;
             if (methodInfo != null && methodInfo.IsGenericMethod)
@@ -87,15 +88,26 @@ namespace ExternalAnnotationsGenerator.Core.FileGeneration
             }
 
             var parameters = methodBase.GetParameters();
-            if (parameters.Length <= 0)
+            if (parameters.Length == 0)
             {
-                return "";
+                return;
             }
 
-            var parametersSeparated = string.Join(",",
-                methodBase.GetParameters().Select(p => GetParameterTypeName(p.ParameterType)));
-
-            return $"({parametersSeparated})";
+            builder.Append("(");
+            var first = true;
+            foreach (var parameter in parameters)
+            {
+                if (first)
+                {
+                    first = false;
+                }
+                else
+                {
+                    builder.Append(",");
+                }
+                AppendParameterTypeName(parameter.ParameterType, builder);
+            }
+            builder.Append(")");
         }
     }
 }

@@ -24,7 +24,7 @@ namespace ExternalAnnotationsGenerator.Tests.AnnotationXml
         public void CanGeneratePredefinedMarkerClassInInnerClass()
         {
             var expected = $"M:{InnerTestTypeName}.MethodWithTypedArg``1(`0,System.Nullable{{``0}},System.Collections.Generic.List{{``0}})";
-            var parsed = Parse((TestClass.InnerClass<T> c) => c.MethodWithTypedArg<TStruct>(Some<T>(), Some<TStruct?>(), Some<List<TStruct>>()));
+            var parsed = Parse((TestClass.InnerClass<T> c) => c.MethodWithTypedArg(Some<T>(), Some<TStruct?>(), Some<List<TStruct>>()));
             var actual = ResharperNamesBuilder.GetMethodNameString((MethodInfo)parsed.Member);
             Assert.That(actual, Is.EqualTo(expected));
         }
