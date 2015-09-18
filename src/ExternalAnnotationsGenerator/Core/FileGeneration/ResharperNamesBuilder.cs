@@ -51,7 +51,18 @@ namespace ExternalAnnotationsGenerator.Core.FileGeneration
 
         private static void AppendRootTypeName(Type type, StringBuilder builder)
         {
-            builder.Append(type.FullName);
+            if (type.IsNested)
+            {
+                AppendRootTypeName(type.DeclaringType, builder);
+                builder.Append("+");
+                builder.Append(type.Name);
+            }
+            else
+            {
+                builder.Append(type.Namespace);
+                builder.Append(".");
+                builder.Append(type.Name);
+            }
         }
 
         private static void AppendParameterTypeName(Type type, StringBuilder builder)
