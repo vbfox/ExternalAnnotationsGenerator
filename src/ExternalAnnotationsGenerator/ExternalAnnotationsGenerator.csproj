@@ -52,6 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\FileGeneration\GenericDefinitionHelper.cs" />
     <Compile Include="Properties\AssemblyInfoVersion.cs" />
     <Compile Include="Core\CoreHelper.cs" />
     <Compile Include="Core\FileGeneration\AnnotationFile.cs" />

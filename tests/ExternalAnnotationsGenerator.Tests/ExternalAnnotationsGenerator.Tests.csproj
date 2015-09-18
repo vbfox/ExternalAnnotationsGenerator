@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AnnotationXml\GenericDefinitionHelperTests.cs" />
     <Compile Include="AnnotationXml\NameBuilderFromExpressionTests.cs" />
     <Compile Include="AnnotatorTests.cs" />
     <Compile Include="Expressions\ExpressionParserTests.cs" />

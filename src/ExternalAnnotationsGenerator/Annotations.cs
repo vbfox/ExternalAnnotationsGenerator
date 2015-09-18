@@ -28,27 +28,27 @@ namespace ExternalAnnotationsGenerator
         /// <summary>
         /// Placeholder for a parameter, field, property or method result with out annotation.
         /// </summary>
-        public static T Some<T>()
+        public static TSome Some<TSome>()
         {
-            return default(T);
+            return default(TSome);
         }
 
         /// <summary>
         /// Mark a parameter, field, property or method result with <see cref="NotNullAttribute"/>.
         /// </summary>
-        public static T NotNull<T>()
-            where T : class
+        public static TNotNull NotNull<TNotNull>()
+            where TNotNull : class
         {
-            return default(T);
+            return default(TNotNull);
         }
 
         /// <summary>
         /// Mark a parameter, field, property or method result with <see cref="CanBeNullAttribute"/>.
         /// </summary>
-        public static T CanBeNull<T>()
-            where T : class
+        public static TCanBeNull CanBeNull<TCanBeNull>()
+            where TCanBeNull : class
         {
-            return default(T);
+            return default(TCanBeNull);
         }
     }
 }

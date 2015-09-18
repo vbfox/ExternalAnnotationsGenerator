@@ -1,6 +1,4 @@
 using System;
-using System.Diagnostics.Eventing.Reader;
-using System.Linq;
 using System.Reflection;
 using System.Text;
 using JetBrains.Annotations;
@@ -30,22 +28,30 @@ namespace ExternalAnnotationsGenerator.Core.FileGeneration
             throw new ArgumentException("Member type not supported : " + member.MemberType, nameof(member));
         }
 
-        public static string GetMethodNameString([NotNull] MethodBase methodInfo)
+        public static string GetMethodNameString([NotNull] MethodBase methodBase)
         {
-            if (methodInfo == null) throw new ArgumentNullException(nameof(methodInfo));
+            if (methodBase == null) throw new ArgumentNullException(nameof(methodBase));
 
-            var declaringType = methodInfo.DeclaringType;
-            if (declaringType == null)
+            return GetMethodNameStringCore(GenericDefinitionHelper.GetGenericDefinition(methodBase));
+        }
+
+        static string GetMethodNameStringCore(MethodBase methodBase)
+        {
+            var builder = new StringBuilder("M:");
+            var declaringType = methodBase.DeclaringType;
+            if (declaringType != null)
             {
-                throw new ArgumentException("The method is required to have a declaring type", nameof(methodInfo));
+                AppendRootTypeName(declaringType, builder);
+                builder.Append(".");
+                builder.Append(methodBase.IsConstructor ? "#ctor" : methodBase.Name);
             }
 
-            var builder = new StringBuilder("M:");
-            AppendRootTypeName(declaringType, builder);
-            builder.Append(".");
-            builder.Append(methodInfo.IsConstructor ? "#ctor" : methodInfo.Name);
-            builder.Append(methodInfo.IsGenericMethod ? "``" + methodInfo.GetGenericArguments().Length : "");
-            AppendParametersString(methodInfo, builder);
+            if (methodBase.IsGenericMethod)
+            {
+                builder.Append("``");
+                builder.Append(methodBase.GetGenericArguments().Length);
+            }
+            AppendParametersString(methodBase, builder);
             return builder.ToString();
         }
 
@@ -92,12 +98,6 @@ namespace ExternalAnnotationsGenerator.Core.FileGeneration
 
         private static void AppendParametersString([NotNull] MethodBase methodBase, StringBuilder builder)
         {
-            var methodInfo = methodBase as MethodInfo;
-            if (methodInfo != null && methodInfo.IsGenericMethod)
-            {
-                methodBase = methodInfo.GetGenericMethodDefinition();
-            }
-
             var parameters = methodBase.GetParameters();
             if (parameters.Length == 0)
             {
