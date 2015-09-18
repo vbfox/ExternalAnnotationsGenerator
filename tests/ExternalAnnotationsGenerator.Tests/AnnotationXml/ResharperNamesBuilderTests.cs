@@ -61,8 +61,8 @@ namespace ExternalAnnotationsGenerator.Tests.AnnotationXml
             }
 
             [NotNull]
-            public double? MethodWithTypedArg<T>(T x, [NotNull] T? y, [NotNull] List<T> lst)
-                where T : struct
+            public double? MethodWithTypedArg<TArg>(TArg x, [NotNull] TArg? y, [NotNull] List<TArg> lst)
+                where TArg : struct
             {
                 return 0;
             }
@@ -70,8 +70,8 @@ namespace ExternalAnnotationsGenerator.Tests.AnnotationXml
             public class InnerClass<TInner>
             {
                 [NotNull]
-                public double? MethodWithTypedArg<T>([NotNull] TInner x, [NotNull] T? y, [NotNull] List<T> lst)
-                                where T : struct
+                public double? MethodWithTypedArg<TArg>([NotNull] TInner x, [NotNull] TArg? y, [NotNull] List<TArg> lst)
+                                where TArg : struct
                 {
                     return 0;
                 }
