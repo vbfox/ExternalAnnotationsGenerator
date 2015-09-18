@@ -87,7 +87,7 @@ namespace ExternalAnnotationsGenerator.Tests.AnnotationXml
         private static readonly Type testType = typeof(TestClass);
         public static readonly string TestTypeName = testType.FullName;
         private static readonly Type innerTestType = typeof(TestClass.InnerClass<>);
-        private static readonly string innerTestTypeName = innerTestType.FullName;
+        public static readonly string InnerTestTypeName = innerTestType.FullName;
 
         [Test]
         public void CanGetEmptyCtorName()
@@ -124,7 +124,7 @@ namespace ExternalAnnotationsGenerator.Tests.AnnotationXml
         [Test]
         public void CanGetMethodWithTypedArgNameInInnerClass()
         {
-            var expected = $"M:{innerTestTypeName}.MethodWithTypedArg``1(`0,System.Nullable{{``0}},System.Collections.Generic.List{{``0}})";
+            var expected = $"M:{InnerTestTypeName}.MethodWithTypedArg``1(`0,System.Nullable{{``0}},System.Collections.Generic.List{{``0}})";
             var actual = ResharperNamesBuilder.GetMethodNameString(innerTestType.GetMethod("MethodWithTypedArg"));
             Assert.That(actual, Is.EqualTo(expected));
         }
