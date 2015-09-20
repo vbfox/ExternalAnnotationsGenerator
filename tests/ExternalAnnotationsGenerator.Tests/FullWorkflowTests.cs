@@ -168,6 +168,23 @@ namespace ExternalAnnotationsGenerator.Tests
                 Is.EqualTo($"M:{testClassFullname}.Info(System.String,System.Object[])"));
         }
 
+        [Test]
+        public void CanAnnotateStaticMethods()
+        {
+            var annotator = Annotator.Create();
+
+            annotator.AnnotateType<TestClass>(
+                type => type.Annotate(i => TestClass.GetLoggerStatic(Annotations.NotNull<Type>()))
+                );
+
+            var doc = GetFirstFile(annotator).Content;
+            var memberElement = doc.XPathSelectElement("/assembly/member");
+
+            Assert.That(memberElement, Is.Not.Null);
+            Assert.That(memberElement.Attribute("name").Value,
+                Is.EqualTo($"M:{testClassFullname}.GetLoggerStatic(System.Type)"));
+        }
+
         private static readonly string testClassFullname = typeof(TestClass).FullName;
 
         [SuppressMessage("ReSharper", "UnusedParameter.Global")]
@@ -179,6 +196,11 @@ namespace ExternalAnnotationsGenerator.Tests
         public class TestClass
         {
             public string GetLogger(Type type)
+            {
+                return default(string);
+            }
+
+            public static string GetLoggerStatic(Type type)
             {
                 return default(string);
             }
