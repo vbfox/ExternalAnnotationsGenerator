@@ -63,14 +63,13 @@ namespace ExternalAnnotationsGenerator.Core.FileGeneration
                     return candidates[0];
 
                 default:
-                    var result = candidates.SingleOrDefault(m => IsSameOverloadComplex(m, genericMethod));
-
-                    if (result == null)
+                    var matching = candidates.Where(m => IsSameOverloadComplex(m, genericMethod)).ToList();
+                    if (matching.Count != 1)
                     {
                         throw CreateUnableToFindMatchException(methodBase);
                     }
 
-                    return result;
+                    return matching[0];
             }
         }
 
@@ -82,12 +81,9 @@ namespace ExternalAnnotationsGenerator.Core.FileGeneration
 
         static bool IsSameOverloadSimple(MethodBase a, MethodBase b)
         {
-            if (a.Name != b.Name)
-            {
-                return false;
-            }
-
-            return a.IsGenericMethod == b.IsGenericMethod
+            return a.Name == b.Name
+                && ArrayEqual(a.GetParameters(), b.GetParameters(), SimpleParameterEquals)
+                && a.IsGenericMethod == b.IsGenericMethod
                 && a.IsAbstract == b.IsAbstract
                 && a.IsAssembly == b.IsAssembly
                 && a.IsFamilyAndAssembly == b.IsFamilyAndAssembly
@@ -101,12 +97,7 @@ namespace ExternalAnnotationsGenerator.Core.FileGeneration
                 && ArrayEqual(a.GetGenericArguments(), b.GetGenericArguments());
         }
 
-        static bool IsSameOverloadComplex(MethodBase a, MethodBase b)
-        {
-            return ArrayEqual(a.GetParameters(), b.GetParameters(), ParameterEquals);
-        }
-
-        static bool ParameterEquals(ParameterInfo a, ParameterInfo b)
+        static bool SimpleParameterEquals(ParameterInfo a, ParameterInfo b)
         {
             return a.Name == b.Name
                    && a.HasDefaultValue == b.HasDefaultValue
@@ -114,8 +105,17 @@ namespace ExternalAnnotationsGenerator.Core.FileGeneration
                    && a.IsLcid == b.IsLcid
                    && a.IsOptional == b.IsOptional
                    && a.IsOut == b.IsOut
-                   && a.IsRetval == b.IsRetval
-                   && GetGenericDefinition(a.ParameterType) == GetGenericDefinition(b.ParameterType);
+                   && a.IsRetval == b.IsRetval;
+        }
+
+        static bool IsSameOverloadComplex(MethodBase a, MethodBase b)
+        {
+            return ArrayEqual(a.GetParameters(), b.GetParameters(), ParameterEqualsComplex);
+        }
+
+        static bool ParameterEqualsComplex(ParameterInfo a, ParameterInfo b)
+        {
+            return GetGenericDefinition(a.ParameterType) == GetGenericDefinition(b.ParameterType);
        }
 
         static bool ArrayEqual<TElement>(TElement[] a, TElement[] b, Func<TElement, TElement, bool> equals = null)

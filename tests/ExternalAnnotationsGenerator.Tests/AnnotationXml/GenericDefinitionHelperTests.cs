@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using NUnit.Framework;
 using static ExternalAnnotationsGenerator.Core.FileGeneration.GenericDefinitionHelper;
@@ -178,6 +179,16 @@ namespace ExternalAnnotationsGenerator.Tests.AnnotationXml
                 {
                     return default(bool);
                 }
+
+                public bool ComplexList(List<T1> a, List<T2> b)
+                {
+                    return default(bool);
+                }
+
+                public bool ComplexList(List<T2> a, List<T1> b)
+                {
+                    return default(bool);
+                }
             }
         }
 
@@ -195,6 +206,29 @@ namespace ExternalAnnotationsGenerator.Tests.AnnotationXml
                     .GetMethods()
                     .Single(m => m.Name == "Complex" && m.GetParameters().First().ParameterType.Name == "T2");
             
+            Assert.That(
+                GetGenericDefinition(first),
+                Is.EqualTo(expectedFirst));
+
+            Assert.That(
+                GetGenericDefinition(second),
+                Is.EqualTo(expectedSecond));
+        }
+
+        [Test]
+        public void GetGenericDefinitionForComplexListCase()
+        {
+            var first = typeof(ComplexCase<bool>.Inner<int>).GetMethod("ComplexList", new[] { typeof(List<bool>), typeof(List<int>) });
+            var second = typeof(ComplexCase<bool>.Inner<int>).GetMethod("ComplexList", new[] { typeof(List<int>), typeof(List<bool>) });
+            var expectedFirst =
+                typeof(ComplexCase<>.Inner<>)
+                    .GetMethods()
+                    .Single(m => m.Name == "ComplexList" && m.GetParameters().First().ParameterType.GetGenericArguments().First().Name == "T1");
+            var expectedSecond =
+                typeof(ComplexCase<>.Inner<>)
+                    .GetMethods()
+                    .Single(m => m.Name == "ComplexList" && m.GetParameters().First().ParameterType.GetGenericArguments().First().Name == "T2");
+
             Assert.That(
                 GetGenericDefinition(first),
                 Is.EqualTo(expectedFirst));
