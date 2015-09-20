@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using NUnit.Framework;
 using static ExternalAnnotationsGenerator.Core.FileGeneration.GenericDefinitionHelper;
 
@@ -160,5 +161,47 @@ namespace ExternalAnnotationsGenerator.Tests.AnnotationXml
                 Is.EqualTo(typeof(NestedTyped<>.DoubleNestedTyped<>)));
         }
 
+        [SuppressMessage("ReSharper", "ClassNeverInstantiated.Local")]
+        [SuppressMessage("ReSharper", "UnusedTypeParameter")]
+        [SuppressMessage("ReSharper", "UnusedMember.Local")]
+        [SuppressMessage("ReSharper", "UnusedParameter.Local")]
+        class ComplexCase<T1>
+        {
+            public class Inner<T2>
+            {
+                public bool Complex(T1 a, T2 b)
+                {
+                    return default(bool);
+                }
+
+                public bool Complex(T2 a, T1 b)
+                {
+                    return default(bool);
+                }
+            }
+        }
+
+        [Test]
+        public void GetGenericDefinitionForComplexCase()
+        {
+            var first = typeof (ComplexCase<bool>.Inner<int>).GetMethod("Complex", new[] { typeof (bool), typeof (int) });
+            var second = typeof(ComplexCase<bool>.Inner<int>).GetMethod("Complex", new[] { typeof(int), typeof(bool) });
+            var expectedFirst =
+                typeof (ComplexCase<>.Inner<>)
+                    .GetMethods()
+                    .Single(m => m.Name == "Complex" && m.GetParameters().First().ParameterType.Name == "T1");
+            var expectedSecond =
+                typeof(ComplexCase<>.Inner<>)
+                    .GetMethods()
+                    .Single(m => m.Name == "Complex" && m.GetParameters().First().ParameterType.Name == "T2");
+            
+            Assert.That(
+                GetGenericDefinition(first),
+                Is.EqualTo(expectedFirst));
+
+            Assert.That(
+                GetGenericDefinition(second),
+                Is.EqualTo(expectedSecond));
+        }
     }
 }

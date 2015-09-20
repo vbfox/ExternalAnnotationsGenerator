@@ -53,10 +53,34 @@ namespace ExternalAnnotationsGenerator.Core.FileGeneration
                 ? type.GetConstructors(bindingFlagsAllMembers).Cast<MethodBase>()
                 : type.GetMethods(bindingFlagsAllMembers);
 
-            return methods.Single(m => IsSameOverload(m, genericMethod));
+            var candidates = methods.Where(m => IsSameOverloadSimple(m, genericMethod)).ToList();
+            switch (candidates.Count)
+            {
+                case 0:
+                    throw CreateUnableToFindMatchException(methodBase);
+
+                case 1:
+                    return candidates[0];
+
+                default:
+                    var result = candidates.SingleOrDefault(m => IsSameOverloadComplex(m, genericMethod));
+
+                    if (result == null)
+                    {
+                        throw CreateUnableToFindMatchException(methodBase);
+                    }
+
+                    return result;
+            }
         }
 
-        static bool IsSameOverload(MethodBase a, MethodBase b)
+        static ArgumentException CreateUnableToFindMatchException(MethodBase methodBase)
+        {
+            return new ArgumentException($"Unable to find a matching generic definition for method {methodBase}",
+                nameof(methodBase));
+        }
+
+        static bool IsSameOverloadSimple(MethodBase a, MethodBase b)
         {
             if (a.Name != b.Name)
             {
@@ -64,8 +88,22 @@ namespace ExternalAnnotationsGenerator.Core.FileGeneration
             }
 
             return a.IsGenericMethod == b.IsGenericMethod
-                   && ArrayEqual(a.GetParameters(), b.GetParameters(), ParameterEquals)
-                   && ArrayEqual(a.GetGenericArguments(), b.GetGenericArguments());
+                && a.IsAbstract == b.IsAbstract
+                && a.IsAssembly == b.IsAssembly
+                && a.IsFamilyAndAssembly == b.IsFamilyAndAssembly
+                && a.IsFamily == b.IsFamily
+                && a.IsFamilyOrAssembly == b.IsFamilyOrAssembly
+                && a.IsFinal == b.IsFinal
+                && a.IsHideBySig == b.IsHideBySig
+                && a.IsPrivate == b.IsPrivate
+                && a.IsPublic == b.IsPublic
+                && a.IsVirtual == b.IsVirtual
+                && ArrayEqual(a.GetGenericArguments(), b.GetGenericArguments());
+        }
+
+        static bool IsSameOverloadComplex(MethodBase a, MethodBase b)
+        {
+            return ArrayEqual(a.GetParameters(), b.GetParameters(), ParameterEquals);
         }
 
         static bool ParameterEquals(ParameterInfo a, ParameterInfo b)
