@@ -5,6 +5,7 @@ using System.Xml.XPath;
 using ExternalAnnotationsGenerator.Core;
 using ExternalAnnotationsGenerator.Core.FileGeneration;
 using NUnit.Framework;
+using static ExternalAnnotationsGenerator.Annotations;
 
 namespace ExternalAnnotationsGenerator.Tests
 {
@@ -17,7 +18,7 @@ namespace ExternalAnnotationsGenerator.Tests
             var annotator = Annotator.Create();
 
             annotator.AnnotateType<TestClass>(
-                type => type.Annotate(i => i.Info(Annotations.FormatString(), Annotations.Some<object[]>())));
+                type => type.Annotate(i => i.Info(FormatString(), Some<object[]>())));
 
             var doc = GetFirstFile(annotator).Content;
             var assemblyElement = doc.XPathSelectElement("/assembly");
@@ -32,7 +33,7 @@ namespace ExternalAnnotationsGenerator.Tests
 
             annotator.AnnotateType<TestClass>(
                 type =>
-                    type.Annotate(i => i.GetLogger(Annotations.Some<Type>()) == Annotations.NotNull<string>()));
+                    type.Annotate(i => i.GetLogger(Some<Type>()) == NotNull<string>()));
 
             var doc = GetFirstFile(annotator).Content;
             var memberElement = doc.XPathSelectElement("/assembly/member");
@@ -51,7 +52,7 @@ namespace ExternalAnnotationsGenerator.Tests
             var annotator = Annotator.Create();
 
             annotator.AnnotateType<TestClass>(
-                type => type.Annotate(i => i.Info(Annotations.FormatString(), Annotations.Some<object[]>())));
+                type => type.Annotate(i => i.Info(FormatString(), Some<object[]>())));
 
             var doc = GetFirstFile(annotator).Content;
             var memberElement = doc.XPathSelectElement("/assembly/member");
@@ -66,7 +67,7 @@ namespace ExternalAnnotationsGenerator.Tests
 
             annotator.AnnotateType<TestClass>(
                 type =>
-                    type.Annotate(i => i.GetLogger(Annotations.Some<Type>()) == Annotations.NotNull<string>()));
+                    type.Annotate(i => i.GetLogger(Some<Type>()) == NotNull<string>()));
 
             var doc = GetFirstFile(annotator).Content;
             var attributeElement = doc.XPathSelectElement("/assembly/member/attribute");
@@ -82,7 +83,7 @@ namespace ExternalAnnotationsGenerator.Tests
             var annotator = Annotator.Create();
 
             annotator.AnnotateType<TestClass>(
-                type => type.Annotate(i => i.Info(Annotations.FormatString(), Annotations.Some<object[]>())));
+                type => type.Annotate(i => i.Info(FormatString(), Some<object[]>())));
 
             var doc = GetFirstFile(annotator).Content;
             var argumentElement = doc.XPathSelectElement("/assembly/member/attribute/argument");
@@ -98,7 +99,7 @@ namespace ExternalAnnotationsGenerator.Tests
             var annotator = Annotator.Create();
 
             annotator.AnnotateType<TestClass>(
-                type => type.Annotate(i => i.Info(Annotations.FormatString(), Annotations.Some<object[]>()))
+                type => type.Annotate(i => i.Info(FormatString(), Some<object[]>()))
                 );
 
             var doc = GetFirstFile(annotator).Content;
@@ -115,7 +116,7 @@ namespace ExternalAnnotationsGenerator.Tests
                 var annotator = Annotator.Create();
 
                 annotator.AnnotateType<TestClass>(
-                    type => type.Annotate(i => i.Info(Annotations.Some<string>(), Annotations.Some<object[]>())));
+                    type => type.Annotate(i => i.Info(Some<string>(), Some<object[]>())));
             });
         }
 
@@ -125,7 +126,7 @@ namespace ExternalAnnotationsGenerator.Tests
             var annotator = Annotator.Create();
 
             annotator.AnnotateType<TestClass>(
-                type => type.Annotate(i => i.Info(Annotations.FormatString(), Annotations.Some<object[]>()))
+                type => type.Annotate(i => i.Info(FormatString(), Some<object[]>()))
                 );
 
             var doc = GetFirstFile(annotator).Content;
@@ -140,7 +141,7 @@ namespace ExternalAnnotationsGenerator.Tests
             var annotator = Annotator.Create();
 
             annotator.AnnotateType<TestClass>(
-                type => type.Annotate(i => i.Info(Annotations.FormatString(), Annotations.Some<object[]>()))
+                type => type.Annotate(i => i.Info(FormatString(), Some<object[]>()))
                 );
 
             var doc = GetFirstFile(annotator).Content;
@@ -157,7 +158,7 @@ namespace ExternalAnnotationsGenerator.Tests
             var annotator = Annotator.Create();
 
             annotator.AnnotateType<TestClass>(
-                type => type.Annotate(i => i.Info(Annotations.FormatString(), Annotations.Some<object[]>()))
+                type => type.Annotate(i => i.Info(FormatString(), Some<object[]>()))
                 );
 
             var doc = GetFirstFile(annotator).Content;
@@ -174,7 +175,7 @@ namespace ExternalAnnotationsGenerator.Tests
             var annotator = Annotator.Create();
 
             annotator.AnnotateType<TestClass>(
-                type => type.Annotate(i => TestClass.GetLoggerStatic(Annotations.NotNull<Type>()))
+                type => type.Annotate(i => TestClass.GetLoggerStatic(NotNull<Type>()))
                 );
 
             var doc = GetFirstFile(annotator).Content;
