@@ -86,8 +86,8 @@ namespace ExternalAnnotationsGenerator.Tests.AnnotationXml
         public void GetGenericDefinitionForMarkerType()
         {
             Assert.That(
-                GetGenericDefinition(typeof(T)),
-                Is.EqualTo(typeof(T)));
+                GetGenericDefinition(typeof(TClass)),
+                Is.EqualTo(typeof(TClass)));
         }
 
         [Test]

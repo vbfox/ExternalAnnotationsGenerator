@@ -98,7 +98,8 @@ namespace ExternalAnnotationsGenerator.Tests
             var annotator = Annotator.Create();
 
             annotator.AnnotateType<TestClass>(
-                type => type.Annotate(i => i.Info(Annotations.FormatString(), Annotations.Some<object[]>())));
+                type => type.Annotate(i => i.Info(Annotations.FormatString(), Annotations.Some<object[]>()))
+                );
 
             var doc = GetFirstFile(annotator).Content;
             var attributeElement = doc.XPathSelectElement("/assembly/member/attribute");
@@ -124,7 +125,8 @@ namespace ExternalAnnotationsGenerator.Tests
             var annotator = Annotator.Create();
 
             annotator.AnnotateType<TestClass>(
-                type => type.Annotate(i => i.Info(Annotations.FormatString(), Annotations.Some<object[]>())));
+                type => type.Annotate(i => i.Info(Annotations.FormatString(), Annotations.Some<object[]>()))
+                );
 
             var doc = GetFirstFile(annotator).Content;
             var assemblyElement = doc.XPathSelectElement("/assembly[@name=\"ExternalAnnotationsGenerator.Tests\"]");
@@ -138,7 +140,8 @@ namespace ExternalAnnotationsGenerator.Tests
             var annotator = Annotator.Create();
 
             annotator.AnnotateType<TestClass>(
-                type => type.Annotate(i => i.Info(Annotations.FormatString(), Annotations.Some<object[]>())));
+                type => type.Annotate(i => i.Info(Annotations.FormatString(), Annotations.Some<object[]>()))
+                );
 
             var doc = GetFirstFile(annotator).Content;
             var attributeElement = doc.XPathSelectElement("/assembly/member/attribute");
@@ -154,7 +157,8 @@ namespace ExternalAnnotationsGenerator.Tests
             var annotator = Annotator.Create();
 
             annotator.AnnotateType<TestClass>(
-                type => type.Annotate(i => i.Info(Annotations.FormatString(), Annotations.Some<object[]>())));
+                type => type.Annotate(i => i.Info(Annotations.FormatString(), Annotations.Some<object[]>()))
+                );
 
             var doc = GetFirstFile(annotator).Content;
             var memberElement = doc.XPathSelectElement("/assembly/member");
@@ -164,7 +168,7 @@ namespace ExternalAnnotationsGenerator.Tests
                 Is.EqualTo($"M:{testClassFullname}.Info(System.String,System.Object[])"));
         }
 
-        private static readonly string testClassFullname = typeof (TestClass).FullName;
+        private static readonly string testClassFullname = typeof(TestClass).FullName;
 
         [SuppressMessage("ReSharper", "UnusedParameter.Global")]
         [SuppressMessage("ReSharper", "UnusedMember.Global")]
@@ -180,6 +184,16 @@ namespace ExternalAnnotationsGenerator.Tests
             }
 
             public void Info(string format, params object[] args)
+            {
+
+            }
+
+            public void Info(string format, object arg)
+            {
+
+            }
+
+            public void Info<T>(string format, T arg)
             {
 
             }
