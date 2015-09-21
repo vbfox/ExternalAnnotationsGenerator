@@ -17,7 +17,7 @@ namespace ExternalAnnotationsGenerator.Tests
         {
             var annotator = Annotator.Create();
 
-            annotator.AnnotateType<TestClass>(
+            annotator.Annotate<TestClass>(
                 type => type.Annotate(i => i.Info(FormatString(), Some<object[]>())));
 
             var doc = GetFirstFile(annotator).Content;
@@ -31,7 +31,7 @@ namespace ExternalAnnotationsGenerator.Tests
         {
             var annotator = Annotator.Create();
 
-            annotator.AnnotateType<TestClass>(
+            annotator.Annotate<TestClass>(
                 type =>
                     type.Annotate(i => i.GetLogger(Some<Type>()) == NotNull<string>()));
 
@@ -51,7 +51,7 @@ namespace ExternalAnnotationsGenerator.Tests
         {
             var annotator = Annotator.Create();
 
-            annotator.AnnotateType<TestClass>(
+            annotator.Annotate<TestClass>(
                 type => type.Annotate(i => i.Info(FormatString(), Some<object[]>())));
 
             var doc = GetFirstFile(annotator).Content;
@@ -65,7 +65,7 @@ namespace ExternalAnnotationsGenerator.Tests
         {
             var annotator = Annotator.Create();
 
-            annotator.AnnotateType<TestClass>(
+            annotator.Annotate<TestClass>(
                 type =>
                     type.Annotate(i => i.GetLogger(Some<Type>()) == NotNull<string>()));
 
@@ -82,7 +82,7 @@ namespace ExternalAnnotationsGenerator.Tests
         {
             var annotator = Annotator.Create();
 
-            annotator.AnnotateType<TestClass>(
+            annotator.Annotate<TestClass>(
                 type => type.Annotate(i => i.Info(FormatString(), Some<object[]>())));
 
             var doc = GetFirstFile(annotator).Content;
@@ -98,7 +98,7 @@ namespace ExternalAnnotationsGenerator.Tests
         {
             var annotator = Annotator.Create();
 
-            annotator.AnnotateType<TestClass>(
+            annotator.Annotate<TestClass>(
                 type => type.Annotate(i => i.Info(FormatString(), Some<object[]>()))
                 );
 
@@ -115,7 +115,7 @@ namespace ExternalAnnotationsGenerator.Tests
             {
                 var annotator = Annotator.Create();
 
-                annotator.AnnotateType<TestClass>(
+                annotator.Annotate<TestClass>(
                     type => type.Annotate(i => i.Info(Some<string>(), Some<object[]>())));
             });
         }
@@ -125,7 +125,7 @@ namespace ExternalAnnotationsGenerator.Tests
         {
             var annotator = Annotator.Create();
 
-            annotator.AnnotateType<TestClass>(
+            annotator.Annotate<TestClass>(
                 type => type.Annotate(i => i.Info(FormatString(), Some<object[]>()))
                 );
 
@@ -140,7 +140,7 @@ namespace ExternalAnnotationsGenerator.Tests
         {
             var annotator = Annotator.Create();
 
-            annotator.AnnotateType<TestClass>(
+            annotator.Annotate<TestClass>(
                 type => type.Annotate(i => i.Info(FormatString(), Some<object[]>()))
                 );
 
@@ -157,7 +157,7 @@ namespace ExternalAnnotationsGenerator.Tests
         {
             var annotator = Annotator.Create();
 
-            annotator.AnnotateType<TestClass>(
+            annotator.Annotate<TestClass>(
                 type => type.Annotate(i => i.Info(FormatString(), Some<object[]>()))
                 );
 
@@ -174,7 +174,7 @@ namespace ExternalAnnotationsGenerator.Tests
         {
             var annotator = Annotator.Create();
 
-            annotator.AnnotateType<TestClass>(
+            annotator.Annotate<TestClass>(
                 type => type.Annotate(i => TestClass.GetLoggerStatic(NotNull<Type>()))
                 );
 

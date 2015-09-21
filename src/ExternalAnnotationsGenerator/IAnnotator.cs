@@ -6,8 +6,8 @@ namespace ExternalAnnotationsGenerator
 {
     public interface IAnnotator : IFluentInterface
     {
-        void AnnotateType<TType>([NotNull] Action<ITypeAnnotator<TType>> annotationActions);
-        void AnnotateStatic([NotNull] Expression<Action> expression);
-        void AnnotateStatic<TResult>([NotNull] Expression<Func<TResult>> expression);
+        void Annotate<TType>([NotNull] Action<ITypeAnnotator<TType>> annotationActions);
+        void Annotate([NotNull] Expression<Action> expression);
+        void Annotate<TResult>([NotNull] Expression<Func<TResult>> expression);
     }
 }

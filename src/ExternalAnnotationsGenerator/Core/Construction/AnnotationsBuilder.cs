@@ -30,7 +30,7 @@ namespace ExternalAnnotationsGenerator.Core.Construction
             return newAnnotations;
         }
 
-        public void AnnotateType<TType>(Action<ITypeAnnotator<TType>> annotationActions)
+        public void Annotate<TType>(Action<ITypeAnnotator<TType>> annotationActions)
         {
             if (annotationActions == null) throw new ArgumentNullException(nameof(annotationActions));
 
@@ -41,12 +41,12 @@ namespace ExternalAnnotationsGenerator.Core.Construction
             assemblyAnnotations.AddRange(memberAnnotator.GetMembersAnnotations());
         }
 
-        public void AnnotateStatic(Expression<Action> expression)
+        public void Annotate(Expression<Action> expression)
         {
             AnnotateStaticCore(expression);
         }
 
-        public void AnnotateStatic<TResult>(Expression<Func<TResult>> expression)
+        public void Annotate<TResult>(Expression<Func<TResult>> expression)
         {
             AnnotateStaticCore(expression);
         }
