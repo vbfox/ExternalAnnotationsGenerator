@@ -110,16 +110,21 @@ Target "Build" <| fun _ ->
 
 Target "RunTests" <| fun _ ->
     CreateDir testsDir
+    let outputFile = testsDir </> "TestResults.xml"
+    DeleteFile outputFile
 
-    !! testAssemblies
-      |> NUnit (fun p ->
-          {p with
-             ToolPath = nunitPath
-             DisableShadowCopy = true
-             TimeOut = TimeSpan.FromMinutes 20.
-             OutputFile = testsDir </> "TestResults.xml" })
-
-    AppVeyor.UploadTestResultsXml AppVeyor.TestResultsType.NUnit testsDir
+    try
+        !! testAssemblies
+          |> NUnit (fun p ->
+              {p with
+                 ToolPath = nunitPath
+                 DisableShadowCopy = true
+                 TimeOut = TimeSpan.FromMinutes 20.
+                 OutputFile = outputFile
+                 ErrorLevel = DontFailBuild })
+    finally
+        if File.Exists(outputFile) then
+            AppVeyor.UploadTestResultsXml AppVeyor.TestResultsType.NUnit testsDir
 
 #if MONO
 #else
