@@ -35,6 +35,17 @@ namespace ExternalAnnotationsGenerator.Core.FileGeneration
             return GetMethodNameStringCore(GenericDefinitionHelper.GetGenericDefinition(methodBase));
         }
 
+        // encodes dots with alternate # character
+        private static string EncodeName(string name)
+        {
+            if (name.IndexOf('.') >= 0)
+            {
+                return name.Replace('.', '#');
+            }
+
+            return name;
+        }
+
         static string GetMethodNameStringCore(MethodBase methodBase)
         {
             var builder = new StringBuilder("M:");
@@ -43,7 +54,7 @@ namespace ExternalAnnotationsGenerator.Core.FileGeneration
             {
                 AppendRootTypeName(declaringType, builder);
                 builder.Append(".");
-                builder.Append(methodBase.IsConstructor ? "#ctor" : methodBase.Name);
+                builder.Append(EncodeName(methodBase.Name));
             }
 
             if (methodBase.IsGenericMethod)
