@@ -15,12 +15,12 @@ The syntax used to create an annotation is a fluent syntax like :
 ```csharp
 var annotator = Annotator.Create();
             
-annotator.AnnotateType<ILogger>(type =>
+annotator.Annotate<ILogger>(type =>
 {
     type.Annotate(logger => logger.Debug(NotNull<Exception>(), FormatString(), Some<object[]>()));
 });
 
-annotator.AnnotateType<ILoggerFactory>(type =>
+annotator.Annotate<ILoggerFactory>(type =>
 {
     type.Annotate(logger => logger.GetLogger(NotNull<Type>()) == NotNull<ILogger>());
 });
