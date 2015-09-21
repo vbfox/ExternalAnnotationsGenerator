@@ -3,7 +3,7 @@ using System.Linq;
 using ExternalAnnotationsGenerator.Core.Construction;
 using NUnit.Framework;
 
-namespace ExternalAnnotationsGenerator.Tests
+namespace ExternalAnnotationsGenerator.Tests.Core.Model
 {
     [TestFixture]
     [SuppressMessage("ReSharper", "PossibleNullReferenceException")]

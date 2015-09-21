@@ -5,7 +5,7 @@ using ExternalAnnotationsGenerator.Core.FileGeneration;
 using JetBrains.Annotations;
 using NUnit.Framework;
 
-namespace ExternalAnnotationsGenerator.Tests.AnnotationXml
+namespace ExternalAnnotationsGenerator.Tests.Core.Construction
 {
     [TestFixture]
     [SuppressMessage("ReSharper", "AssignNullToNotNullAttribute")]

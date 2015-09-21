@@ -2,7 +2,7 @@
 using System.Linq.Expressions;
 using ExternalAnnotationsGenerator.Core.Construction;
 
-namespace ExternalAnnotationsGenerator.Tests.Expressions
+namespace ExternalAnnotationsGenerator.Tests.Core.Construction
 {
     static class ParseHelper
     {

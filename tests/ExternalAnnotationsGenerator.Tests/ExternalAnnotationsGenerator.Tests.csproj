@@ -47,14 +47,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AnnotationXml\GenericDefinitionHelperTests.cs" />
-    <Compile Include="AnnotationXml\NameBuilderFromExpressionTests.cs" />
-    <Compile Include="AnnotatorTests.cs" />
-    <Compile Include="Expressions\ExpressionParserTests.cs" />
-    <Compile Include="Expressions\ParseHelper.cs" />
+    <Compile Include="Core\Construction\GenericDefinitionHelperTests.cs" />
+    <Compile Include="Core\Construction\NameBuilderFromExpressionTests.cs" />
+    <Compile Include="Core\Model\AnnotatorTests.cs" />
+    <Compile Include="Core\Construction\ExpressionParserTests.cs" />
+    <Compile Include="Core\Construction\ParseHelper.cs" />
     <Compile Include="FullWorkflowTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="AnnotationXml\ResharperNamesBuilderTests.cs" />
+    <Compile Include="Core\Construction\ResharperNamesBuilderTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -69,6 +69,7 @@
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
