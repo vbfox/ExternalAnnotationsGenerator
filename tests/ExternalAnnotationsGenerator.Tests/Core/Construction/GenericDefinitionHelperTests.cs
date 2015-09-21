@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using ExternalAnnotationsGenerator.Core.FileGeneration;
 using NUnit.Framework;
+using static ExternalAnnotationsGenerator.Core.FileGeneration.GenericDefinitionHelper;
 
 namespace ExternalAnnotationsGenerator.Tests.Core.Construction
 {
@@ -86,7 +86,7 @@ namespace ExternalAnnotationsGenerator.Tests.Core.Construction
         public void GetGenericDefinitionForMarkerType()
         {
             Assert.That(
-                GenericDefinitionHelper.GetGenericDefinition(typeof(TClass)),
+                GetGenericDefinition(typeof(TClass)),
                 Is.EqualTo(typeof(TClass)));
         }
 
@@ -94,7 +94,7 @@ namespace ExternalAnnotationsGenerator.Tests.Core.Construction
         public void GetGenericDefinitionForNestedType()
         {
             Assert.That(
-                GenericDefinitionHelper.GetGenericDefinition(typeof (Nested)),
+                GetGenericDefinition(typeof (Nested)),
                 Is.EqualTo(typeof (Nested)));
         }
 
@@ -102,7 +102,7 @@ namespace ExternalAnnotationsGenerator.Tests.Core.Construction
         public void GetGenericDefinitionForNormalMethodInNestedType()
         {
             Assert.That(
-                GenericDefinitionHelper.GetGenericDefinition(typeof(Nested).GetMethod("NormalMethod")),
+                GetGenericDefinition(typeof(Nested).GetMethod("NormalMethod")),
                 Is.EqualTo(typeof(Nested).GetMethod("NormalMethod")));
         }
 
@@ -110,7 +110,7 @@ namespace ExternalAnnotationsGenerator.Tests.Core.Construction
         public void GetGenericDefinitionForGenericMethodInNestedType()
         {
             Assert.That(
-                GenericDefinitionHelper.GetGenericDefinition(typeof(Nested).GetMethod("GenericMethod").MakeGenericMethod(typeof(int))),
+                GetGenericDefinition(typeof(Nested).GetMethod("GenericMethod").MakeGenericMethod(typeof(int))),
                 Is.EqualTo(typeof(Nested).GetMethod("GenericMethod")));
         }
 
@@ -118,7 +118,7 @@ namespace ExternalAnnotationsGenerator.Tests.Core.Construction
         public void GetGenericDefinitionForNormalMethodInGenericNestedType()
         {
             Assert.That(
-                GenericDefinitionHelper.GetGenericDefinition(typeof(NestedTyped<bool>).GetMethod("NormalMethod")),
+                GetGenericDefinition(typeof(NestedTyped<bool>).GetMethod("NormalMethod")),
                 Is.EqualTo(typeof(NestedTyped<>).GetMethod("NormalMethod")));
         }
 
@@ -126,7 +126,7 @@ namespace ExternalAnnotationsGenerator.Tests.Core.Construction
         public void GetGenericDefinitionForGenericMethodInGenericNestedType()
         {
             Assert.That(
-                GenericDefinitionHelper.GetGenericDefinition(typeof(NestedTyped<bool>).GetMethod("GenericMethod").MakeGenericMethod(typeof(int))),
+                GetGenericDefinition(typeof(NestedTyped<bool>).GetMethod("GenericMethod").MakeGenericMethod(typeof(int))),
                 Is.EqualTo(typeof(NestedTyped<>).GetMethod("GenericMethod")));
         }
 
@@ -134,7 +134,7 @@ namespace ExternalAnnotationsGenerator.Tests.Core.Construction
         public void GetGenericDefinitionForNormalMethodInGenericNestedTypeInsideGenericNestedType()
         {
             Assert.That(
-                GenericDefinitionHelper.GetGenericDefinition(typeof(NestedTyped<bool>.DoubleNestedTyped<int>).GetMethod("NormalMethod")),
+                GetGenericDefinition(typeof(NestedTyped<bool>.DoubleNestedTyped<int>).GetMethod("NormalMethod")),
                 Is.EqualTo(typeof(NestedTyped<>.DoubleNestedTyped<>).GetMethod("NormalMethod")));
         }
 
@@ -142,7 +142,7 @@ namespace ExternalAnnotationsGenerator.Tests.Core.Construction
         public void GetGenericDefinitionForGenericMethodInGenericNestedTypeInsideGenericNestedType()
         {
             Assert.That(
-                GenericDefinitionHelper.GetGenericDefinition(typeof(NestedTyped<bool>.DoubleNestedTyped<int>).GetMethod("GenericMethod").MakeGenericMethod(typeof(int))),
+                GetGenericDefinition(typeof(NestedTyped<bool>.DoubleNestedTyped<int>).GetMethod("GenericMethod").MakeGenericMethod(typeof(int))),
                 Is.EqualTo(typeof(NestedTyped<>.DoubleNestedTyped<>).GetMethod("GenericMethod")));
         }
 
@@ -150,7 +150,7 @@ namespace ExternalAnnotationsGenerator.Tests.Core.Construction
         public void GetGenericDefinitionForNestedGenericType()
         {
             Assert.That(
-                GenericDefinitionHelper.GetGenericDefinition(typeof(Nested.DoubleNestedTyped<int>)),
+                GetGenericDefinition(typeof(Nested.DoubleNestedTyped<int>)),
                 Is.EqualTo(typeof(Nested.DoubleNestedTyped<>)));
         }
 
@@ -158,7 +158,7 @@ namespace ExternalAnnotationsGenerator.Tests.Core.Construction
         public void GetGenericDefinitionForNestedGenericTypeInGenericType()
         {
             Assert.That(
-                GenericDefinitionHelper.GetGenericDefinition(typeof(NestedTyped<bool>.DoubleNestedTyped<int>)),
+                GetGenericDefinition(typeof(NestedTyped<bool>.DoubleNestedTyped<int>)),
                 Is.EqualTo(typeof(NestedTyped<>.DoubleNestedTyped<>)));
         }
 
@@ -207,11 +207,11 @@ namespace ExternalAnnotationsGenerator.Tests.Core.Construction
                     .Single(m => m.Name == "Complex" && m.GetParameters().First().ParameterType.Name == "T2");
             
             Assert.That(
-                GenericDefinitionHelper.GetGenericDefinition(first),
+                GetGenericDefinition(first),
                 Is.EqualTo(expectedFirst));
 
             Assert.That(
-                GenericDefinitionHelper.GetGenericDefinition(second),
+                GetGenericDefinition(second),
                 Is.EqualTo(expectedSecond));
         }
 
@@ -230,11 +230,11 @@ namespace ExternalAnnotationsGenerator.Tests.Core.Construction
                     .Single(m => m.Name == "ComplexList" && m.GetParameters().First().ParameterType.GetGenericArguments().First().Name == "T2");
 
             Assert.That(
-                GenericDefinitionHelper.GetGenericDefinition(first),
+                GetGenericDefinition(first),
                 Is.EqualTo(expectedFirst));
 
             Assert.That(
-                GenericDefinitionHelper.GetGenericDefinition(second),
+                GetGenericDefinition(second),
                 Is.EqualTo(expectedSecond));
         }
     }
