@@ -7,7 +7,7 @@ using ExternalAnnotationsGenerator.Core.Model;
 
 namespace ExternalAnnotationsGenerator.Core.Construction
 {
-    internal class TypeAnnotationsBuilder<TClass> : ITypeAnnotator<TClass>
+    internal class TypeAnnotationsBuilder<TType> : ITypeAnnotator<TType>
     {
         private readonly List<MemberAnnotations> membersAnnotations = new List<MemberAnnotations>();
 
@@ -29,12 +29,12 @@ namespace ExternalAnnotationsGenerator.Core.Construction
             return newAnnotations;
         }
 
-        public void Annotate<TResult>(Expression<Func<TClass, TResult>> expression)
+        public void Annotate<TResult>(Expression<Func<TType, TResult>> expression)
         {
             AnnotateCore(expression);
         }
 
-        public void Annotate(Expression<Action<TClass>> expression)
+        public void Annotate(Expression<Action<TType>> expression)
         {
             AnnotateCore(expression);
         }
@@ -42,10 +42,7 @@ namespace ExternalAnnotationsGenerator.Core.Construction
         private void AnnotateCore(LambdaExpression expression)
         {
             var result = ExpressionParser.Parse(expression);
-            var memberAnnotations = GetMemberAnnotations(result.Member);
-
-            memberAnnotations.Annotations.AddRange(result.Annotations);
-            memberAnnotations.ParameterAnnotations.AddRange(result.ParameterAnnotations);
+            GetMemberAnnotations(result.Member).AddAnnotationsFromParsing(result);
         }
     }
 }

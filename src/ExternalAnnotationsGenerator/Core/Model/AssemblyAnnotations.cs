@@ -19,6 +19,13 @@ namespace ExternalAnnotationsGenerator.Core.Model
             Assembly = assembly;
         }
 
+        public void Add([NotNull] MemberAnnotations memberAnnotation)
+        {
+            if (memberAnnotation == null) throw new ArgumentNullException(nameof(memberAnnotation));
+
+            membersAnnotations.Add(memberAnnotation);
+        }
+
         public void AddRange([NotNull] IEnumerable<MemberAnnotations> memberAnnotations)
         {
             if (memberAnnotations == null) throw new ArgumentNullException(nameof(memberAnnotations));

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -42,12 +43,38 @@ namespace ExternalAnnotationsGenerator.Core.Construction
 
         public void AnnotateStatic(Expression<Action> expression)
         {
-            throw new NotImplementedException();
+            AnnotateStaticCore(expression);
         }
 
         public void AnnotateStatic<TResult>(Expression<Func<TResult>> expression)
         {
-            throw new NotImplementedException();
+            AnnotateStaticCore(expression);
+        }
+
+        private MemberAnnotations GetMemberAnnotations(MemberInfo member)
+        {
+            Debug.Assert(member != null);
+            Debug.Assert(member.DeclaringType != null);
+
+            var assemblyAnnotations = GetAssemblyAnnotations(member.DeclaringType.Assembly);
+            var existing = assemblyAnnotations.FirstOrDefault(m => m.Member == member);
+            if (existing != null)
+            {
+                return existing;
+            }
+
+            var newAnnotations = new MemberAnnotations(member);
+            assemblyAnnotations.Add(newAnnotations);
+            return newAnnotations;
+        }
+
+        private void AnnotateStaticCore(LambdaExpression expression)
+        {
+            var result = ExpressionParser.Parse(expression);
+            Debug.Assert(result.Member.DeclaringType != null,
+                "Expression parser shouldn't succeed for members without declaring type");
+
+            GetMemberAnnotations(result.Member).AddAnnotationsFromParsing(result);
         }
     }
 }

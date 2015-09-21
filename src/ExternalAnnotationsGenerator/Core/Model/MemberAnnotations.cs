@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using ExternalAnnotationsGenerator.Core.Construction;
 using JetBrains.Annotations;
 
 namespace ExternalAnnotationsGenerator.Core.Model
@@ -16,6 +17,14 @@ namespace ExternalAnnotationsGenerator.Core.Model
             if (member == null) throw new ArgumentNullException(nameof(member));
 
             Member = member;
+        }
+
+        internal void AddAnnotationsFromParsing([NotNull] ExpressionParsingResult result)
+        {
+            if (result == null) throw new ArgumentNullException(nameof(result));
+
+            Annotations.AddRange(result.Annotations);
+            ParameterAnnotations.AddRange(result.ParameterAnnotations);
         }
     }
 }

@@ -269,7 +269,7 @@ namespace ExternalAnnotationsGenerator.Tests.Core.Model
             Assert.That(memberAnnotations, Is.Not.Null);
             Assert.That(memberAnnotations.Member.Name, Is.EqualTo("GetString"));
             Assert.That(resultInfo, Is.Not.Null);
-            Assert.That(resultInfo.IsNotNull, Is.False);
+            Assert.That(resultInfo.IsNotNull, Is.True);
             Assert.That(resultInfo.CanBeNull, Is.False);
         }
 
@@ -282,12 +282,12 @@ namespace ExternalAnnotationsGenerator.Tests.Core.Model
 
             var annotations = ((AnnotationsBuilder)annotator).GetAnnotations().First();
             var memberAnnotations = annotations.FirstOrDefault();
-            var resultInfo = memberAnnotations?.Annotations.FirstOrDefault();
+            var resultInfo = memberAnnotations?.ParameterAnnotations.FirstOrDefault();
 
             Assert.That(memberAnnotations, Is.Not.Null);
             Assert.That(memberAnnotations.Member.Name, Is.EqualTo("GetString"));
             Assert.That(resultInfo, Is.Not.Null);
-            Assert.That(resultInfo.IsNotNull, Is.False);
+            Assert.That(resultInfo.IsNotNull, Is.True);
             Assert.That(resultInfo.CanBeNull, Is.False);
         }
 
