@@ -3,9 +3,9 @@ using System.Linq.Expressions;
 
 namespace ExternalAnnotationsGenerator
 {
-    public interface ITypeAnnotator<TClass> : IFluentInterface
+    public interface ITypeAnnotator<TType> : IFluentInterface
     {
-        void Annotate<TResult>(Expression<Func<TClass, TResult>> expression);
-        void Annotate(Expression<Action<TClass>> expression);
+        void Annotate<TResult>(Expression<Func<TType, TResult>> expression);
+        void Annotate(Expression<Action<TType>> expression);
     }
 }

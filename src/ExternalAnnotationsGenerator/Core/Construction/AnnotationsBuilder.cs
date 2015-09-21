@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 using ExternalAnnotationsGenerator.Core.Model;
 
@@ -37,6 +38,16 @@ namespace ExternalAnnotationsGenerator.Core.Construction
 
             var assemblyAnnotations = GetAssemblyAnnotations(typeof (TType).Assembly);
             assemblyAnnotations.AddRange(memberAnnotator.GetMembersAnnotations());
+        }
+
+        public void AnnotateStatic(Expression<Action> expression)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AnnotateStatic<TResult>(Expression<Func<TResult>> expression)
+        {
+            throw new NotImplementedException();
         }
     }
 }
