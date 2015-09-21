@@ -25,6 +25,18 @@ namespace ExternalAnnotationsGenerator.Core.FileGeneration
                 return GetMethodNameString(methodInfo);
             }
 
+            var propertyInfo = member as PropertyInfo;
+            if (propertyInfo != null)
+            {
+                return GetPropertyNameString(propertyInfo);
+            }
+
+            var fieldInfo = member as FieldInfo;
+            if (fieldInfo != null)
+            {
+                return GetFieldNameString(fieldInfo);
+            }
+
             throw new ArgumentException("Member type not supported : " + member.MemberType, nameof(member));
         }
 
@@ -33,6 +45,34 @@ namespace ExternalAnnotationsGenerator.Core.FileGeneration
             if (methodBase == null) throw new ArgumentNullException(nameof(methodBase));
 
             return GetMethodNameStringCore(GenericDefinitionHelper.GetGenericDefinition(methodBase));
+        }
+
+        public static string GetPropertyNameString([NotNull] PropertyInfo property)
+        {
+            if (property == null) throw new ArgumentNullException(nameof(property));
+
+            return GetPropertyNameStringCore(GenericDefinitionHelper.GetGenericDefinition(property));
+        }
+
+        private static string GetPropertyNameStringCore(PropertyInfo property)
+        {
+            var builder = new StringBuilder("P:");
+            AppendMemberTypeAndName(property, builder);
+            return builder.ToString();
+        }
+
+        public static string GetFieldNameString([NotNull] FieldInfo field)
+        {
+            if (field == null) throw new ArgumentNullException(nameof(field));
+
+            return GetFieldNameStringCore(GenericDefinitionHelper.GetGenericDefinition(field));
+        }
+
+        private static string GetFieldNameStringCore(FieldInfo field)
+        {
+            var builder = new StringBuilder("F:");
+            AppendMemberTypeAndName(field, builder);
+            return builder.ToString();
         }
 
         // encodes dots with alternate # character
@@ -46,16 +86,22 @@ namespace ExternalAnnotationsGenerator.Core.FileGeneration
             return name;
         }
 
-        static string GetMethodNameStringCore(MethodBase methodBase)
+        private static void AppendMemberTypeAndName(MemberInfo member, StringBuilder builder)
         {
-            var builder = new StringBuilder("M:");
-            var declaringType = methodBase.DeclaringType;
+            var declaringType = member.DeclaringType;
             if (declaringType != null)
             {
                 AppendRootTypeName(declaringType, builder);
                 builder.Append(".");
-                builder.Append(EncodeName(methodBase.Name));
+                builder.Append(EncodeName(member.Name));
             }
+        }
+
+        static string GetMethodNameStringCore(MethodBase methodBase)
+        {
+            var builder = new StringBuilder("M:");
+
+            AppendMemberTypeAndName(methodBase, builder);
 
             if (methodBase.IsGenericMethod)
             {

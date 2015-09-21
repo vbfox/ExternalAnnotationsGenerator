@@ -2,14 +2,18 @@
 * Add xml documentation files to the package
 * Add pdb files to the package with
   [SourceLink](https://ctaggart.github.io/SourceLink/).
-* `AnnotateType` has been renamed `Annotate`
-* Marker types `TClass` and `TStruct` added to standardize usage
-  [Issue #3](https://github.com/vbfox/ExternalAnnotationsGenerator/issues/3).
-* Static methods in static types can now be annotated
-  [Issue #2](https://github.com/vbfox/ExternalAnnotationsGenerator/issues/2).
+* `AnnotateType` has been renamed to `Annotate`.
 * Static methods in non-static types can now be annotated
   [Issue #1](https://github.com/vbfox/ExternalAnnotationsGenerator/issues/1).
-* Ensure that complex generic imbrication of nested generic classes and
+* Static methods in static types can now be annotated
+  [Issue #2](https://github.com/vbfox/ExternalAnnotationsGenerator/issues/2).
+* Marker types `TClass` and `TStruct` added to standardize usage
+  [Issue #3](https://github.com/vbfox/ExternalAnnotationsGenerator/issues/3).
+* Fields can now be annotated
+  [Issue #6](https://github.com/vbfox/ExternalAnnotationsGenerator/issues/6).
+* Properties can now be annotated
+  [Issue #7](https://github.com/vbfox/ExternalAnnotationsGenerator/issues/7).
+* **BUGFIX:** Ensure that complex generic imbrication of nested generic classes and
   generic methods can be annotated.
   [Issue #4](https://github.com/vbfox/ExternalAnnotationsGenerator/issues/4).
 

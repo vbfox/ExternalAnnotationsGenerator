@@ -6,6 +6,7 @@ using ExternalAnnotationsGenerator.Core;
 using ExternalAnnotationsGenerator.Core.FileGeneration;
 using NUnit.Framework;
 using static ExternalAnnotationsGenerator.Annotations;
+using static ExternalAnnotationsGenerator.Tests.XmlTestsHelpers;
 
 namespace ExternalAnnotationsGenerator.Tests
 {
@@ -186,6 +187,36 @@ namespace ExternalAnnotationsGenerator.Tests
                 Is.EqualTo($"M:{testClassFullname}.GetLoggerStatic(System.Type)"));
         }
 
+        [Test]
+        public void CanAnnotateField()
+        {
+            var annotator = Annotator.Create();
+            annotator.Annotate<TestClass>(x => x.Annotate(t => t.Field == NotNull<string>()));
+
+            var actual = GetFirstFile(annotator).Content.Descendants("member").Single();
+
+            var expected = @"
+<member name=""F:ExternalAnnotationsGenerator.Tests.FullWorkflowTests+TestClass.Field"">
+    <attribute ctor=""M:JetBrains.Annotations.NotNullAttribute.#ctor"" />
+</member>";
+            Assert.That(Normalize(actual), Is.EqualTo(Normalize(expected)));
+        }
+
+        [Test]
+        public void CanAnnotateProperty()
+        {
+            var annotator = Annotator.Create();
+            annotator.Annotate<TestClass>(x => x.Annotate(t => t.Property == NotNull<string>()));
+
+            var actual = GetFirstFile(annotator).Content.Descendants("member").Single();
+
+            var expected = @"
+<member name=""P:ExternalAnnotationsGenerator.Tests.FullWorkflowTests+TestClass.Property"">
+    <attribute ctor=""M:JetBrains.Annotations.NotNullAttribute.#ctor"" />
+</member>";
+            Assert.That(Normalize(actual), Is.EqualTo(Normalize(expected)));
+        }
+
         private static readonly string testClassFullname = typeof(TestClass).FullName;
 
         [SuppressMessage("ReSharper", "UnusedParameter.Global")]
@@ -196,6 +227,9 @@ namespace ExternalAnnotationsGenerator.Tests
         [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
         public class TestClass
         {
+            public string Property { get; set; }
+            public string Field;
+
             public string GetLogger(Type type)
             {
                 return default(string);

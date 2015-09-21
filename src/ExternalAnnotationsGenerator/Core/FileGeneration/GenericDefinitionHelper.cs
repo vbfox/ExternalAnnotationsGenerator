@@ -18,6 +18,32 @@ namespace ExternalAnnotationsGenerator.Core.FileGeneration
             return GetGenericTypeDefinition(type, genericTypes);
         }
 
+        public static PropertyInfo GetGenericDefinition([NotNull] PropertyInfo property)
+        {
+            if (property == null) throw new ArgumentNullException(nameof(property));
+
+            if (property.DeclaringType == null)
+            {
+                return property;
+            }
+
+            var type = GetGenericDefinition(property.DeclaringType);
+            return type.GetProperty(property.Name, bindingFlagsAllMembers);
+        }
+
+        public static FieldInfo GetGenericDefinition([NotNull] FieldInfo field)
+        {
+            if (field == null) throw new ArgumentNullException(nameof(field));
+
+            if (field.DeclaringType == null)
+            {
+                return field;
+            }
+
+            var type = GetGenericDefinition(field.DeclaringType);
+            return type.GetField(field.Name, bindingFlagsAllMembers);
+        }
+
         public static MethodBase GetGenericDefinition(MethodBase methodBase)
         {
             return GetGenericMethodDefinition(methodBase);
