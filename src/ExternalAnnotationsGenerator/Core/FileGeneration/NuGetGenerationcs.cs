@@ -9,15 +9,14 @@ namespace ExternalAnnotationsGenerator.Core.FileGeneration
     {
         public static void CreateNugetPackage(NugetSpec spec, IEnumerable<AnnotationFile> annotationFiles, DirectoryInfo directory)
         {
-            var packageDir = new DirectoryInfo(Path.Combine(directory.FullName, spec.Id));
-            var annotationsDir = new DirectoryInfo(Path.Combine(packageDir.FullName, "ReSharper", "vAny", "annotations"));
+            var annotationsDir = new DirectoryInfo(Path.Combine(directory.FullName, "ReSharper", "vAny", "annotations"));
 
             if (!annotationsDir.Exists)
             {
                 annotationsDir.Create();
             }
 
-            WriteSpecFile(spec, packageDir);
+            WriteSpecFile(spec, directory);
             WriteAnnotationFiles(annotationFiles, annotationsDir);
         }
 
@@ -36,7 +35,7 @@ namespace ExternalAnnotationsGenerator.Core.FileGeneration
 
         private static void WriteSpecFile(NugetSpec spec, DirectoryInfo packageDir)
         {
-            var specFilename = spec.Id + "." + spec.Version + ".nuspec";
+            var specFilename = $"{spec.Id}.{spec.Version}.nuspec";
             var specFilePath = Path.Combine(packageDir.FullName, specFilename);
 
             using (var writer = new XmlTextWriter(specFilePath, Encoding.UTF8) {Formatting = Formatting.Indented})

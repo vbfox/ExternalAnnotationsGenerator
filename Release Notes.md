@@ -1,3 +1,6 @@
+### New in 2.1
+* Don't create an extra directory in CreateNugetPackage
+
 ### New in 2.0
 * Add xml documentation files to the package
 * Add pdb files to the package with
