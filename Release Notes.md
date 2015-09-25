@@ -1,3 +1,8 @@
+### New in 2.2
+
+* Generate packages files with ReSharper 9.0 format
+  See https://www.jetbrains.com/resharper/devguide/Extensions/Packaging.html
+
 ### New in 2.1
 * Don't create an extra directory in CreateNugetPackage
 

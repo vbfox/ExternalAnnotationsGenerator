@@ -9,7 +9,7 @@ namespace ExternalAnnotationsGenerator.Core.FileGeneration
     {
         public static void CreateNugetPackage(NugetSpec spec, IEnumerable<AnnotationFile> annotationFiles, DirectoryInfo directory)
         {
-            var annotationsDir = new DirectoryInfo(Path.Combine(directory.FullName, "ReSharper", "vAny", "annotations"));
+            var annotationsDir = new DirectoryInfo(Path.Combine(directory.FullName, "DotFiles", "Extensions", spec.Id, "annotations"));
 
             if (!annotationsDir.Exists)
             {

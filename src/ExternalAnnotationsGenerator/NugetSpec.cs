@@ -53,8 +53,8 @@ namespace ExternalAnnotationsGenerator
                         new XElement("tags", Tags),
                         new XElement("dependencies",
                             new XElement("dependency",
-                                new XAttribute("id", "ReSharper"),
-                                new XAttribute("version", "[7.0,]")))
+                                new XAttribute("id", "Wave"),
+                                new XAttribute("version", "[1.0,]")))
                         )));
 
             return doc;
