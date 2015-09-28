@@ -21,3 +21,5 @@ files
     ../../bin/ExternalAnnotationsGenerator/*.dll ==> lib/net46
     ../../bin/ExternalAnnotationsGenerator/*.xml ==> lib/net46
     ../../bin/ExternalAnnotationsGenerator/*.pdb ==> lib/net46
+	../ExternalAnnotationsGenerator.Fake/*.fs ==> build
+	../ExternalAnnotationsGenerator.Fake/*.fsx ==> build

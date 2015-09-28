@@ -1,4 +1,6 @@
+using System;
 using System.Xml.Linq;
+using JetBrains.Annotations;
 
 namespace ExternalAnnotationsGenerator
 {
@@ -58,6 +60,23 @@ namespace ExternalAnnotationsGenerator
                         )));
 
             return doc;
+        }
+
+        [NotNull, Pure]
+        public NugetSpec WithVersion([NotNull] Version version)
+        {
+            if (version == null) throw new ArgumentNullException(nameof(version));
+
+            return new NugetSpec(
+                Id,
+                version.ToString(),
+                Title,
+                Authors,
+                Owners,
+                ProjectUrl,
+                IconUrl,
+                Description,
+                Tags);
         }
     }
 }

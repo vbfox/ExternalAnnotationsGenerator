@@ -4,10 +4,10 @@ using System.Reflection;
 [assembly: AssemblyTitleAttribute("ExternalAnnotationsGenerator")]
 [assembly: AssemblyProductAttribute("ExternalAnnotationsGenerator")]
 [assembly: AssemblyDescriptionAttribute("Fluent Library for generating ReSharper External annotation files")]
-[assembly: AssemblyVersionAttribute("2.2")]
-[assembly: AssemblyFileVersionAttribute("2.2")]
+[assembly: AssemblyVersionAttribute("2.3")]
+[assembly: AssemblyFileVersionAttribute("2.3")]
 namespace System {
     internal static class AssemblyVersionInformation {
-        internal const string Version = "2.2";
+        internal const string Version = "2.3";
     }
 }
