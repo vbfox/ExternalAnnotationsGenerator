@@ -20,7 +20,9 @@ let project = "ExternalAnnotationsGenerator"
 let summary = "Fluent Library for generating ReSharper External annotation files"
 let solutionFile  = rootDir </> project + ".sln"
 let testAssemblies = rootDir </> "tests/**/bin/Release/*.Tests.dll"
-let sourceProjects = rootDir </> "src/**/*.??proj"
+let sourceProjects = 
+    !! (rootDir </> "src/**/*.??proj")
+    -- "src/ExternalAnnotationsGenerator.Fake/ExternalAnnotationsGenerator.Fake.fsproj"
 
 
 /// The profile where the project is posted
@@ -74,7 +76,7 @@ Target "AssemblyInfo" <| fun _ ->
           (getAssemblyInfoAttributes projectName)
         )
 
-    !! sourceProjects
+    sourceProjects
     |> Seq.map getProjectDetails
     |> Seq.iter (fun (projFileName, projectName, folderName, attributes) ->
         match projFileName with
@@ -88,7 +90,7 @@ Target "AssemblyInfo" <| fun _ ->
 // src folder to support multiple project outputs
 Target "CopyBinaries" <| fun _ ->
     CreateDir binDir
-    !! sourceProjects
+    sourceProjects
     |>  Seq.map (fun f -> ((System.IO.Path.GetDirectoryName f) </> "bin/Release", binDir </> (System.IO.Path.GetFileNameWithoutExtension f)))
     |>  Seq.iter (fun (fromDir, toDir) -> CopyDir toDir fromDir (fun _ -> true))
 

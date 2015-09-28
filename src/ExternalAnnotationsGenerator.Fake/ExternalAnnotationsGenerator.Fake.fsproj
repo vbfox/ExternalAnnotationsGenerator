@@ -44,7 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Generator.fs" />
-    <None Include="ExternalAnnotationsGenerator.fsx" />
+    <None Include="GeneratorHelper.fsx" />
     <None Include="paket.references" />
   </ItemGroup>
   <PropertyGroup>
