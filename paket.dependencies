@@ -8,5 +8,6 @@ group build
     source https://www.nuget.org/api/v2/
 
     nuget FAKE
+	nuget FAKE.Lib
     nuget SourceLink.Fake
     github fsharp/FAKE modules/Octokit/Octokit.fsx

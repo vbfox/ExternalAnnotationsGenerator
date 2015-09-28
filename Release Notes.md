@@ -1,3 +1,8 @@
+### New in 2.3
+
+* Add a full blown program structure to the library to avoid all project using
+  it duplicating argument parsing.
+
 ### New in 2.2
 
 * Generate packages files with ReSharper 9.0 format
